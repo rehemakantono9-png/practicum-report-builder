@@ -32,7 +32,12 @@ const state = {
   placementTypes: [],
   reportSectionsConfig: null,
   demoProjects: [],
-  savedProjects: []
+  savedProjects: [],
+  payment: {
+    isPaid: false,
+    amount: 10000,
+    status: "unpaid"
+  }
 };
 
 const STORAGE_KEYS = {
@@ -185,6 +190,7 @@ function bindHomeActions() {
   document.getElementById("projectNameInput")?.addEventListener("input", (e) => {
     state.projectName = e.target.value.trim() || "My Practicum Report Project";
     updateActiveProjectName();
+    updateCurrentStorage();
   });
 
   document.getElementById("saveProjectBtn")?.addEventListener("click", saveProject);
@@ -255,11 +261,17 @@ function bindLogbookInputs() {
 
 function bindReportEditor() {
   document.getElementById("generateStarterDraftBtn")?.addEventListener("click", () => {
+    if (!state.payment.isPaid) {
+      alert("Starter draft generation is a premium feature. Pay UGX 10,000 to unlock it.");
+      return;
+    }
+
     const title = state.selectedSectionTitle;
     state.sectionContent[title] = generateStarterDraft(title);
     renderReportEditor();
     renderPreviewPage();
     renderStatusArea();
+    renderPaymentUI();
     updateCurrentStorage();
   });
 
@@ -269,6 +281,7 @@ function bindReportEditor() {
     renderReportEditor();
     renderPreviewPage();
     renderStatusArea();
+    renderPaymentUI();
     updateCurrentStorage();
   });
 
@@ -282,10 +295,18 @@ function bindReportEditor() {
 
 function bindGeneralButtons() {
   document.getElementById("exportWordBtn")?.addEventListener("click", () => {
+    if (!state.payment.isPaid) {
+      alert("Please pay UGX 10,000 to unlock Word export.");
+      return;
+    }
     exportAsTextFile("doc");
   });
 
   document.getElementById("exportPdfBtn")?.addEventListener("click", () => {
+    if (!state.payment.isPaid) {
+      alert("Please pay UGX 10,000 to unlock PDF export.");
+      return;
+    }
     window.print();
   });
 
@@ -295,6 +316,10 @@ function bindGeneralButtons() {
 
   document.getElementById("printLogbookBtn")?.addEventListener("click", () => {
     printLogbookOnly();
+  });
+
+  document.getElementById("payToUnlockBtn")?.addEventListener("click", () => {
+    alert("Pesapal connection will be added next. For now this button shows where premium payment will begin.");
   });
 }
 
@@ -310,16 +335,20 @@ function renderAll() {
   syncInputsFromState();
   updateActiveProjectName();
   renderProfilePreview();
+  renderPlacementTypes();
+  renderWorkModes();
   renderPlacementPromptPanel();
   renderDynamicLogbookFields();
   renderSavedLogbookEntries();
   renderReportSectionsList();
   renderReportGuidancePanel();
   renderReportEditor();
+  renderAITools();
   renderAIGuidancePanel();
   renderDashboard();
   renderPreviewPage();
   renderExportPage();
+  renderPaymentUI();
   renderSavedProjectsLists();
   renderWorkflowSections();
   renderStatusArea();
@@ -498,11 +527,7 @@ function renderDynamicLogbookFields() {
   fields.forEach(([key, label]) => {
     const wrapper = document.createElement("div");
     wrapper.className = "form-group";
-    if (
-      key === "learnerResponse" ||
-      key === "infectionControl" ||
-      key === "draftingFiling"
-    ) {
+    if (key === "learnerResponse" || key === "infectionControl" || key === "draftingFiling") {
       wrapper.classList.add("full-span");
       wrapper.innerHTML = `
         <label for="dynamic-${key}">${label}</label>
@@ -515,9 +540,6 @@ function renderDynamicLogbookFields() {
       `;
     }
     container.appendChild(wrapper);
-
-    const input = wrapper.querySelector(`#dynamic-${key}`);
-    input.value = "";
   });
 }
 
@@ -794,9 +816,13 @@ function renderAITools() {
   AI_TOOLS.forEach((tool) => {
     const item = document.createElement("div");
     item.className = "tool-item";
+
+    const lockedText = state.payment.isPaid ? "Use Tool" : "Locked";
+    const disabledAttr = state.payment.isPaid ? "" : "disabled";
+
     item.innerHTML = `
       <h4>${tool}</h4>
-      <button type="button" class="secondary-btn">Use Tool</button>
+      <button type="button" class="secondary-btn premium-action" ${disabledAttr}>${lockedText}</button>
     `;
     container.appendChild(item);
   });
@@ -1004,6 +1030,22 @@ function renderExportPage() {
   });
 }
 
+function renderPaymentUI() {
+  const badge = document.getElementById("paymentStatusBadge");
+  const exportWordBtn = document.getElementById("exportWordBtn");
+  const exportPdfBtn = document.getElementById("exportPdfBtn");
+  const starterBtn = document.getElementById("generateStarterDraftBtn");
+
+  if (badge) {
+    badge.textContent = state.payment.isPaid ? "Paid" : "Unpaid";
+    badge.className = state.payment.isPaid ? "ready-badge" : "inprogress-badge";
+  }
+
+  if (exportWordBtn) exportWordBtn.disabled = !state.payment.isPaid;
+  if (exportPdfBtn) exportPdfBtn.disabled = !state.payment.isPaid;
+  if (starterBtn) starterBtn.disabled = !state.payment.isPaid;
+}
+
 function saveProject() {
   const payload = getSerializableState();
   const existing = getSavedProjectsFromStorage();
@@ -1096,6 +1138,11 @@ function resetProject(withAlert = false) {
   state.projectName = "My Practicum Report Project";
   state.selectedSectionTitle = "Title Page";
   state.sectionContent = {};
+  state.payment = {
+    isPaid: false,
+    amount: 10000,
+    status: "unpaid"
+  };
   initializeSectionContent();
 
   localStorage.removeItem(STORAGE_KEYS.current);
@@ -1267,6 +1314,7 @@ function getSerializableState() {
     workMode: state.workMode,
     logbookEntries: state.logbookEntries,
     sectionContent: state.sectionContent,
+    payment: state.payment,
     savedAt: new Date().toISOString()
   };
 }
@@ -1294,6 +1342,11 @@ function applyProjectData(project) {
   state.workMode = project.workMode || "";
   state.logbookEntries = Array.isArray(project.logbookEntries) ? project.logbookEntries : [];
   state.sectionContent = { ...state.sectionContent, ...(project.sectionContent || {}) };
+  state.payment = {
+    isPaid: project.payment?.isPaid || false,
+    amount: project.payment?.amount || 10000,
+    status: project.payment?.status || "unpaid"
+  };
   initializeSectionContent();
 
   const titles = getAllSectionTitles();
