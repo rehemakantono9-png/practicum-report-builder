@@ -1,0 +1,111 @@
+[
+  {
+    "id": "internship",
+    "title": "Internship",
+    "description": "General workplace-based attachment for practical learning.",
+    "category": "general",
+    "icon": "building",
+    "logbookMode": ["daily", "weekly"],
+    "reportFocus": [
+      "organization background",
+      "duties performed",
+      "skills gained",
+      "challenges faced",
+      "recommendations"
+    ]
+  },
+  {
+    "id": "field_attachment",
+    "title": "Field Attachment",
+    "description": "Professional placement with field or office tasks.",
+    "category": "general",
+    "icon": "briefcase",
+    "logbookMode": ["daily", "weekly"],
+    "reportFocus": [
+      "field activities",
+      "observations",
+      "skills gained",
+      "challenges faced",
+      "recommendations"
+    ]
+  },
+  {
+    "id": "school_practice",
+    "title": "School Practice",
+    "description": "Teaching practice for education students.",
+    "category": "education",
+    "icon": "graduation-cap",
+    "logbookMode": ["daily", "weekly"],
+    "reportFocus": [
+      "school background",
+      "subjects taught",
+      "classes handled",
+      "teaching methods",
+      "classroom management",
+      "reflection"
+    ]
+  },
+  {
+    "id": "clinical_placement",
+    "title": "Clinical Placement",
+    "description": "For nursing, medical, and health-related programmes.",
+    "category": "health",
+    "icon": "stethoscope",
+    "logbookMode": ["daily", "weekly"],
+    "reportFocus": [
+      "health facility background",
+      "ward or unit attachment",
+      "procedures observed",
+      "patient care activities",
+      "professional ethics",
+      "competencies gained"
+    ]
+  },
+  {
+    "id": "industrial_training",
+    "title": "Industrial Training",
+    "description": "For engineering and technical training placement.",
+    "category": "technical",
+    "icon": "factory",
+    "logbookMode": ["daily", "weekly"],
+    "reportFocus": [
+      "technical operations",
+      "equipment handled",
+      "safety procedures",
+      "practical skills gained",
+      "challenges faced",
+      "recommendations"
+    ]
+  },
+  {
+    "id": "law_attachment",
+    "title": "Law Attachment",
+    "description": "For legal offices, chambers, and court observation.",
+    "category": "law",
+    "icon": "scale",
+    "logbookMode": ["daily", "weekly"],
+    "reportFocus": [
+      "legal office background",
+      "court attendance",
+      "drafting and filing",
+      "legal research",
+      "professional ethics",
+      "skills gained"
+    ]
+  },
+  {
+    "id": "practicum",
+    "title": "General Practicum",
+    "description": "A broad option for other structured professional placements.",
+    "category": "general",
+    "icon": "file-text",
+    "logbookMode": ["daily", "weekly"],
+    "reportFocus": [
+      "host institution background",
+      "activities performed",
+      "skills gained",
+      "challenges faced",
+      "recommendations"
+    ]
+  }
+]
