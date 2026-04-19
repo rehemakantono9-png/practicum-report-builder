@@ -1,0 +1,229 @@
+{
+  "common": [
+    {
+      "id": "title_page",
+      "title": "Title Page",
+      "group": "front_matter",
+      "autoGenerate": true,
+      "prompts": [
+        "Include institution name",
+        "Include report title",
+        "Include student name",
+        "Include registration number",
+        "Include programme",
+        "Include host institution",
+        "Include practicum period"
+      ]
+    },
+    {
+      "id": "declaration",
+      "title": "Declaration",
+      "group": "front_matter",
+      "autoGenerate": true,
+      "prompts": [
+        "State that the report is your original work",
+        "Include student name",
+        "Leave space for signature and date"
+      ]
+    },
+    {
+      "id": "approval",
+      "title": "Approval",
+      "group": "front_matter",
+      "autoGenerate": true,
+      "prompts": [
+        "Include supervisor approval statement",
+        "Include supervisor name and title",
+        "Leave space for signature and date"
+      ]
+    },
+    {
+      "id": "acknowledgement",
+      "title": "Acknowledgement",
+      "group": "front_matter",
+      "autoGenerate": false,
+      "prompts": [
+        "Thank Allah or God if desired",
+        "Thank the university",
+        "Thank the host institution",
+        "Thank supervisors and others who helped"
+      ]
+    },
+    {
+      "id": "executive_summary",
+      "title": "Executive Summary",
+      "group": "main_body",
+      "autoGenerate": true,
+      "prompts": [
+        "Summarize the placement",
+        "Summarize key activities",
+        "Mention skills gained",
+        "Mention challenges faced",
+        "Give a brief conclusion"
+      ]
+    },
+    {
+      "id": "introduction",
+      "title": "Chapter One: Introduction",
+      "group": "main_body",
+      "autoGenerate": true,
+      "prompts": [
+        "Explain the purpose of the placement",
+        "State objectives",
+        "Show scope",
+        "Indicate duration",
+        "Explain significance"
+      ]
+    },
+    {
+      "id": "organization_background",
+      "title": "Chapter Two: Background of Host Institution",
+      "group": "main_body",
+      "autoGenerate": true,
+      "prompts": [
+        "Describe the institution",
+        "State location",
+        "Explain mission or mandate",
+        "Describe the department attached to",
+        "Summarize structure or services"
+      ]
+    },
+    {
+      "id": "activities_performed",
+      "title": "Chapter Three: Activities Performed",
+      "group": "main_body",
+      "autoGenerate": true,
+      "prompts": [
+        "Use real logbook entries",
+        "Describe duties and tasks performed",
+        "Group similar activities together",
+        "Show practical involvement"
+      ]
+    },
+    {
+      "id": "skills_learning",
+      "title": "Chapter Four: Skills and Learning Experience",
+      "group": "main_body",
+      "autoGenerate": true,
+      "prompts": [
+        "Describe technical skills gained",
+        "Describe professional growth",
+        "Describe personal development",
+        "Connect learning to the programme"
+      ]
+    },
+    {
+      "id": "challenges_recommendations_conclusion",
+      "title": "Chapter Five: Challenges, Recommendations, Conclusion",
+      "group": "main_body",
+      "autoGenerate": true,
+      "prompts": [
+        "Describe real challenges faced",
+        "Explain how they affected the work",
+        "Give practical recommendations",
+        "Write a brief conclusion"
+      ]
+    },
+    {
+      "id": "references",
+      "title": "References",
+      "group": "end_matter",
+      "autoGenerate": false,
+      "prompts": [
+        "List sources used in the report",
+        "Use the institution's preferred style if known"
+      ]
+    },
+    {
+      "id": "appendices",
+      "title": "Appendices",
+      "group": "end_matter",
+      "autoGenerate": false,
+      "prompts": [
+        "Add supporting materials",
+        "Include labels for each appendix",
+        "Use attendance sheets, lesson plans, forms, photos, or work samples where relevant"
+      ]
+    }
+  ],
+  "specialized": {
+    "school_practice": [
+      {
+        "id": "subjects_classes_taught",
+        "title": "Subjects and Classes Taught",
+        "group": "main_body",
+        "prompts": [
+          "List subjects taught",
+          "List classes handled",
+          "Show teaching load"
+        ]
+      },
+      {
+        "id": "teaching_methods_classroom_management",
+        "title": "Teaching Methods and Classroom Management",
+        "group": "main_body",
+        "prompts": [
+          "Describe teaching methods used",
+          "Describe teaching aids used",
+          "Describe classroom management experiences",
+          "Reflect on learner response"
+        ]
+      }
+    ],
+    "clinical_placement": [
+      {
+        "id": "wards_units_attached",
+        "title": "Wards or Units Attached To",
+        "group": "main_body",
+        "prompts": [
+          "List wards or units",
+          "Explain duties in each area"
+        ]
+      },
+      {
+        "id": "procedures_patient_care",
+        "title": "Procedures Observed and Patient Care Activities",
+        "group": "main_body",
+        "prompts": [
+          "Describe procedures observed",
+          "Describe procedures assisted",
+          "Describe patient care tasks",
+          "Highlight ethics and safety"
+        ]
+      }
+    ],
+    "law_attachment": [
+      {
+        "id": "court_attendance",
+        "title": "Court Attendance and Legal Observation",
+        "group": "main_body",
+        "prompts": [
+          "Describe court sessions attended",
+          "Explain what was learned from observation"
+        ]
+      },
+      {
+        "id": "drafting_research_ethics",
+        "title": "Legal Drafting, Research, and Professional Ethics",
+        "group": "main_body",
+        "prompts": [
+          "Describe drafting and filing work",
+          "Describe legal research tasks",
+          "Reflect on ethics and conduct"
+        ]
+      }
+    ],
+    "industrial_training": [
+      {
+        "id": "technical_operations",
+        "title": "Technical Operations and Equipment Handled",
+        "group": "main_body",
+        "prompts": [
+          "Describe technical tasks",
+          "List equipment handled",
+          "Explain safety procedures followed"
+        ]
+      }
+    ]
+  }
+}
