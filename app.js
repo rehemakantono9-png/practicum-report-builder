@@ -318,9 +318,9 @@ function bindGeneralButtons() {
     printLogbookOnly();
   });
 
-  document.getElementById("payToUnlockBtn")?.addEventListener("click", () => {
-    alert("Pesapal connection will be added next. For now this button shows where premium payment will begin.");
-  });
+  document.getElementById("printReportBtn")?.addEventListener("click", () => {
+  printFullReport();
+});
 }
 
 function renderStaticAreas() {
@@ -1457,7 +1457,74 @@ function buildExportContent() {
   });
   return lines.join("\n");
 }
+function printFullReport() {
+  const filledSections = getAllSectionTitles().filter((title) => {
+    return (state.sectionContent[title] || "").trim().length > 0;
+  });
 
+  if (filledSections.length === 0) {
+    alert("There is no report content to print yet.");
+    return;
+  }
+
+  const printWindow = window.open("", "_blank");
+
+  const reportHtml = filledSections
+    .map((title) => {
+      const content = escapeHtml(state.sectionContent[title] || "").replace(/\n/g, "<br>");
+      return `
+        <section style="margin-bottom: 28px;">
+          <h2 style="margin-bottom: 10px; font-size: 20px; color: #111827;">${escapeHtml(title)}</h2>
+          <div style="line-height: 1.7; font-size: 15px; color: #374151;">
+            ${content}
+          </div>
+        </section>
+      `;
+    })
+    .join("");
+
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>${escapeHtml(state.projectName)} - Full Report</title>
+        <style>
+          body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 40px;
+            color: #111827;
+            line-height: 1.6;
+          }
+          h1 {
+            margin-bottom: 8px;
+            font-size: 28px;
+          }
+          .meta {
+            margin-bottom: 30px;
+            color: #4b5563;
+            font-size: 14px;
+          }
+          h2 {
+            border-bottom: 1px solid #d1d5db;
+            padding-bottom: 6px;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>${escapeHtml(state.projectName)}</h1>
+        <div class="meta">
+          <div><strong>Student:</strong> ${escapeHtml(state.profile.fullName || "Not provided")}</div>
+          <div><strong>Programme:</strong> ${escapeHtml(state.profile.programme || "Not provided")}</div>
+          <div><strong>Placement Type:</strong> ${escapeHtml(getPlacementLabel())}</div>
+          <div><strong>Host Institution:</strong> ${escapeHtml(state.placement.hostOrganization || "Not provided")}</div>
+        </div>
+        ${reportHtml}
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+  printWindow.print();
+}
 function printLogbookOnly() {
   if (!state.logbookEntries.length) {
     alert("There are no logbook entries to print.");
