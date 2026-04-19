@@ -1,0 +1,78 @@
+[
+  {
+    "id": "demo-school-practice",
+    "projectName": "Demo School Practice Project",
+    "profile": {
+      "fullName": "Amina Nansubuga",
+      "registrationNumber": "2024/BED/114",
+      "studentNumber": "24/U/EDU/114",
+      "university": "Islamic University in Uganda",
+      "faculty": "Faculty of Education",
+      "programme": "Bachelor of Education",
+      "yearSemester": "Year 3 - Semester 2",
+      "phone": "+256700000000",
+      "email": "amina@example.com"
+    },
+    "placement": {
+      "placementType": "school_practice",
+      "hostOrganization": "Mbale Progressive Secondary School",
+      "departmentUnit": "Humanities Department",
+      "location": "Mbale City",
+      "startDate": "2026-05-04",
+      "endDate": "2026-07-03",
+      "duration": "8 Weeks",
+      "hostSupervisor": "Mr. Musa Kato",
+      "hostSupervisorTitle": "Head of Department",
+      "universitySupervisor": "Dr. Sarah Namutebi",
+      "universitySupervisorTitle": "Lecturer Supervisor",
+      "missionFunctions": "The school provides secondary education, learner mentorship, co-curricular development, and community-oriented academic growth."
+    },
+    "workMode": "ai_builder",
+    "logbookEntries": [
+      {
+        "date": "2026-05-06",
+        "departmentUnit": "Humanities Department",
+        "mainActivity": "Teaching a History lesson to Senior Two students",
+        "skillsApplied": "Lesson planning, classroom communication, time management",
+        "learningPoint": "I learned how to engage learners through guided discussion and questioning.",
+        "challenge": "Some learners were hesitant to participate at the start of the lesson.",
+        "reflection": "I became more confident in managing the lesson flow and encouraging participation.",
+        "classTaught": "Senior Two",
+        "subjectTaught": "History",
+        "topicTaught": "The East African Coastal Trade",
+        "teachingMethod": "Discussion and guided explanation",
+        "teachingAid": "Manila chart",
+        "learnerResponse": "Learners responded better when examples were connected to familiar local trade activities."
+      },
+      {
+        "date": "2026-05-10",
+        "departmentUnit": "Humanities Department",
+        "mainActivity": "Marking learner exercises and reviewing performance",
+        "skillsApplied": "Assessment, feedback, record keeping",
+        "learningPoint": "I learned how assessment helps identify learner gaps and guide remedial teaching.",
+        "challenge": "Some scripts were incomplete, which made assessment slower.",
+        "reflection": "I saw the importance of clear instructions and follow-up after class activities.",
+        "classTaught": "Senior Two",
+        "subjectTaught": "History",
+        "topicTaught": "Revision Exercise",
+        "teachingMethod": "Written exercise and feedback session",
+        "teachingAid": "Exercise books and marking guide",
+        "learnerResponse": "Most learners improved after receiving direct feedback on their mistakes."
+      }
+    ],
+    "sectionContent": {
+      "Title Page": "ISLAMIC UNIVERSITY IN UGANDA\n\nSCHOOL PRACTICE REPORT\n\nAMINA NANSUBUGA\n2024/BED/114\nBachelor of Education\nMbale Progressive Secondary School\n2026-05-04 - 2026-07-03",
+      "Declaration": "I, Amina Nansubuga, declare that this school practice report is my original work and has not been submitted to any other institution for academic award. The experiences recorded in this report are based on my actual teaching practice placement.",
+      "Approval": "This report has been submitted for examination with the approval of the university supervisor and host institution supervisor.",
+      "Acknowledgement": "I sincerely thank Allah, the Islamic University in Uganda, Mbale Progressive Secondary School, my university supervisor, and my host supervisor for the guidance and support extended to me during the school practice period.",
+      "Executive Summary": "This report presents the experiences gained during my school practice at Mbale Progressive Secondary School. It highlights teaching activities carried out, professional skills developed, challenges encountered, and the contribution of the placement to my growth as a future teacher.",
+      "Chapter One: Introduction": "This report presents the experience gained during my school practice at Mbale Progressive Secondary School. The placement was undertaken as part of the academic requirements for the Bachelor of Education programme. It provided an opportunity to connect classroom learning with actual teaching practice, strengthen professional competence, and understand the responsibilities of a classroom teacher.",
+      "Chapter Two: Background of Host Institution": "Mbale Progressive Secondary School is located in Mbale City and offers secondary education to learners from different backgrounds. During the school practice period, I was attached to the Humanities Department. The school focuses on academic development, learner discipline, and co-curricular participation.",
+      "Chapter Three: Activities Performed": "During the placement, I taught History lessons, observed classroom sessions, marked learner exercises, participated in staff guidance, and prepared teaching materials. These activities helped me understand classroom delivery, learner engagement, and assessment practices.",
+      "Chapter Four: Skills and Learning Experience": "During the school practice, I developed lesson planning skills, classroom communication, assessment techniques, and learner management skills. I also improved my confidence in public speaking, instructional delivery, and reflection on teaching effectiveness.",
+      "Chapter Five: Challenges, Recommendations, Conclusion": "During the placement, I faced challenges such as limited learner participation in some lessons and time pressure when marking many scripts. I recommend more learner-centered participation strategies, stronger follow-up after class exercises, and continued mentorship for student teachers. In conclusion, the school practice was a valuable learning experience that strengthened my readiness for the teaching profession.",
+      "References": "School records, lesson notes, teaching practice guidelines, and classroom observation notes.",
+      "Appendices": "Lesson plans, record of work, timetable, supervisor comment sheets, and selected teaching aids."
+    }
+  }
+]
