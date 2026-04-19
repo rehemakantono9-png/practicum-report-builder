@@ -36,7 +36,9 @@ const state = {
   payment: {
     isPaid: false,
     amount: 10000,
-    status: "unpaid"
+    status: "unpaid",
+    orderTrackingId: "",
+    merchantReference: ""
   }
 };
 
@@ -44,6 +46,8 @@ const STORAGE_KEYS = {
   projects: "practicum_report_builder_projects",
   current: "practicum_report_builder_current"
 };
+
+const BACKEND_BASE_URL = "https://practicum-report-payments-backend.netlify.app";
 
 const WORK_MODES = [
   {
@@ -98,6 +102,7 @@ async function initApp() {
   loadSavedProjectsFromStorage();
   loadCurrentProjectFromStorage();
   renderStaticAreas();
+  await handleReturnedPayment();
   renderAll();
 }
 
@@ -115,6 +120,50 @@ async function loadConfigFiles() {
   } catch (error) {
     console.error("Failed to load config files:", error);
     alert("Some data files failed to load. Check file names and JSON formatting.");
+  }
+}
+
+async function handleReturnedPayment() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const paymentReturned = params.get("payment");
+    const orderTrackingId = params.get("orderTrackingId");
+    const merchantReference = params.get("merchantReference");
+
+    if (paymentReturned !== "returned" || !orderTrackingId) {
+      return;
+    }
+
+    const response = await fetch(
+      `${BACKEND_BASE_URL}/.netlify/functions/check-status?orderTrackingId=${encodeURIComponent(orderTrackingId)}`
+    );
+
+    const data = await response.json();
+
+    if (
+      response.ok &&
+      data.payment_status_description &&
+      String(data.payment_status_description).toLowerCase() === "completed"
+    ) {
+      state.payment = {
+        isPaid: true,
+        amount: Number(data.amount || 10000),
+        status: "paid",
+        orderTrackingId,
+        merchantReference: merchantReference || data.merchant_reference || ""
+      };
+
+      updateCurrentStorage();
+      alert("Payment confirmed successfully. Premium features are now unlocked.");
+    } else {
+      alert("Payment return detected, but payment is not yet confirmed.");
+    }
+
+    const cleanUrl = `${window.location.origin}${window.location.pathname}`;
+    window.history.replaceState({}, document.title, cleanUrl);
+  } catch (error) {
+    console.error("Payment verification failed:", error);
+    alert("Could not verify payment automatically.");
   }
 }
 
@@ -318,9 +367,55 @@ function bindGeneralButtons() {
     printLogbookOnly();
   });
 
-  document.getElementById("payToUnlockBtn")?.addEventListener("click", () => {
-    alert("Pesapal connection will be added next. For now this button shows where premium payment will begin.");
+  document.getElementById("payToUnlockBtn")?.addEventListener("click", async () => {
+    await startPesapalPayment();
   });
+}
+
+async function startPesapalPayment() {
+  try {
+    if (!state.profile.email) {
+      alert("Please add the student's email in the profile section before making payment.");
+      return;
+    }
+
+    const notificationId = "e6d8d436-5f99-48ef-be90-da7a8de67f3d";
+    const merchantReference = `PRB-${Date.now()}`;
+
+    const payload = {
+      amount: 10000,
+      email: state.profile.email,
+      phone_number: normalizeUgPhone(state.profile.phone),
+      first_name: getFirstName(state.profile.fullName),
+      last_name: getLastName(state.profile.fullName),
+      project_name: state.projectName || "Practicum Report Builder Premium",
+      merchant_reference: merchantReference,
+      notification_id: notificationId
+    };
+
+    const response = await fetch(`${BACKEND_BASE_URL}/.netlify/functions/submit-order`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.redirect_url) {
+      alert(data.error || "Could not start payment.");
+      console.error("Payment start failed:", data);
+      return;
+    }
+
+    state.payment.merchantReference = merchantReference;
+    updateCurrentStorage();
+    window.location.href = data.redirect_url;
+  } catch (error) {
+    console.error("Payment start error:", error);
+    alert("Could not connect to payment service.");
+  }
 }
 
 function renderStaticAreas() {
@@ -1039,6 +1134,7 @@ function renderPaymentUI() {
   const exportWordBtn = document.getElementById("exportWordBtn");
   const exportPdfBtn = document.getElementById("exportPdfBtn");
   const starterBtn = document.getElementById("generateStarterDraftBtn");
+  const payBtn = document.getElementById("payToUnlockBtn");
 
   if (badge) {
     badge.textContent = state.payment.isPaid ? "Paid" : "Unpaid";
@@ -1048,6 +1144,11 @@ function renderPaymentUI() {
   if (exportWordBtn) exportWordBtn.disabled = !state.payment.isPaid;
   if (exportPdfBtn) exportPdfBtn.disabled = !state.payment.isPaid;
   if (starterBtn) starterBtn.disabled = !state.payment.isPaid;
+
+  if (payBtn) {
+    payBtn.textContent = state.payment.isPaid ? "Premium Unlocked" : "Pay to Unlock Premium";
+    payBtn.disabled = state.payment.isPaid;
+  }
 }
 
 function saveProject() {
@@ -1145,7 +1246,9 @@ function resetProject(withAlert = false) {
   state.payment = {
     isPaid: false,
     amount: 10000,
-    status: "unpaid"
+    status: "unpaid",
+    orderTrackingId: "",
+    merchantReference: ""
   };
 
   initializeSectionContent();
@@ -1352,7 +1455,9 @@ function applyProjectData(project) {
   state.payment = {
     isPaid: project.payment?.isPaid || false,
     amount: project.payment?.amount || 10000,
-    status: project.payment?.status || "unpaid"
+    status: project.payment?.status || "unpaid",
+    orderTrackingId: project.payment?.orderTrackingId || "",
+    merchantReference: project.payment?.merchantReference || ""
   };
 
   initializeSectionContent();
@@ -1603,6 +1708,25 @@ function printLogbookOnly() {
     printWindow.focus();
     printWindow.print();
   }, 500);
+}
+
+function normalizeUgPhone(phone) {
+  const cleaned = String(phone || "").replace(/[^\d]/g, "");
+  if (!cleaned) return "";
+  if (cleaned.startsWith("256")) return cleaned;
+  if (cleaned.startsWith("0")) return `256${cleaned.slice(1)}`;
+  return cleaned;
+}
+
+function getFirstName(fullName) {
+  const parts = String(fullName || "").trim().split(/\s+/).filter(Boolean);
+  return parts[0] || "Student";
+}
+
+function getLastName(fullName) {
+  const parts = String(fullName || "").trim().split(/\s+/).filter(Boolean);
+  if (parts.length <= 1) return "User";
+  return parts.slice(1).join(" ");
 }
 
 function slugify(text) {
