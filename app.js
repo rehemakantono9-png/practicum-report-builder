@@ -121,7 +121,7 @@ async function loadConfigFiles() {
 function initializeSectionContent() {
   const titles = getAllSectionTitles();
   titles.forEach((title) => {
-    if (!state.sectionContent[title]) {
+    if (!Object.prototype.hasOwnProperty.call(state.sectionContent, title)) {
       state.sectionContent[title] = "";
     }
   });
@@ -307,20 +307,20 @@ function bindGeneralButtons() {
       alert("Please pay UGX 10,000 to unlock PDF export.");
       return;
     }
-    window.print();
+    printFullReport();
   });
 
   document.getElementById("printReportBtn")?.addEventListener("click", () => {
-    window.print();
+    printFullReport();
   });
 
   document.getElementById("printLogbookBtn")?.addEventListener("click", () => {
     printLogbookOnly();
   });
 
-  document.getElementById("printReportBtn")?.addEventListener("click", () => {
-  printFullReport();
-});
+  document.getElementById("payToUnlockBtn")?.addEventListener("click", () => {
+    alert("Pesapal connection will be added next. For now this button shows where premium payment will begin.");
+  });
 }
 
 function renderStaticAreas() {
@@ -527,6 +527,7 @@ function renderDynamicLogbookFields() {
   fields.forEach(([key, label]) => {
     const wrapper = document.createElement("div");
     wrapper.className = "form-group";
+
     if (key === "learnerResponse" || key === "infectionControl" || key === "draftingFiling") {
       wrapper.classList.add("full-span");
       wrapper.innerHTML = `
@@ -539,6 +540,7 @@ function renderDynamicLogbookFields() {
         <input type="text" id="dynamic-${key}" />
       `;
     }
+
     container.appendChild(wrapper);
   });
 }
@@ -604,6 +606,7 @@ function getDraftLogbookEntryFromInputs() {
 
 function saveLogbookEntry() {
   const entry = getDraftLogbookEntryFromInputs();
+
   if (!entry.date || !entry.mainActivity) {
     alert("Please add at least the date and main activity.");
     return;
@@ -983,9 +986,10 @@ function renderFullReportPreview() {
   getAllSectionTitles().forEach((title) => {
     const item = document.createElement("div");
     item.className = "preview-section";
+    const text = (state.sectionContent[title] || "").trim() || `No content added yet for ${title}.`;
     item.innerHTML = `
-      <h4>${title}</h4>
-      <p>${escapeHtml((state.sectionContent[title] || "").trim() || `No content added yet for ${title}.`)}</p>
+      <h4>${escapeHtml(title)}</h4>
+      <p>${escapeHtml(text).replace(/\n/g, "<br>")}</p>
     `;
     container.appendChild(item);
   });
@@ -1143,8 +1147,8 @@ function resetProject(withAlert = false) {
     amount: 10000,
     status: "unpaid"
   };
-  initializeSectionContent();
 
+  initializeSectionContent();
   localStorage.removeItem(STORAGE_KEYS.current);
   renderAll();
   goToPage("home");
@@ -1174,7 +1178,9 @@ function renderSavedProjectsLists() {
             <span>${formatDateTime(project.savedAt)}</span>
           </div>
         `;
+
         const btnWrap = document.createElement("div");
+
         const openBtn = document.createElement("button");
         openBtn.className = "secondary-btn";
         openBtn.textContent = "Open";
@@ -1207,6 +1213,7 @@ function renderSavedProjectsLists() {
             <span>Saved: ${formatDateTime(project.savedAt)}</span>
           </div>
         `;
+
         const controls = document.createElement("div");
 
         const openBtn = document.createElement("button");
@@ -1347,6 +1354,7 @@ function applyProjectData(project) {
     amount: project.payment?.amount || 10000,
     status: project.payment?.status || "unpaid"
   };
+
   initializeSectionContent();
 
   const titles = getAllSectionTitles();
@@ -1451,12 +1459,15 @@ function exportAsTextFile(extension) {
 function buildExportContent() {
   const lines = [];
   getAllSectionTitles().forEach((title) => {
-    lines.push(title.toUpperCase());
-    lines.push(state.sectionContent[title] || "");
-    lines.push("");
+    if ((state.sectionContent[title] || "").trim()) {
+      lines.push(title.toUpperCase());
+      lines.push(state.sectionContent[title] || "");
+      lines.push("");
+    }
   });
   return lines.join("\n");
 }
+
 function printFullReport() {
   const filledSections = getAllSectionTitles().filter((title) => {
     return (state.sectionContent[title] || "").trim().length > 0;
@@ -1469,9 +1480,15 @@ function printFullReport() {
 
   const printWindow = window.open("", "_blank");
 
+  if (!printWindow) {
+    alert("The print window was blocked by the browser. Please allow popups and try again.");
+    return;
+  }
+
   const reportHtml = filledSections
     .map((title) => {
-      const content = escapeHtml(state.sectionContent[title] || "").replace(/\n/g, "<br>");
+      const rawContent = state.sectionContent[title] || "";
+      const content = escapeHtml(rawContent).replace(/\n/g, "<br>");
       return `
         <section style="margin-bottom: 28px;">
           <h2 style="margin-bottom: 10px; font-size: 20px; color: #111827;">${escapeHtml(title)}</h2>
@@ -1483,9 +1500,12 @@ function printFullReport() {
     })
     .join("");
 
+  printWindow.document.open();
   printWindow.document.write(`
+    <!DOCTYPE html>
     <html>
       <head>
+        <meta charset="utf-8" />
         <title>${escapeHtml(state.projectName)} - Full Report</title>
         <style>
           body {
@@ -1506,6 +1526,12 @@ function printFullReport() {
           h2 {
             border-bottom: 1px solid #d1d5db;
             padding-bottom: 6px;
+            margin-top: 30px;
+          }
+          @media print {
+            body {
+              margin: 20px;
+            }
           }
         </style>
       </head>
@@ -1521,10 +1547,14 @@ function printFullReport() {
       </body>
     </html>
   `);
-
   printWindow.document.close();
-  printWindow.print();
+
+  setTimeout(() => {
+    printWindow.focus();
+    printWindow.print();
+  }, 500);
 }
+
 function printLogbookOnly() {
   if (!state.logbookEntries.length) {
     alert("There are no logbook entries to print.");
@@ -1532,22 +1562,35 @@ function printLogbookOnly() {
   }
 
   const printWindow = window.open("", "_blank");
-  const content = state.logbookEntries.map((entry, index) => {
-    return `
-      <h3>Entry ${index + 1}</h3>
-      <p><strong>Date:</strong> ${escapeHtml(entry.date)}</p>
-      <p><strong>Main Activity:</strong> ${escapeHtml(entry.mainActivity)}</p>
-      <p><strong>Skills Applied:</strong> ${escapeHtml(entry.skillsApplied || "")}</p>
-      <p><strong>Learning Point:</strong> ${escapeHtml(entry.learningPoint || "")}</p>
-      <p><strong>Challenge:</strong> ${escapeHtml(entry.challenge || "")}</p>
-      <p><strong>Reflection:</strong> ${escapeHtml(entry.reflection || "")}</p>
-      <hr />
-    `;
-  }).join("");
 
+  if (!printWindow) {
+    alert("The print window was blocked by the browser. Please allow popups and try again.");
+    return;
+  }
+
+  const content = state.logbookEntries
+    .map((entry, index) => {
+      return `
+        <h3>Entry ${index + 1}</h3>
+        <p><strong>Date:</strong> ${escapeHtml(entry.date)}</p>
+        <p><strong>Main Activity:</strong> ${escapeHtml(entry.mainActivity)}</p>
+        <p><strong>Skills Applied:</strong> ${escapeHtml(entry.skillsApplied || "")}</p>
+        <p><strong>Learning Point:</strong> ${escapeHtml(entry.learningPoint || "")}</p>
+        <p><strong>Challenge:</strong> ${escapeHtml(entry.challenge || "")}</p>
+        <p><strong>Reflection:</strong> ${escapeHtml(entry.reflection || "")}</p>
+        <hr />
+      `;
+    })
+    .join("");
+
+  printWindow.document.open();
   printWindow.document.write(`
+    <!DOCTYPE html>
     <html>
-      <head><title>Logbook Print</title></head>
+      <head>
+        <meta charset="utf-8" />
+        <title>Logbook Print</title>
+      </head>
       <body>
         <h1>${escapeHtml(state.projectName)} - Logbook</h1>
         ${content}
@@ -1555,7 +1598,11 @@ function printLogbookOnly() {
     </html>
   `);
   printWindow.document.close();
-  printWindow.print();
+
+  setTimeout(() => {
+    printWindow.focus();
+    printWindow.print();
+  }, 500);
 }
 
 function slugify(text) {
