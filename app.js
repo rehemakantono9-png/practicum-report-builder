@@ -34,9 +34,9 @@ const state = {
   demoProjects: [],
   savedProjects: [],
   payment: {
-    isPaid: false,
+    isPaid: true,
     amount: 10000,
-    status: "unpaid",
+    status: "paid",
     orderTrackingId: "",
     merchantReference: ""
   }
