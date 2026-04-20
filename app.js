@@ -482,28 +482,93 @@ function getAllSectionTitles() {
 // ========== NAVIGATION ==========
 
 function bindNavigation() {
-  document.querySelectorAll(".nav-link").forEach((button) => {
-    button.addEventListener("click", () => {
-      goToPage(button.dataset.page);
-    });
+  // ============================================ //
+  // 1. MAIN NAVIGATION BUTTONS (Home, Profile, Placement, etc.)
+  // ============================================ //
+  const navButtons = document.querySelectorAll('.nav-btn');
+  
+  navButtons.forEach(button => {
+    // Remove any existing listeners to avoid duplicates
+    button.removeEventListener('click', button._listener);
+    
+    // Create the click handler
+    const handler = () => {
+      const pageId = button.dataset.page;
+      goToPage(pageId);
+    };
+    
+    // Store the handler so we can remove it later if needed
+    button._listener = handler;
+    button.addEventListener('click', handler);
   });
-
-  document.querySelectorAll("[data-go]").forEach((button) => {
-    button.addEventListener("click", () => {
-      goToPage(button.dataset.go);
-    });
+  
+  // ============================================ //
+  // 2. CONTINUE/BACK BUTTONS (Profile → Placement, etc.)
+  // ============================================ //
+  
+  // From Profile to Placement
+  const toPlacementBtn = document.getElementById('toPlacementBtn');
+  if (toPlacementBtn) {
+    toPlacementBtn.removeEventListener('click', toPlacementBtn._listener);
+    const handler = () => goToPage('placement');
+    toPlacementBtn._listener = handler;
+    toPlacementBtn.addEventListener('click', handler);
+  }
+  
+  // From Placement to Logbook (if you have this button)
+  const toLogbookBtn = document.getElementById('toLogbookBtn');
+  if (toLogbookBtn) {
+    toLogbookBtn.removeEventListener('click', toLogbookBtn._listener);
+    const handler = () => goToPage('logbook');
+    toLogbookBtn._listener = handler;
+    toLogbookBtn.addEventListener('click', handler);
+  }
+  
+  // ============================================ //
+  // 3. ANY OTHER CUSTOM NAVIGATION BUTTONS
+  // ============================================ //
+  
+  // Handle any button with data-go attribute
+  const goButtons = document.querySelectorAll('[data-go]');
+  goButtons.forEach(button => {
+    button.removeEventListener('click', button._listener);
+    const handler = () => {
+      const targetPage = button.dataset.go;
+      goToPage(targetPage);
+    };
+    button._listener = handler;
+    button.addEventListener('click', handler);
   });
 }
 
+// ============================================ //
+// THE goToPage FUNCTION (switches between pages)
+// ============================================ //
 function goToPage(pageId) {
-  document.querySelectorAll(".page").forEach((page) => page.classList.remove("active"));
-  document.querySelectorAll(".nav-link").forEach((link) => link.classList.remove("active"));
-
-  const page = document.getElementById(`page-${pageId}`);
-  const nav = document.querySelector(`.nav-link[data-page="${pageId}"]`);
-
-  if (page) page.classList.add("active");
-  if (nav) nav.classList.add("active");
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.remove('active');
+  });
+  
+  // Show the selected page
+  const activePage = document.getElementById(`page-${pageId}`);
+  if (activePage) {
+    activePage.classList.add('active');
+  }
+  
+  // Update active state of navigation buttons
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.dataset.page === pageId) {
+      btn.classList.add('active');
+    }
+  });
+  
+  // Save current page (optional)
+  localStorage.setItem('currentPage', pageId);
+  
+  // Scroll to top when page changes
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ========== EVENT BINDINGS ==========
