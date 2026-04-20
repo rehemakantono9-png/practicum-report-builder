@@ -2407,3 +2407,53 @@ function escapeHtml(value) {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;");
 }
+// ============================================ //
+// SIMPLE NAVIGATION FIX - ADD AT THE BOTTOM
+// ============================================ //
+
+// Wait for everything to load
+window.addEventListener('DOMContentLoaded', function() {
+  console.log('Navigation fix loaded');
+  
+  // Get all navigation buttons
+  const navBtns = document.querySelectorAll('.nav-btn');
+  console.log('Found buttons:', navBtns.length);
+  
+  // Add click handlers to each button
+  navBtns.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const pageName = this.getAttribute('data-page');
+      console.log('Button clicked:', pageName);
+      
+      // Hide all pages
+      const allPages = document.querySelectorAll('.page');
+      allPages.forEach(function(page) {
+        page.classList.remove('active');
+      });
+      
+      // Show selected page
+      const targetPage = document.getElementById('page-' + pageName);
+      if (targetPage) {
+        targetPage.classList.add('active');
+        console.log('Showing page:', pageName);
+      } else {
+        console.log('Page not found:', 'page-' + pageName);
+      }
+      
+      // Update active button style
+      navBtns.forEach(function(b) {
+        b.classList.remove('active');
+      });
+      this.classList.add('active');
+    });
+  });
+  
+  // Handle Continue buttons
+  const toPlacement = document.getElementById('toPlacementBtn');
+  if (toPlacement) {
+    toPlacement.addEventListener('click', function() {
+      document.querySelector('.nav-btn[data-page="placement"]').click();
+    });
+  }
+});
