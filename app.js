@@ -168,7 +168,135 @@ function hideLoading(element) {
 // ========== INITIALIZATION ==========
 
 document.addEventListener("DOMContentLoaded", initApp);
+// ============================================ //
+// STEP-BY-STEP NAVIGATION (NEW)
+// ============================================ //
 
+let currentStep = 0;
+const steps = ['profile', 'placement', 'logbook', 'report', 'preview', 'export'];
+
+function goToNextStep() {
+  if (currentStep < steps.length - 1) {
+    currentStep++;
+    goToPage(steps[currentStep]);
+    updateStepButtons();
+  }
+}
+
+function goToPreviousStep() {
+  if (currentStep > 0) {
+    currentStep--;
+    goToPage(steps[currentStep]);
+    updateStepButtons();
+  }
+}
+
+function updateStepButtons() {
+  const stepButtons = document.querySelectorAll('.step-btn');
+  stepButtons.forEach((btn, index) => {
+    if (index === currentStep) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+    
+    // Mark as completed if section has data
+    if (index === 0 && isProfileComplete()) btn.classList.add('completed');
+    if (index === 1 && isPlacementComplete()) btn.classList.add('completed');
+    if (index === 2 && state.logbookEntries.length > 0) btn.classList.add('completed');
+    if (index === 3 && hasAnyReportDraft()) btn.classList.add('completed');
+  });
+}
+
+// Add Next/Previous buttons to each page
+function addNavigationButtons() {
+  const pages = ['profile', 'placement', 'logbook', 'report', 'preview', 'export'];
+  
+  pages.forEach((pageId, index) => {
+    const page = document.getElementById(`page-${pageId}`);
+    if (!page) return;
+    
+    // Check if buttons already exist
+    if (page.querySelector('.navigation-buttons')) return;
+    
+    const navDiv = document.createElement('div');
+    navDiv.className = 'btn-group navigation-buttons';
+    
+    if (index > 0) {
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'btn-secondary';
+      prevBtn.innerHTML = '← Previous';
+      prevBtn.onclick = goToPreviousStep;
+      navDiv.appendChild(prevBtn);
+    }
+    
+    if (index < pages.length - 1) {
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'btn-primary';
+      nextBtn.innerHTML = 'Next →';
+      nextBtn.onclick = goToNextStep;
+      navDiv.appendChild(nextBtn);
+    }
+    
+    page.appendChild(navDiv);
+  });
+}
+
+// Section navigation for report builder (click section to jump to it)
+function bindSectionNavigation() {
+  const sections = getAllSectionTitles();
+  const container = document.getElementById('sectionNavContainer');
+  if (!container) return;
+  
+  container.innerHTML = '';
+  
+  sections.forEach((title, index) => {
+    const btn = document.createElement('button');
+    btn.className = 'section-nav-item';
+    btn.textContent = title.length > 25 ? title.substring(0, 22) + '...' : title;
+    btn.onclick = () => {
+      state.selectedSectionTitle = title;
+      renderReportEditor();
+      renderReportSectionsList();
+      
+      // Scroll to editor
+      document.getElementById('report-editor')?.scrollIntoView({ behavior: 'smooth' });
+      
+      // Update active class
+      document.querySelectorAll('.section-nav-item').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    container.appendChild(btn);
+  });
+}
+
+// Add step indicators to the top of each page
+function addStepIndicators() {
+  const mainContent = document.querySelector('.main-content');
+  if (!mainContent) return;
+  
+  // Check if steps already exist
+  if (document.querySelector('.steps-container')) return;
+  
+  const stepsContainer = document.createElement('div');
+  stepsContainer.className = 'steps-container';
+  
+  const stepNames = ['Profile', 'Placement', 'Logbook', 'Report', 'Preview', 'Export'];
+  
+  stepNames.forEach((name, index) => {
+    const stepBtn = document.createElement('button');
+    stepBtn.className = 'step-btn';
+    stepBtn.innerHTML = `${index + 1}. ${name}`;
+    stepBtn.onclick = () => {
+      currentStep = index;
+      goToPage(steps[index]);
+      updateStepButtons();
+    };
+    stepsContainer.appendChild(stepBtn);
+  });
+  
+  mainContent.insertBefore(stepsContainer, mainContent.firstChild);
+}
 async function initApp() {
   try {
     await loadConfigFiles();
@@ -186,10 +314,23 @@ async function initApp() {
     renderStaticAreas();
     await handleReturnedPayment();
     renderAll();
-    addButtonRippleEffect()
+    
+    // NEW: Add these lines
+    addStepIndicators();
+    addNavigationButtons();
+    updateStepButtons();
+    bindSectionNavigation();
+    addButtonRippleEffect();
+    
     if (state.payment.isPaid) {
       renderPaymentUI();
       showNotification("Premium features restored", "success");
+    }
+  } catch (error) {
+    console.error("Failed to initialize app:", error);
+    showNotification("Failed to load application. Please refresh the page.", "error");
+  }
+}
     }
   } catch (error) {
     console.error("Failed to initialize app:", error);
@@ -1679,6 +1820,7 @@ function renderReportGuidancePanel() {
 }
 
 function renderReportEditor() {
+  bindSectionNavigation(); 
   const titleEl = document.getElementById("selectedSectionTitle");
   const promptsEl = document.getElementById("selectedSectionPrompts");
   const editor = document.getElementById("sectionEditor");
