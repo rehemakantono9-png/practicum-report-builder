@@ -186,7 +186,7 @@ async function initApp() {
     renderStaticAreas();
     await handleReturnedPayment();
     renderAll();
-    
+    addButtonRippleEffect()
     if (state.payment.isPaid) {
       renderPaymentUI();
       showNotification("Premium features restored", "success");
@@ -2159,7 +2159,41 @@ function slugify(text) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 }
+// ========== BUTTON RIPPLE EFFECT FUNCTIONS ==========
+// 🔥 ADD THESE FUNCTIONS HERE - BEFORE escapeHtml
 
+function addButtonRippleEffect() {
+  document.querySelectorAll('.primary-btn, .secondary-btn, .nav-link').forEach(btn => {
+    btn.removeEventListener('click', createRipple);
+    btn.addEventListener('click', createRipple);
+  });
+}
+
+function createRipple(e) {
+  const ripple = document.createElement('span');
+  ripple.classList.add('ripple');
+  
+  const rect = this.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
+  ripple.style.left = `${x}px`;
+  ripple.style.top = `${y}px`;
+  
+  this.appendChild(ripple);
+  
+  setTimeout(() => {
+    ripple.remove();
+  }, 600);
+}
+
+// Your existing escapeHtml function stays here
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
