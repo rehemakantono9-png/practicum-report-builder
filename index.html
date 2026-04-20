@@ -242,7 +242,7 @@
     <div class="header">
       <div>
         <h1>📝 Practicum Report Builder</h1>
-        <p>AI-powered report writing - Turns bullet points into professional paragraphs</p>
+        <p>AI-powered report writing - Turns bullet points into professional paragraphs for ALL chapters</p>
       </div>
       <div class="premium-badge" id="premiumBadge" onclick="unlockPremium()">
         ⭐ FREE Trial - Click to Unlock Premium
@@ -265,7 +265,7 @@
       <!-- HOME PAGE -->
       <div id="page-home" class="page active">
         <h2>✨ Welcome to Your AI-Powered Report Builder</h2>
-        <p style="color: #6b7280; margin-bottom: 20px;">Create professional practicum reports - Turn bullet points into paragraphs with AI</p>
+        <p style="color: #6b7280; margin-bottom: 20px;">Create professional practicum reports - AI turns bullet points into paragraphs for ALL chapters</p>
         
         <div class="card-grid">
           <div class="card" onclick="document.querySelector('[data-page=\'profile\']').click()">
@@ -290,7 +290,7 @@
           </div>
           <div class="card" onclick="document.querySelector('[data-page=\'ai\']').click()">
             <h4>🤖 6. AI Enhancement</h4>
-            <p>Turn bullet points into paragraphs, expand content, improve grammar</p>
+            <p>Turn bullet points into paragraphs for ALL chapters</p>
           </div>
           <div class="card" onclick="document.querySelector('[data-page=\'export\']').click()">
             <h4>💾 7. Export</h4>
@@ -414,7 +414,7 @@
           </div>
           <div>
             <h4 id="currentSectionTitle">Select a section</h4>
-            <textarea id="sectionContent" rows="12" placeholder="Write your content here... Use bullet points and AI will expand them into paragraphs"></textarea>
+            <textarea id="sectionContent" rows="12" placeholder="Write your content as bullet points... AI will expand into paragraphs for ANY chapter"></textarea>
             <div class="btn-group" style="margin-top: 12px;">
               <button class="btn-secondary" id="clearSectionBtn">Clear</button>
               <button class="btn-primary" id="aiSuggestBtn">✨ AI: Expand Bullet Points</button>
@@ -435,11 +435,23 @@
         <div class="ai-grid">
           <div class="ai-card" onclick="applyAITool('expandBullets')">
             <h4>📝 Turn Bullets into Paragraphs</h4>
-            <p>Convert bullet points into flowing paragraphs</p>
+            <p>Convert bullet points into flowing paragraphs for ANY chapter</p>
           </div>
-          <div class="ai-card" onclick="applyAITool('expandContent')">
-            <h4>📊 Expand Brief Points</h4>
-            <p>Add detail and explanation to short statements</p>
+          <div class="ai-card" onclick="applyAITool('expandChapter1')">
+            <h4>📖 Expand Chapter 1: Introduction</h4>
+            <p>Turn introduction bullet points into professional paragraphs</p>
+          </div>
+          <div class="ai-card" onclick="applyAITool('expandChapter2')">
+            <h4>🏢 Expand Chapter 2: Background</h4>
+            <p>Turn organization background bullet points into paragraphs</p>
+          </div>
+          <div class="ai-card" onclick="applyAITool('expandChapter4')">
+            <h4>🎯 Expand Chapter 4: Skills</h4>
+            <p>Turn skills and learning bullet points into paragraphs</p>
+          </div>
+          <div class="ai-card" onclick="applyAITool('expandChapter5')">
+            <h4>⚠️ Expand Chapter 5: Challenges</h4>
+            <p>Turn challenges bullet points into detailed paragraphs</p>
           </div>
           <div class="ai-card" onclick="applyAITool('formal')">
             <h4>🎓 Rewrite Formally</h4>
@@ -451,7 +463,7 @@
           </div>
           <div class="ai-card" onclick="applyAITool('logbookToParagraphs')">
             <h4>📓 Convert Logbook to Report</h4>
-            <p>Turn all logbook entries into report paragraphs</p>
+            <p>Turn all logbook entries into Chapter 3 paragraphs</p>
           </div>
           <div class="ai-card" onclick="applyAITool('recommendations')">
             <h4>💡 Generate Recommendations</h4>
@@ -461,18 +473,15 @@
             <h4>🎯 Generate Conclusion</h4>
             <p>Write a comprehensive conclusion</p>
           </div>
-          <div class="ai-card" onclick="applyAITool('introduction')">
-            <h4>📖 Draft Introduction</h4>
-            <p>Generate an introduction section</p>
-          </div>
         </div>
         
         <div style="background: #fef3c7; padding: 15px; border-radius: 12px; margin-top: 20px;">
-          <h4>💡 How to Use</h4>
-          <p>1. Go to Report Builder and select a section<br>
-             2. Write your content as bullet points or short notes<br>
-             3. Click "Turn Bullets into Paragraphs" to expand<br>
-             4. Or use "Convert Logbook to Report" to generate activities chapter</p>
+          <h4>💡 How to Use - Chapter by Chapter</h4>
+          <p><strong>Chapter 1 (Introduction):</strong> Write bullet points about your background, objectives, and scope → Click "Expand Chapter 1"<br>
+             <strong>Chapter 2 (Background):</strong> Write bullet points about the organization → Click "Expand Chapter 2"<br>
+             <strong>Chapter 3 (Activities):</strong> Add logbook entries → Click "Convert Logbook to Report"<br>
+             <strong>Chapter 4 (Skills):</strong> Write bullet points about skills learned → Click "Expand Chapter 4"<br>
+             <strong>Chapter 5 (Challenges):</strong> Write bullet points about challenges → Click "Expand Chapter 5"</p>
         </div>
         
         <div class="btn-group">
@@ -547,13 +556,77 @@
     sections.forEach(s => { reportContent[s] = ''; });
     
     // ============================================
-    // CORE AI FUNCTION - Turn Bullet Points into Paragraphs
+    // CHAPTER-SPECIFIC AI EXPANSIONS
     // ============================================
     
-    function convertBulletsToParagraphs(text) {
+    function expandChapter1Introduction(bullets) {
+      const org = document.getElementById('hostOrg')?.value || 'the organization';
+      const programme = document.getElementById('programme')?.value || 'my programme';
+      const university = document.getElementById('university')?.value || 'the university';
+      
+      let intro = `This report presents a comprehensive account of the practicum experience undertaken at ${org}. `;
+      intro += `The placement was conducted as a partial requirement for the award of ${programme} at ${university}. `;
+      
+      // Extract objectives from bullets
+      if (bullets.toLowerCase().includes('objective') || bullets.toLowerCase().includes('aim')) {
+        intro += `The primary objectives of this practicum included: ${extractObjectives(bullets)} `;
+      }
+      
+      intro += `\n\n${convertBulletsToParagraphs(bullets, 'introduction')}`;
+      
+      intro += `\n\nThis report is organized into seven chapters. Chapter One provides the introduction and background to the study. Chapter Two presents the profile of the host organization. Chapter Three details the activities performed during the placement. Chapter Four discusses the skills and learning outcomes. Chapter Five highlights the challenges encountered. Chapter Six offers recommendations for improvement. Chapter Seven concludes the report.`;
+      
+      return intro;
+    }
+    
+    function expandChapter2Background(bullets) {
+      const org = document.getElementById('hostOrg')?.value || 'the organization';
+      const location = document.getElementById('location')?.value || 'its location';
+      const mission = document.getElementById('mission')?.value || '';
+      
+      let background = `${org} is located in ${location}. `;
+      if (mission) {
+        background += `The organization's mission is: "${mission}". `;
+      }
+      
+      background += `\n\n${convertBulletsToParagraphs(bullets, 'background')}`;
+      
+      return background;
+    }
+    
+    function expandChapter4Skills(bullets) {
+      let skills = `During my practicum, I developed and strengthened several professional competencies. `;
+      skills += `\n\n${convertBulletsToParagraphs(bullets, 'skills')}`;
+      skills += `\n\nThese skills are essential for my future career and have enhanced my readiness for the professional workplace. The practical exposure gained through this placement has significantly improved my confidence and competence.`;
+      return skills;
+    }
+    
+    function expandChapter5Challenges(bullets) {
+      let challenges = `Throughout the practicum period, I encountered various challenges that tested my adaptability and problem-solving abilities. `;
+      challenges += `\n\n${convertBulletsToParagraphs(bullets, 'challenges')}`;
+      challenges += `\n\nDespite these challenges, I learned valuable lessons about perseverance, professional conduct, and effective communication. Each challenge presented an opportunity for growth and learning.`;
+      return challenges;
+    }
+    
+    function extractObjectives(bullets) {
+      const lines = bullets.split('\n');
+      const objectives = [];
+      for (let line of lines) {
+        if (line.toLowerCase().includes('objective') || line.toLowerCase().includes('aim')) {
+          let clean = line.replace(/^[•\-*\d+.]\s+/, '');
+          objectives.push(clean);
+        }
+      }
+      if (objectives.length === 0) {
+        return "gaining practical experience, applying theoretical knowledge, and developing professional competencies.";
+      }
+      return objectives.join('; ');
+    }
+    
+    // Core bullet to paragraph converter - WORKS FOR ALL CHAPTERS
+    function convertBulletsToParagraphs(text, chapterType = 'general') {
       if (!text) return '';
       
-      // Detect bullet points (lines starting with •, -, *, or numbers)
       const lines = text.split('\n');
       let paragraphs = [];
       let currentParagraph = '';
@@ -562,24 +635,18 @@
         line = line.trim();
         if (!line) continue;
         
-        // Check if line is a bullet point
         const isBullet = /^[•\-*\d+.]\s/.test(line);
         
         if (isBullet) {
-          // End current paragraph if exists
           if (currentParagraph) {
             paragraphs.push(currentParagraph);
             currentParagraph = '';
           }
-          // Clean the bullet point
           let bulletText = line.replace(/^[•\-*\d+.]\s+/, '');
-          // Capitalize first letter
           bulletText = bulletText.charAt(0).toUpperCase() + bulletText.slice(1);
-          // Expand the bullet point into a proper sentence
-          let expanded = expandBulletPoint(bulletText);
+          let expanded = expandBulletForChapter(bulletText, chapterType);
           paragraphs.push(expanded);
         } else {
-          // Continue building paragraph
           if (currentParagraph) {
             currentParagraph += ' ' + line;
           } else {
@@ -595,90 +662,106 @@
       return paragraphs.join('\n\n');
     }
     
-    function expandBulletPoint(bulletText) {
-      // Common expansions based on keywords
+    function expandBulletForChapter(bulletText, chapterType) {
       const lowerText = bulletText.toLowerCase();
       
-      if (lowerText.includes('learned') || lowerText.includes('learnt')) {
-        return `One of the key takeaways from this experience was that ${bulletText}. This learning has significantly contributed to my professional development and understanding of workplace dynamics.`;
-      }
-      
-      if (lowerText.includes('challenge') || lowerText.includes('difficult')) {
-        return `A notable challenge encountered was ${bulletText}. To overcome this, I employed problem-solving strategies and sought guidance from supervisors, which ultimately turned the challenge into a valuable learning opportunity.`;
-      }
-      
-      if (lowerText.includes('skill') || lowerText.includes('ability')) {
-        return `This activity enabled me to develop ${bulletText}. These skills are essential for my future career and have enhanced my competence in professional settings.`;
-      }
-      
-      if (lowerText.includes('task') || lowerText.includes('duty') || lowerText.includes('responsibility')) {
-        return `One of my primary responsibilities was ${bulletText}. I approached this task with diligence and attention to detail, ensuring that all requirements were met according to organizational standards.`;
-      }
-      
-      if (lowerText.includes('meeting') || lowerText.includes('discussion')) {
-        return `I participated in ${bulletText}. This meeting provided valuable insights into organizational decision-making processes and enhanced my understanding of professional communication.`;
-      }
-      
-      if (lowerText.includes('project') || lowerText.includes('assignment')) {
-        return `I was involved in ${bulletText}. This project required collaboration, critical thinking, and application of theoretical knowledge to achieve desired outcomes.`;
-      }
-      
-      if (lowerText.includes('observe') || lowerText.includes('watched')) {
-        return `I had the opportunity to observe ${bulletText}. This observation was instrumental in understanding best practices and professional standards in the workplace.`;
-      }
-      
-      if (lowerText.includes('assist') || lowerText.includes('helped')) {
-        return `I assisted with ${bulletText}. This experience allowed me to contribute meaningfully while learning from experienced professionals.`;
-      }
-      
-      // Default expansion
-      return `${bulletText}. This activity was significant because it provided practical exposure to real-world applications of my academic training. The experience enhanced my understanding and prepared me for future professional responsibilities.`;
-    }
-    
-    function expandShortContent(content) {
-      if (!content) return '';
-      if (content.length > 200) return content;
-      
-      // Check if content has bullet points
-      if (/[•\-*\d+.]/.test(content)) {
-        return convertBulletsToParagraphs(content);
-      }
-      
-      // Expand short sentences
-      const sentences = content.split(/[.!?]+/);
-      let expanded = '';
-      
-      for (let sentence of sentences) {
-        sentence = sentence.trim();
-        if (sentence.length < 30 && sentence.length > 5) {
-          expanded += sentence + '. ' + getExpansionForSentence(sentence) + ' ';
-        } else if (sentence.length > 5) {
-          expanded += sentence + '. ';
+      // INTRODUCTION chapter expansions
+      if (chapterType === 'introduction') {
+        if (lowerText.includes('background')) {
+          return `The background to this practicum involves ${bulletText}. This context is essential for understanding the scope and significance of the placement experience.`;
         }
+        if (lowerText.includes('objective') || lowerText.includes('aim')) {
+          return `A key objective of this practicum was ${bulletText}. This goal guided my activities throughout the placement period.`;
+        }
+        if (lowerText.includes('scope')) {
+          return `The scope of this practicum covered ${bulletText}. These areas were selected to ensure comprehensive exposure to relevant professional practices.`;
+        }
+        return `${bulletText}. This aspect of the practicum was crucial for achieving the overall learning outcomes and professional development goals.`;
       }
       
-      return expanded.trim();
+      // BACKGROUND chapter expansions
+      if (chapterType === 'background') {
+        if (lowerText.includes('mission') || lowerText.includes('vision')) {
+          return `The organization's ${bulletText}. This guiding principle shapes all organizational activities and strategic decisions.`;
+        }
+        if (lowerText.includes('department') || lowerText.includes('unit')) {
+          return `The ${bulletText}. This department was responsible for key operational functions and provided valuable learning opportunities.`;
+        }
+        if (lowerText.includes('service') || lowerText.includes('product')) {
+          return `${bulletText}. These offerings demonstrate the organization's commitment to meeting stakeholder needs and industry standards.`;
+        }
+        return `${bulletText}. Understanding this aspect of the host institution was fundamental to appreciating its role in the industry.`;
+      }
+      
+      // SKILLS chapter expansions
+      if (chapterType === 'skills') {
+        if (lowerText.includes('communication')) {
+          return `I developed strong communication skills through ${bulletText}. Effective communication proved essential for successful collaboration and task execution.`;
+        }
+        if (lowerText.includes('team') || lowerText.includes('collaboration')) {
+          return `Teamwork was enhanced as ${bulletText}. Working collaboratively taught me the value of diverse perspectives and collective problem-solving.`;
+        }
+        if (lowerText.includes('technical')) {
+          return `My technical competencies grew significantly as ${bulletText}. These hands-on technical skills are directly applicable to my future career.`;
+        }
+        if (lowerText.includes('time') || lowerText.includes('management')) {
+          return `Time management skills improved through ${bulletText}. Balancing multiple responsibilities taught me prioritization and efficient work habits.`;
+        }
+        return `${bulletText}. This skill has proven invaluable in professional settings and will serve me well in future endeavors.`;
+      }
+      
+      // CHALLENGES chapter expansions
+      if (chapterType === 'challenges') {
+        if (lowerText.includes('communication')) {
+          return `A significant communication challenge involved ${bulletText}. To address this, I initiated clearer channels of communication and sought regular feedback.`;
+        }
+        if (lowerText.includes('resource') || lowerText.includes('equipment')) {
+          return `Resource limitations presented challenges, specifically ${bulletText}. I adapted by finding creative solutions and optimizing available resources.`;
+        }
+        if (lowerText.includes('time') || lowerText.includes('deadline')) {
+          return `Meeting deadlines was challenging because ${bulletText}. I developed better time management strategies and prioritized tasks effectively.`;
+        }
+        if (lowerText.includes('supervisor') || lowerText.includes('guidance')) {
+          return `Navigating supervisor expectations was challenging as ${bulletText}. I learned to proactively seek clarification and demonstrate initiative.`;
+        }
+        return `${bulletText}. This challenge taught me resilience and the importance of maintaining a positive attitude when facing difficulties.`;
+      }
+      
+      // GENERAL / ACTIVITIES expansions
+      if (lowerText.includes('learned') || lowerText.includes('learnt')) {
+        return `One of the key takeaways from this experience was that ${bulletText}. This learning has significantly contributed to my professional development.`;
+      }
+      if (lowerText.includes('challenge')) {
+        return `A notable challenge encountered was ${bulletText}. I addressed this through problem-solving and seeking guidance from supervisors.`;
+      }
+      if (lowerText.includes('skill')) {
+        return `This activity enabled me to develop ${bulletText}. These skills are essential for my future career.`;
+      }
+      if (lowerText.includes('task') || lowerText.includes('duty')) {
+        return `One of my primary responsibilities was ${bulletText}. I approached this task with diligence and attention to detail.`;
+      }
+      if (lowerText.includes('meeting')) {
+        return `I participated in ${bulletText}. This meeting provided valuable insights into organizational decision-making processes.`;
+      }
+      if (lowerText.includes('project')) {
+        return `I was involved in ${bulletText}. This project required collaboration and application of theoretical knowledge.`;
+      }
+      if (lowerText.includes('observe')) {
+        return `I had the opportunity to observe ${bulletText}. This observation was instrumental in understanding professional standards.`;
+      }
+      
+      return `${bulletText}. This activity was significant because it provided practical exposure to real-world applications of my academic training.`;
     }
     
-    function getExpansionForSentence(sentence) {
-      const lower = sentence.toLowerCase();
+    function expandShortContent(content, chapterType) {
+      if (!content) return '';
+      if (content.length > 300) return content;
       
-      if (lower.includes('learn')) {
-        return 'This learning experience was valuable for my professional growth.';
+      if (/[•\-*\d+.]/.test(content)) {
+        return convertBulletsToParagraphs(content, chapterType);
       }
-      if (lower.includes('task')) {
-        return 'Completing this task required attention to detail and adherence to professional standards.';
-      }
-      if (lower.includes('meeting')) {
-        return 'The meeting provided insights into organizational communication and decision-making.';
-      }
-      if (lower.includes('project')) {
-        return 'This project enhanced my problem-solving and collaboration abilities.';
-      }
-      if (lower.includes('skill')) {
-        return 'Developing this skill has improved my workplace competence.';
-      }
-      return 'This experience contributed significantly to my practical understanding of professional environments.';
+      
+      return content;
     }
     
     function convertLogbookToReport() {
@@ -687,25 +770,17 @@
       }
       
       let report = '';
-      let currentDate = '';
       let dateGroup = [];
       
       for (let i = 0; i < logbookEntries.length; i++) {
         const entry = logbookEntries[i];
+        dateGroup.push(entry);
         
-        if (entry.date !== currentDate) {
-          if (dateGroup.length > 0) {
-            report += writeParagraphForEntries(dateGroup);
-          }
-          currentDate = entry.date;
-          dateGroup = [entry];
-        } else {
-          dateGroup.push(entry);
+        const nextDate = logbookEntries[i + 1]?.date;
+        if (nextDate !== entry.date || i === logbookEntries.length - 1) {
+          report += writeParagraphForEntries(dateGroup);
+          dateGroup = [];
         }
-      }
-      
-      if (dateGroup.length > 0) {
-        report += writeParagraphForEntries(dateGroup);
       }
       
       return report;
@@ -718,25 +793,22 @@
       const activities = entries.map(e => e.title.toLowerCase()).join(' and ');
       paragraph += `I engaged in ${activities}. `;
       
-      // Combine descriptions
       const descriptions = entries.map(e => e.description).filter(d => d);
       if (descriptions.length > 0) {
-        paragraph += `Specifically, ${descriptions.join(' Additionally, ')} `;
+        paragraph += `${descriptions.join(' ')} `;
       }
       
-      // Add skills
       const skills = entries.map(e => e.skills).filter(s => s);
       if (skills.length > 0) {
         paragraph += `Through these activities, I developed skills including ${skills.join(', ')}. `;
       }
       
-      // Add challenges
       const challenges = entries.map(e => e.challenges).filter(c => c);
       if (challenges.length > 0) {
-        paragraph += `I encountered challenges such as ${challenges[0]}, which I addressed through problem-solving and supervisor guidance. `;
+        paragraph += `I encountered challenges such as ${challenges[0]}, which I addressed through problem-solving. `;
       }
       
-      paragraph += `These experiences contributed significantly to my practical understanding of professional responsibilities and workplace expectations.\n\n`;
+      paragraph += `These experiences contributed significantly to my practical understanding of professional responsibilities.\n\n`;
       
       return paragraph;
     }
@@ -773,22 +845,6 @@
       return conclusion;
     }
     
-    function generateIntroduction() {
-      const programme = document.getElementById('programme')?.value || 'my academic programme';
-      const org = document.getElementById('hostOrg')?.value || 'the host organization';
-      const typeName = placementTypes[placementType]?.name || 'Practicum';
-      const university = document.getElementById('university')?.value || 'this university';
-      
-      let introduction = `This report presents a comprehensive account of the experience gained during my ${typeName} at ${org}. `;
-      introduction += `The placement was undertaken as a partial requirement for the award of ${programme} at ${university}. `;
-      introduction += `The primary objective of this practicum was to provide hands-on experience that connects theoretical knowledge acquired in class with practical work situations. `;
-      introduction += `During the placement period, I was exposed to various professional activities that enhanced my understanding of organizational operations and workplace expectations. `;
-      introduction += `This report is organized into several chapters: Chapter One provides background information, Chapter Two describes the host institution, Chapter Three details activities performed, Chapter Four discusses skills and learning outcomes, Chapter Five presents challenges encountered, Chapter Six offers recommendations, and Chapter Seven concludes the report. `;
-      introduction += `Overall, this practicum has been instrumental in building my professional competence and preparing me for the workforce.`;
-      
-      return introduction;
-    }
-    
     // ============================================
     // AI TOOL DISPATCHER
     // ============================================
@@ -799,31 +855,31 @@
       
       switch(tool) {
         case 'expandBullets':
-          if (!content) {
-            alert('Please write some bullet points or content first.');
-            return;
-          }
-          result = convertBulletsToParagraphs(content);
+          if (!content) { alert('Please write some bullet points first.'); return; }
+          result = convertBulletsToParagraphs(content, 'general');
           break;
-        case 'expandContent':
-          if (!content) {
-            alert('Please write some content first.');
-            return;
-          }
-          result = expandShortContent(content);
+        case 'expandChapter1':
+          if (!content) { alert('Please write bullet points for Chapter 1.'); return; }
+          result = expandChapter1Introduction(content);
+          break;
+        case 'expandChapter2':
+          if (!content) { alert('Please write bullet points for Chapter 2.'); return; }
+          result = expandChapter2Background(content);
+          break;
+        case 'expandChapter4':
+          if (!content) { alert('Please write bullet points for Chapter 4.'); return; }
+          result = expandChapter4Skills(content);
+          break;
+        case 'expandChapter5':
+          if (!content) { alert('Please write bullet points for Chapter 5.'); return; }
+          result = expandChapter5Challenges(content);
           break;
         case 'formal':
-          if (!content) {
-            alert('Please write some content first.');
-            return;
-          }
+          if (!content) { alert('Please write some content first.'); return; }
           result = makeFormal(content);
           break;
         case 'grammar':
-          if (!content) {
-            alert('Please write some content first.');
-            return;
-          }
+          if (!content) { alert('Please write some content first.'); return; }
           result = fixGrammar(content);
           break;
         case 'logbookToParagraphs':
@@ -834,9 +890,6 @@
           break;
         case 'conclusion':
           result = generateConclusion();
-          break;
-        case 'introduction':
-          result = generateIntroduction();
           break;
         default:
           result = content;
@@ -853,13 +906,15 @@
     function getToolDisplayName(tool) {
       const names = {
         expandBullets: 'Turn Bullets into Paragraphs',
-        expandContent: 'Expand Brief Points',
+        expandChapter1: 'Expand Chapter 1: Introduction',
+        expandChapter2: 'Expand Chapter 2: Background',
+        expandChapter4: 'Expand Chapter 4: Skills',
+        expandChapter5: 'Expand Chapter 5: Challenges',
         formal: 'Rewrite Formally',
         grammar: 'Fix Grammar',
         logbookToParagraphs: 'Convert Logbook to Report',
         recommendations: 'Generate Recommendations',
-        conclusion: 'Generate Conclusion',
-        introduction: 'Draft Introduction'
+        conclusion: 'Generate Conclusion'
       };
       return names[tool] || tool;
     }
@@ -879,12 +934,7 @@
         'help': 'facilitate',
         'make': 'produce',
         'very': 'extremely',
-        'really': 'significantly',
-        'okay': 'acceptable',
-        'nice': 'valuable',
-        'but': 'however',
-        'so': 'therefore',
-        'also': 'additionally'
+        'really': 'significantly'
       };
       
       let formal = content;
@@ -920,12 +970,12 @@
       
       const guidance = {
         internship: 'Focus on corporate culture, professional skills, teamwork, project contributions.',
-        school_practice: 'Focus on lesson planning, teaching methods, classroom management, student assessment.',
-        clinical_placement: 'Focus on patient care, medical procedures, infection control, clinical competencies.',
+        school_practice: 'Focus on lesson planning, teaching methods, classroom management.',
+        clinical_placement: 'Focus on patient care, medical procedures, infection control.',
         law_attachment: 'Focus on court sessions, legal drafting, research, client meetings.',
         industrial_training: 'Focus on technical skills, equipment handling, safety procedures.',
         field_attachment: 'Focus on field visits, data collection, community engagement.',
-        practicum: 'Focus on professional development, workplace integration, practical application.'
+        practicum: 'Focus on professional development, workplace integration.'
       };
       
       const guidanceBox = document.getElementById('placementGuidance');
@@ -1128,7 +1178,7 @@
     function unlockPremium() {
       document.getElementById('premiumBadge').innerHTML = '⭐ PREMIUM ACTIVE';
       document.getElementById('premiumBadge').classList.add('premium');
-      alert('✨ Premium unlocked! All AI features are now available.');
+      alert('✨ Premium unlocked! All AI features are now available for all chapters.');
     }
     
     function escapeHtml(str) {
@@ -1158,13 +1208,20 @@
     document.getElementById('aiSuggestBtn')?.addEventListener('click', () => {
       const content = document.getElementById('sectionContent').value;
       if (!content) {
-        alert('Please write some content first (bullet points work great!).');
+        alert('Please write some bullet points first.');
         return;
       }
-      const expanded = convertBulletsToParagraphs(content);
+      
+      let chapterType = 'general';
+      if (currentSection.includes('Introduction')) chapterType = 'introduction';
+      else if (currentSection.includes('Background')) chapterType = 'background';
+      else if (currentSection.includes('Skills')) chapterType = 'skills';
+      else if (currentSection.includes('Challenges')) chapterType = 'challenges';
+      
+      const expanded = convertBulletsToParagraphs(content, chapterType);
       document.getElementById('sectionContent').value = expanded;
       reportContent[currentSection] = expanded;
-      alert('✨ Bullet points converted to paragraphs!');
+      alert(`✨ Bullet points converted to paragraphs for ${currentSection}!`);
       renderReportBuilder();
     });
     
@@ -1172,7 +1229,7 @@
     renderLogbookEntries();
     renderReportBuilder();
     updateDynamicFields('internship');
-    console.log('✅ App ready! AI features: Turn bullet points into paragraphs, expand content, convert logbook to report.');
+    console.log('✅ App ready! Chapter-specific AI expansions working for Chapters 1, 2, 3, 4, 5');
   </script>
 </body>
 </html>
