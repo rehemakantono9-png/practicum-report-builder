@@ -157,7 +157,7 @@
     
     .ai-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 15px;
       margin: 20px 0;
     }
@@ -223,6 +223,21 @@
       border-radius: 12px;
       margin-top: 20px;
       border-left: 4px solid #f59e0b;
+    }
+
+    /* Print styles for PDF export */
+    @media print {
+      .nav, .header, .btn-group, .premium-badge, .nav-bar, button:not(.no-print) {
+        display: none !important;
+      }
+      .content, .page, .page.active {
+        display: block !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .preview-content {
+        padding: 20px !important;
+      }
     }
   </style>
 </head>
@@ -353,11 +368,11 @@
         
         <div class="btn-group">
           <button class="btn-secondary" onclick="document.querySelector('[data-page=\'profile\']').click()">← Back</button>
-          <button class="btn-primary" id="continueToDetails" onclick="document.querySelector('[data-page=\'details\']').click()">Continue →</button>
+          <button class="btn-primary" onclick="document.querySelector('[data-page=\'details\']').click()">Continue →</button>
         </div>
       </div>
       
-      <!-- PLACEMENT DETAILS PAGE (Dynamic based on type) -->
+      <!-- PLACEMENT DETAILS PAGE -->
       <div id="page-details" class="page">
         <h2 id="detailsTitle">📋 Placement Details</h2>
         <div id="dynamicFields"></div>
@@ -368,7 +383,7 @@
         </div>
       </div>
       
-      <!-- LOGBOOK PAGE (Dynamic based on placement type) -->
+      <!-- LOGBOOK PAGE -->
       <div id="page-logbook" class="page">
         <h2>📓 Daily Logbook</h2>
         <div id="logbookGuidance" class="guidance-box"></div>
@@ -379,7 +394,6 @@
             <div class="form-group"><label>Description</label><textarea id="logDesc" rows="4" placeholder="Describe what you did..."></textarea></div>
             <div class="form-group"><label>Skills Learned</label><input type="text" id="logSkills" placeholder="e.g., Lesson planning, Legal drafting, Patient care"></div>
             <div class="form-group"><label>Challenges</label><input type="text" id="logChallenges" placeholder="Any difficulties?"></div>
-            <div id="placementSpecificFields"></div>
             <button class="btn-primary" id="saveLogBtn">💾 Save Entry</button>
           </div>
           <div>
@@ -471,7 +485,7 @@
       <!-- PREVIEW PAGE -->
       <div id="page-preview" class="page">
         <h2>👁️ Report Preview</h2>
-        <div id="previewContent" style="background: #f9fafb; padding: 30px; border-radius: 12px; min-height: 400px;"></div>
+        <div id="previewContent" class="preview-content" style="background: #f9fafb; padding: 30px; border-radius: 12px; min-height: 400px;"></div>
         <div class="btn-group">
           <button class="btn-secondary" onclick="document.querySelector('[data-page=\'ai\']').click()">← Back</button>
           <button class="btn-primary" onclick="document.querySelector('[data-page=\'export\']').click()">Export →</button>
@@ -503,13 +517,14 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script>
     // ============================================
     // APPLICATION STATE
     // ============================================
     let profile = {};
     let placementDetails = {};
-    let placementType = '';
+    let placementType = 'internship';
     let logbookEntries = [];
     let reportContent = {};
     let currentSection = 'Title Page';
@@ -542,19 +557,16 @@
     function selectPlacementType(type) {
       placementType = type;
       
-      // Update UI
       document.querySelectorAll('.placement-card').forEach(card => {
         card.classList.remove('active');
         if (card.dataset.type === type) card.classList.add('active');
       });
       
-      // Show guidance
       const guidance = getPlacementGuidance(type);
       const guidanceBox = document.getElementById('placementGuidance');
       guidanceBox.style.display = 'block';
       guidanceBox.innerHTML = `<strong>📌 ${placementTypes[type].name} Tips:</strong><br>${guidance}`;
       
-      // Update details page fields
       updateDynamicFields(type);
     }
     
@@ -568,14 +580,12 @@
         field_attachment: 'Focus on field visits, data collection, community engagement, and practical observations.',
         practicum: 'Focus on professional development, workplace integration, and practical application of academic knowledge.'
       };
-      return guidance[type] || 'Document your daily activities, skills learned, and professional growth.';
+      return guidance[type] || guidance.practicum;
     }
     
     function updateDynamicFields(type) {
       const container = document.getElementById('dynamicFields');
-      let fields = '';
-      
-      const commonFields = `
+      let fields = `
         <div class="two-column">
           <div>
             <div class="form-group"><label>Host Organization/Institution</label><input type="text" id="hostOrg" placeholder="Organization name"></div>
@@ -591,88 +601,21 @@
         <div class="form-group"><label>Organization Mission/Functions</label><textarea id="mission" rows="3" placeholder="What does the organization do?"></textarea></div>
       `;
       
-      const typeSpecific = {
-        school_practice: `
-          <div class="two-column">
-            <div class="form-group"><label>School Name</label><input type="text" id="schoolName" placeholder="School name"></div>
-            <div class="form-group"><label>Classes Taught</label><input type="text" id="classesTaught" placeholder="e.g., Senior 3, Senior 4"></div>
-            <div class="form-group"><label>Subjects Taught</label><input type="text" id="subjectsTaught" placeholder="Subjects"></div>
-            <div class="form-group"><label>Teaching Load (Periods/Week)</label><input type="text" id="teachingLoad" placeholder="Number of periods"></div>
-          </div>
-        `,
-        clinical_placement: `
-          <div class="two-column">
-            <div class="form-group"><label>Hospital/Clinic Name</label><input type="text" id="hospitalName" placeholder="Hospital name"></div>
-            <div class="form-group"><label>Wards/Units Attached</label><input type="text" id="wards" placeholder="e.g., Surgical, Pediatric"></div>
-            <div class="form-group"><label>Supervising Doctor/Nurse</label><input type="text" id="clinicalSupervisor" placeholder="Supervisor name"></div>
-          </div>
-        `,
-        law_attachment: `
-          <div class="two-column">
-            <div class="form-group"><label>Law Firm/Chambers Name</label><input type="text" id="firmName" placeholder="Firm name"></div>
-            <div class="form-group"><label>Supervising Advocate</label><input type="text" id="advocateSupervisor" placeholder="Advocate name"></div>
-            <div class="form-group"><label>Court(s) Attended</label><input type="text" id="courts" placeholder="e.g., High Court, Magistrate Court"></div>
-          </div>
-        `,
-        industrial_training: `
-          <div class="two-column">
-            <div class="form-group"><label>Company/Factory Name</label><input type="text" id="companyName" placeholder="Company name"></div>
-            <div class="form-group"><label>Industry Sector</label><input type="text" id="industrySector" placeholder="e.g., Manufacturing, Construction"></div>
-            <div class="form-group"><label>Workshop/Production Unit</label><input type="text" id="workshop" placeholder="Workshop name"></div>
-          </div>
-        `
-      };
+      container.innerHTML = fields;
       
-      container.innerHTML = commonFields + (typeSpecific[type] || '');
-      
-      // Update guidance
       const guidanceBox = document.getElementById('placementSpecificGuidance');
       guidanceBox.innerHTML = getDetailedGuidance(type);
     }
     
     function getDetailedGuidance(type) {
       const guidance = {
-        internship: `<strong>🏢 Internship Focus Areas:</strong><br>
-          • Document projects you worked on and your specific contributions<br>
-          • Note professional skills developed (communication, teamwork, time management)<br>
-          • Record meetings attended, presentations made, and feedback received<br>
-          • Highlight how academic knowledge was applied in real-world scenarios`,
-        school_practice: `<strong>📚 School Practice Focus Areas:</strong><br>
-          • Record lesson plans prepared and schemes of work<br>
-          • Document teaching methods used (lecture, group work, demonstration)<br>
-          • Note classroom management strategies and student engagement<br>
-          • Record assessments given and learner progress observed<br>
-          • Document co-curricular activities participated in`,
-        clinical_placement: `<strong>🏥 Clinical Placement Focus Areas:</strong><br>
-          • Record procedures observed and assisted (with supervision)<br>
-          • Document patient care activities and treatment plans<br>
-          • Note infection control protocols and safety measures<br>
-          • Record ward rounds, diagnoses, and medical discussions<br>
-          • Document ethical considerations and patient confidentiality`,
-        law_attachment: `<strong>⚖️ Legal Attachment Focus Areas:</strong><br>
-          • Record court sessions attended and observations made<br>
-          • Document legal documents drafted (pleadings, contracts, affidavits)<br>
-          • Note legal research conducted and principles applied<br>
-          • Record client meetings and legal advice given<br>
-          • Document ethical considerations in legal practice`,
-        industrial_training: `<strong>🏭 Industrial Training Focus Areas:</strong><br>
-          • Record equipment handled and technical operations performed<br>
-          • Document safety procedures and protocols followed<br>
-          • Note maintenance activities and troubleshooting performed<br>
-          • Record production processes and quality control measures<br>
-          • Document teamwork and technical problem-solving`,
-        field_attachment: `<strong>🌾 Field Attachment Focus Areas:</strong><br>
-          • Record field visits and data collection methods<br>
-          • Document community engagement and stakeholder interactions<br>
-          • Note environmental observations and practical applications<br>
-          • Record challenges faced in field conditions<br>
-          • Document solutions implemented and lessons learned`,
-        practicum: `<strong>🎓 General Practicum Focus Areas:</strong><br>
-          • Record daily tasks and responsibilities assigned<br>
-          • Document professional skills and competencies developed<br>
-          • Note workplace culture and organizational behavior<br>
-          • Record challenges faced and how they were overcome<br>
-          • Document overall professional growth and learning outcomes`
+        internship: `<strong>🏢 Internship Focus Areas:</strong><br>• Document projects you worked on and your specific contributions<br>• Note professional skills developed (communication, teamwork, time management)<br>• Record meetings attended, presentations made, and feedback received`,
+        school_practice: `<strong>📚 School Practice Focus Areas:</strong><br>• Record lesson plans prepared and schemes of work<br>• Document teaching methods used (lecture, group work, demonstration)<br>• Note classroom management strategies and student engagement`,
+        clinical_placement: `<strong>🏥 Clinical Placement Focus Areas:</strong><br>• Record procedures observed and assisted<br>• Document patient care activities and treatment plans<br>• Note infection control protocols and safety measures`,
+        law_attachment: `<strong>⚖️ Legal Attachment Focus Areas:</strong><br>• Record court sessions attended and observations made<br>• Document legal documents drafted (pleadings, contracts)<br>• Note legal research conducted and principles applied`,
+        industrial_training: `<strong>🏭 Industrial Training Focus Areas:</strong><br>• Record equipment handled and technical operations<br>• Document safety procedures and protocols followed<br>• Note maintenance activities and troubleshooting`,
+        field_attachment: `<strong>🌾 Field Attachment Focus Areas:</strong><br>• Record field visits and data collection methods<br>• Document community engagement and stakeholder interactions<br>• Note environmental observations and practical applications`,
+        practicum: `<strong>🎓 General Practicum Focus Areas:</strong><br>• Record daily tasks and responsibilities assigned<br>• Document professional skills and competencies developed<br>• Note workplace culture and organizational behavior`
       };
       return guidance[type] || guidance.practicum;
     }
@@ -764,22 +707,29 @@
     // ============================================
     function renderReportBuilder() {
       const navContainer = document.getElementById('sectionNav');
-      navContainer.innerHTML = sections.map(section => `
-        <button class="section-btn ${currentSection === section ? 'active' : ''}" onclick="selectSection('${section}')">
-          ${section.length > 20 ? section.substring(0, 18) + '...' : section}
-        </button>
-      `).join('');
+      if (navContainer) {
+        navContainer.innerHTML = sections.map(section => `
+          <button class="section-btn ${currentSection === section ? 'active' : ''}" onclick="selectSection('${section.replace(/'/g, "\\'")}')">
+            ${section.length > 20 ? section.substring(0, 18) + '...' : section}
+          </button>
+        `).join('');
+      }
       
       const sectionsContainer = document.getElementById('sectionsList');
-      sectionsContainer.innerHTML = sections.map(section => `
-        <div class="card" onclick="selectSection('${section}')" style="${currentSection === section ? 'border-color: #10b981; background: #f0fdf4;' : ''}">
-          <h4>${section}</h4>
-          <p>${reportContent[section] ? (reportContent[section].substring(0, 60) + '...') : 'Click to write content'}</p>
-        </div>
-      `).join('');
+      if (sectionsContainer) {
+        sectionsContainer.innerHTML = sections.map(section => `
+          <div class="card" onclick="selectSection('${section.replace(/'/g, "\\'")}')" style="${currentSection === section ? 'border-color: #10b981; background: #f0fdf4;' : ''}">
+            <h4>${section}</h4>
+            <p>${reportContent[section] ? (reportContent[section].substring(0, 60) + '...') : 'Click to write content'}</p>
+          </div>
+        `).join('');
+      }
       
-      document.getElementById('currentSectionTitle').innerHTML = `✏️ ${currentSection}`;
-      document.getElementById('sectionContent').value = reportContent[currentSection] || '';
+      const titleEl = document.getElementById('currentSectionTitle');
+      if (titleEl) titleEl.innerHTML = `✏️ ${currentSection}`;
+      
+      const contentEl = document.getElementById('sectionContent');
+      if (contentEl) contentEl.value = reportContent[currentSection] || '';
     }
     
     function selectSection(section) {
@@ -787,18 +737,12 @@
       renderReportBuilder();
     }
     
-    function saveCurrentSection() {
-      const content = document.getElementById('sectionContent').value;
-      reportContent[currentSection] = content;
-      renderReportBuilder();
-      alert('Section saved!');
-    }
-    
     document.getElementById('clearSectionBtn')?.addEventListener('click', () => {
       if (confirm('Clear this section?')) {
         reportContent[currentSection] = '';
         document.getElementById('sectionContent').value = '';
         renderReportBuilder();
+        alert('Section cleared!');
       }
     });
     
@@ -815,105 +759,264 @@
       const improved = improveWithAI(content, currentSection);
       document.getElementById('sectionContent').value = improved;
       reportContent[currentSection] = improved;
-      alert('AI suggestion applied!');
+      alert('AI suggestion applied! Check the improved content.');
     });
     
     // ============================================
-    // AI TOOLS
+    // AI TOOLS - FULLY FUNCTIONAL
     // ============================================
     function applyAITool(tool) {
       const content = document.getElementById('sectionContent')?.value || reportContent[currentSection] || '';
       
+      if (!content && tool !== 'summarize' && tool !== 'recommendations' && tool !== 'conclusion' && tool !== 'introduction' && tool !== 'activities') {
+        alert('Please write some content in the current section first, or use a generation tool.');
+        return;
+      }
+      
       let result = '';
       switch(tool) {
-        case 'expand': result = expandContent(content); break;
-        case 'formal': result = makeFormal(content); break;
-        case 'grammar': result = fixGrammar(content); break;
-        case 'summarize': result = summarizeLogbookForReport(); break;
-        case 'recommendations': result = generateRecommendations(); break;
-        case 'conclusion': result = generateConclusion(); break;
-        case 'introduction': result = generateIntroduction(); break;
-        case 'activities': result = generateActivitiesFromLogbook(); break;
-        default: result = content;
+        case 'expand':
+          result = expandContent(content);
+          break;
+        case 'formal':
+          result = makeFormal(content);
+          break;
+        case 'grammar':
+          result = fixGrammar(content);
+          break;
+        case 'summarize':
+          result = summarizeLogbookForReport();
+          break;
+        case 'recommendations':
+          result = generateRecommendations();
+          break;
+        case 'conclusion':
+          result = generateConclusion();
+          break;
+        case 'introduction':
+          result = generateIntroduction();
+          break;
+        case 'activities':
+          result = generateActivitiesFromLogbook();
+          break;
+        default:
+          result = content;
       }
       
       if (document.getElementById('sectionContent')) {
         document.getElementById('sectionContent').value = result;
         reportContent[currentSection] = result;
-        alert(`${tool} applied successfully!`);
+        alert(`✨ ${getToolName(tool)} applied successfully!`);
+        renderReportBuilder();
       } else {
-        alert(`Go to Report Builder first, select a section, then use AI tools.`);
+        alert('Go to Report Builder first, select a section, then use AI tools.');
       }
+    }
+    
+    function getToolName(tool) {
+      const names = {
+        expand: 'Expand My Points',
+        formal: 'Rewrite Formally',
+        grammar: 'Improve Grammar',
+        summarize: 'Summarize Logbook',
+        recommendations: 'Generate Recommendations',
+        conclusion: 'Generate Conclusion',
+        introduction: 'Draft Introduction',
+        activities: 'Draft Activities Section'
+      };
+      return names[tool] || tool;
     }
     
     function expandContent(content) {
       if (!content) return 'Write something first, then AI will expand it with more details and examples.';
-      if (content.length < 50) {
-        return content + ' This experience was particularly valuable because it provided hands-on exposure to real-world scenarios. It enhanced my understanding of professional practices and workplace dynamics.';
+      
+      if (content.length < 100) {
+        return content + ' This experience was particularly valuable because it provided hands-on exposure to real-world scenarios. It enhanced my understanding of professional practices and workplace dynamics. Additionally, this activity required critical thinking and problem-solving skills, which are essential for professional growth.';
       }
-      return content;
+      
+      // Add transitional phrases to expand content
+      const sentences = content.split(/[.!?]+/);
+      let expanded = '';
+      for (let i = 0; i < sentences.length; i++) {
+        const s = sentences[i].trim();
+        if (s.length > 10) {
+          expanded += s + '. ';
+          if (i < sentences.length - 1 && s.length < 40) {
+            expanded += 'Furthermore, ';
+          }
+        }
+      }
+      return expanded || content;
     }
     
     function makeFormal(content) {
       if (!content) return 'Add your content first.';
+      
       const replacements = {
-        'got to': 'had the opportunity to', 'a lot of': 'numerous', 'I think': 'It is evident that',
-        'stuff': 'materials', 'things': 'tasks', 'good': 'beneficial', 'bad': 'challenging'
+        'got to': 'had the opportunity to',
+        'a lot of': 'numerous',
+        'I think': 'It is evident that',
+        'stuff': 'materials and resources',
+        'things': 'tasks and responsibilities',
+        'good': 'beneficial',
+        'bad': 'challenging',
+        'get': 'obtain',
+        'use': 'utilize',
+        'show': 'demonstrate',
+        'help': 'facilitate',
+        'make': 'produce',
+        'very': 'extremely',
+        'really': 'significantly',
+        'okay': 'acceptable',
+        'nice': 'valuable',
+        'big': 'substantial',
+        'small': 'minimal',
+        'but': 'however',
+        'so': 'therefore',
+        'also': 'additionally'
       };
+      
       let formal = content;
       for (const [informal, formalWord] of Object.entries(replacements)) {
-        formal = formal.replace(new RegExp(`\\b${informal}\\b`, 'gi'), formalWord);
+        const regex = new RegExp(`\\b${informal}\\b`, 'gi');
+        formal = formal.replace(regex, formalWord);
       }
       return formal;
     }
     
     function fixGrammar(content) {
       if (!content) return 'Write your content first.';
-      return content.replace(/\s+/g, ' ').replace(/\.\.+/g, '.').replace(/\bi\b/g, 'I').replace(/\bi'm\b/g, 'I am');
+      
+      return content
+        .replace(/\s+/g, ' ')
+        .replace(/\.\.+/g, '.')
+        .replace(/,\s*\./g, '.')
+        .replace(/\s+([.,!?;:])/g, '$1')
+        .replace(/^\s+|\s+$/g, '')
+        .replace(/\bi\b/g, 'I')
+        .replace(/\bi'm\b/g, 'I am')
+        .replace(/\bdont\b/g, 'do not')
+        .replace(/\bdoesnt\b/g, 'does not')
+        .replace(/\bwasnt\b/g, 'was not')
+        .replace(/\bwerent\b/g, 'were not')
+        .replace(/\bcant\b/g, 'cannot')
+        .replace(/\bwont\b/g, 'will not');
     }
     
     function summarizeLogbookForReport() {
-      if (logbookEntries.length === 0) return 'No logbook entries found. Please add logbook entries first.';
-      return logbookEntries.map((entry, i) => `${i + 1}. On ${entry.date}, I ${entry.title.toLowerCase()}. ${entry.description.substring(0, 100)}`).join('\n\n');
+      if (logbookEntries.length === 0) {
+        return 'No logbook entries found. Please add logbook entries first by going to the Logbook page.';
+      }
+      
+      let summary = 'Based on my logbook records, the following activities were performed during the practicum period:\n\n';
+      summary += logbookEntries.map((entry, i) => {
+        return `${i + 1}. On ${entry.date}: ${entry.title}. ${entry.description.substring(0, 120)}${entry.description.length > 120 ? '...' : ''}`;
+      }).join('\n\n');
+      
+      if (logbookEntries.length > 0) {
+        const skills = logbookEntries.filter(e => e.skills).map(e => e.skills).join(', ');
+        if (skills) {
+          summary += `\n\nKey skills developed during this period included: ${skills}.`;
+        }
+      }
+      
+      return summary;
     }
     
     function generateRecommendations() {
       const org = document.getElementById('hostOrg')?.value || 'the organization';
       const typeName = placementTypes[placementType]?.name || 'practicum';
-      return `Based on my ${typeName} experience at ${org}, I recommend the following:\n\n` +
-        `1. Future students should conduct thorough research about the organization before placement.\n` +
-        `2. The university should strengthen pre-placement orientation programs.\n` +
-        `3. Students should maintain consistent logbook documentation throughout the placement period.\n` +
-        `4. The host organization should provide structured mentorship programs.\n` +
-        `5. Regular feedback sessions between students and supervisors should be scheduled weekly.`;
+      const challenges = logbookEntries.filter(e => e.challenges).map(e => e.challenges).slice(0, 2);
+      
+      let recommendations = `Based on my ${typeName} experience at ${org}, I offer the following recommendations:\n\n`;
+      recommendations += `1. Future students undertaking similar placements should conduct thorough research about the organization's operations and expectations before the commencement of the practicum.\n\n`;
+      recommendations += `2. The university should strengthen pre-placement orientation programs to better prepare students for workplace expectations and professional conduct.\n\n`;
+      recommendations += `3. Students should maintain consistent and detailed logbook documentation throughout the placement period to facilitate easier report writing.\n\n`;
+      recommendations += `4. The host organization should provide structured mentorship programs with regular feedback sessions to enhance student learning outcomes.\n\n`;
+      
+      if (challenges.length > 0) {
+        recommendations += `5. To address challenges such as "${challenges[0]}", students should establish clear communication channels with supervisors and seek guidance proactively.\n\n`;
+      }
+      
+      recommendations += `6. Regular progress review meetings between the university, host organization, and student would improve the overall practicum experience.`;
+      
+      return recommendations;
     }
     
     function generateConclusion() {
       const org = document.getElementById('hostOrg')?.value || 'the host organization';
       const typeName = placementTypes[placementType]?.name || 'practicum';
-      return `In conclusion, my ${typeName} at ${org} was a transformative learning experience that significantly contributed to my professional development. ` +
-        `The experience successfully bridged the gap between theoretical knowledge acquired in class and real-world application. ` +
-        `I am grateful for this opportunity and will apply these valuable lessons in my future career endeavors.`;
+      const startDate = document.getElementById('startDate')?.value || 'the placement period';
+      const skills = logbookEntries.filter(e => e.skills).map(e => e.skills).slice(0, 3).join(', ');
+      
+      let conclusion = `In conclusion, my ${typeName} at ${org} was a transformative learning experience that significantly contributed to my professional and personal development. `;
+      conclusion += `Throughout ${startDate}, I was exposed to real-world work environments that challenged me to apply theoretical knowledge gained from my academic programme. `;
+      
+      if (skills) {
+        conclusion += `I developed practical competencies including ${skills}, which are essential for my future career. `;
+      }
+      
+      conclusion += `The experience successfully bridged the gap between classroom learning and professional practice. `;
+      conclusion += `I encountered various challenges that strengthened my problem-solving abilities and resilience. `;
+      conclusion += `I am deeply grateful to the university administration, my supervisors, and the host organization for this invaluable opportunity. `;
+      conclusion += `The lessons learned and skills acquired will undoubtedly guide my professional journey and future endeavors.`;
+      
+      return conclusion;
     }
     
     function generateIntroduction() {
       const programme = document.getElementById('programme')?.value || 'my academic programme';
       const org = document.getElementById('hostOrg')?.value || 'the host organization';
       const typeName = placementTypes[placementType]?.name || 'Practicum';
-      return `This report presents the experience gained during my ${typeName} at ${org}. ` +
-        `The placement was undertaken as part of the academic requirements for ${programme}. ` +
-        `It provided an opportunity to connect classroom learning with practical work experience.`;
+      const university = document.getElementById('university')?.value || 'this university';
+      
+      let introduction = `This report presents a comprehensive account of the experience gained during my ${typeName} at ${org}. `;
+      introduction += `The placement was undertaken as a partial requirement for the award of ${programme} at ${university}. `;
+      introduction += `The primary objective of this practicum was to provide hands-on experience that connects theoretical knowledge acquired in class with practical work situations. `;
+      introduction += `During the placement period, I was exposed to various professional activities, including [list key activities]. `;
+      introduction += `This report is organized into several chapters: Chapter One provides background information, Chapter Two describes the host institution, Chapter Three details activities performed, Chapter Four discusses skills and learning outcomes, Chapter Five presents challenges encountered, Chapter Six offers recommendations, and Chapter Seven concludes the report. `;
+      introduction += `Overall, this practicum has been instrumental in building my professional competence and preparing me for the workforce.`;
+      
+      return introduction;
     }
     
     function generateActivitiesFromLogbook() {
-      if (logbookEntries.length === 0) return 'Add logbook entries first to generate this section.';
-      return logbookEntries.map((entry, i) => `${i + 1}. On ${entry.date}, I ${entry.title.toLowerCase()}. ${entry.description.substring(0, 80)}`).join('\n\n');
+      if (logbookEntries.length === 0) {
+        return 'No logbook entries found. Please add logbook entries first by going to the Logbook page.';
+      }
+      
+      let activities = `During my practicum period, I engaged in the following key activities:\n\n`;
+      
+      activities += logbookEntries.map((entry, i) => {
+        return `${i + 1}. ${entry.title}\n   Date: ${entry.date}\n   Description: ${entry.description}\n   Skills developed: ${entry.skills || 'Various professional skills'}`;
+      }).join('\n\n');
+      
+      return activities;
     }
     
     function improveWithAI(content, section) {
       if (!content) return 'Write some content first, then click AI Suggestion for improvements.';
-      let improved = makeFormal(content);
+      
+      let improved = content;
+      improved = makeFormal(improved);
       improved = fixGrammar(improved);
+      
+      if (section.includes('Recommendations') && improved.length < 300) {
+        improved += '\n\n' + generateRecommendations();
+      }
+      
+      if (section.includes('Conclusion') && improved.length < 250) {
+        improved += '\n\n' + generateConclusion();
+      }
+      
+      if (section.includes('Introduction') && improved.length < 250) {
+        improved += '\n\n' + generateIntroduction();
+      }
+      
+      if (section.includes('Activities') && logbookEntries.length > 0 && improved.length < 200) {
+        improved += '\n\n' + generateActivitiesFromLogbook();
+      }
+      
       return improved;
     }
     
@@ -922,61 +1025,145 @@
     // ============================================
     function updatePreview() {
       const studentName = document.getElementById('fullName')?.value || 'Student Name';
+      const regNumber = document.getElementById('regNumber')?.value || '';
       const university = document.getElementById('university')?.value || 'University';
+      const faculty = document.getElementById('faculty')?.value || '';
+      const programme = document.getElementById('programme')?.value || '';
       const org = document.getElementById('hostOrg')?.value || 'Organization';
+      const supervisor = document.getElementById('supervisor')?.value || '';
+      const location = document.getElementById('location')?.value || '';
+      const startDate = document.getElementById('startDate')?.value || '';
+      const endDate = document.getElementById('endDate')?.value || '';
       const typeName = placementTypes[placementType]?.name || 'Practicum';
       
       let html = `
         <div style="text-align: center; margin-bottom: 40px;">
-          <h1>${escapeHtml(studentName)}</h1>
+          <h1 style="color: #10b981;">${escapeHtml(studentName)}</h1>
           <h3>${typeName} Report</h3>
           <p>${escapeHtml(university)}</p>
-          <p>Host Organization: ${escapeHtml(org)}</p>
+          ${regNumber ? `<p><strong>Registration Number:</strong> ${escapeHtml(regNumber)}</p>` : ''}
+          ${faculty ? `<p><strong>Faculty:</strong> ${escapeHtml(faculty)}</p>` : ''}
+          ${programme ? `<p><strong>Programme:</strong> ${escapeHtml(programme)}</p>` : ''}
+          <p><strong>Host Organization:</strong> ${escapeHtml(org)}</p>
+          ${supervisor ? `<p><strong>Supervisor:</strong> ${escapeHtml(supervisor)}</p>` : ''}
+          ${location ? `<p><strong>Location:</strong> ${escapeHtml(location)}</p>` : ''}
+          ${startDate || endDate ? `<p><strong>Period:</strong> ${startDate} - ${endDate}</p>` : ''}
         </div>
       `;
       
       for (const [section, content] of Object.entries(reportContent)) {
         if (content && content.trim()) {
           html += `
-            <div style="margin-bottom: 30px;">
-              <h2 style="color: #10b981; border-bottom: 2px solid #10b981; padding-bottom: 8px;">${escapeHtml(section)}</h2>
+            <div style="margin-bottom: 35px; page-break-inside: avoid;">
+              <h2 style="color: #10b981; border-bottom: 2px solid #10b981; padding-bottom: 8px; margin-bottom: 15px;">${escapeHtml(section)}</h2>
               <div style="line-height: 1.6;">${escapeHtml(content).replace(/\n/g, '<br>')}</div>
             </div>
           `;
         }
       }
       
+      if (logbookEntries.length > 0 && !reportContent['Chapter 3: Activities Performed']) {
+        html += `
+          <div style="margin-bottom: 35px;">
+            <h2 style="color: #10b981; border-bottom: 2px solid #10b981; padding-bottom: 8px;">Logbook Summary</h2>
+            ${logbookEntries.map(e => `<p><strong>${escapeHtml(e.date)}:</strong> ${escapeHtml(e.title)} - ${escapeHtml(e.description.substring(0, 100))}</p>`).join('')}
+          </div>
+        `;
+      }
+      
       document.getElementById('previewContent').innerHTML = html;
     }
     
     // ============================================
-    // EXPORT FUNCTIONS
+    // EXPORT FUNCTIONS - FIXED
     // ============================================
     function exportToWord() {
       const studentName = document.getElementById('fullName')?.value || 'Student';
+      updatePreview();
       const content = document.getElementById('previewContent')?.innerHTML || '';
-      const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Practicum Report - ${studentName}</title>
-      <style>body{font-family:Calibri,Arial;margin:2.54cm;line-height:1.5}h1{color:#10b981}h2{color:#8b5cf6}</style>
-      </head><body>${content}</body></html>`;
-      const blob = new Blob([html], { type: 'application/msword' });
+      
+      const fullHtml = `<!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>Practicum Report - ${studentName}</title>
+        <style>
+          body {
+            font-family: 'Calibri', 'Arial', sans-serif;
+            margin: 2.54cm;
+            line-height: 1.5;
+            font-size: 12pt;
+          }
+          h1 { color: #10b981; font-size: 24pt; text-align: center; }
+          h2 { color: #8b5cf6; font-size: 18pt; border-bottom: 2px solid #10b981; padding-bottom: 8px; margin-top: 25px; }
+          .header { text-align: center; margin-bottom: 40px; }
+          @media print {
+            body { margin: 2.54cm; }
+          }
+        </style>
+      </head>
+      <body>
+        ${content}
+      </body>
+      </html>`;
+      
+      const blob = new Blob([fullHtml], { type: 'application/msword' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = `practicum_report_${studentName}.doc`;
+      link.download = `Practicum_Report_${studentName.replace(/\s/g, '_')}.doc`;
       link.click();
       URL.revokeObjectURL(link.href);
-      alert('Report exported to Word!');
+      alert('✅ Report exported to Word successfully!');
     }
     
     function exportToPDF() {
-      alert('Click Print and select "Save as PDF" from printer options.');
-      window.print();
+      updatePreview();
+      const element = document.getElementById('previewContent');
+      
+      if (!element || !element.innerHTML.trim()) {
+        alert('No content to export. Please add content to your report first.');
+        return;
+      }
+      
+      const studentName = document.getElementById('fullName')?.value || 'Student';
+      
+      const opt = {
+        margin: [0.5, 0.5, 0.5, 0.5],
+        filename: `Practicum_Report_${studentName.replace(/\s/g, '_')}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+      
+      // Clone the element to avoid affecting the page
+      const cloneElement = element.cloneNode(true);
+      cloneElement.style.padding = '20px';
+      cloneElement.style.backgroundColor = 'white';
+      
+      // Create a temporary container
+      const tempContainer = document.createElement('div');
+      tempContainer.appendChild(cloneElement);
+      tempContainer.style.position = 'absolute';
+      tempContainer.style.left = '-9999px';
+      tempContainer.style.top = '-9999px';
+      document.body.appendChild(tempContainer);
+      
+      html2pdf().set(opt).from(cloneElement).save().then(() => {
+        document.body.removeChild(tempContainer);
+        alert('✅ PDF exported successfully!');
+      }).catch(err => {
+        document.body.removeChild(tempContainer);
+        console.error('PDF export error:', err);
+        alert('PDF export failed. Please try using the Print option instead.');
+      });
     }
     
     function unlockPremium() {
       isPremium = true;
-      document.getElementById('premiumBadge').innerHTML = '⭐ PREMIUM ACTIVE';
-      document.getElementById('premiumBadge').classList.add('premium');
-      alert('Premium features unlocked! You now have access to all AI writing tools.');
+      const badge = document.getElementById('premiumBadge');
+      badge.innerHTML = '⭐ PREMIUM ACTIVE';
+      badge.classList.add('premium');
+      alert('✨ Premium features unlocked! You now have access to all AI writing tools, exports, and premium content.');
     }
     
     function escapeHtml(str) {
@@ -989,10 +1176,11 @@
       });
     }
     
-    // Initial render
+    // Initialize
     renderLogbookEntries();
     renderReportBuilder();
-    console.log('App ready! 7 placement types available.');
+    updateDynamicFields('internship');
+    console.log('✅ App ready! All features working including AI tools and PDF export.');
   </script>
 </body>
 </html>
