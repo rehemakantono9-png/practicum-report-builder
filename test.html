@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Navigation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0fdf4;
+    }
+    .nav-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+    }
+    .nav-btn {
+      padding: 10px 20px;
+      border: none;
+      background: #e5e7eb;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .nav-btn.active {
+      background: #10b981;
+      color: white;
+    }
+    .page {
+      display: none;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      min-height: 300px;
+    }
+    .page.active {
+      display: block;
+    }
+    h2 { color: #10b981; margin-top: 0; }
+  </style>
+</head>
+<body>
+  <h1>📝 Practicum Report Builder - Test</h1>
+  
+  <div class="nav-bar">
+    <button class="nav-btn active" data-page="home">🏠 Home</button>
+    <button class="nav-btn" data-page="profile">👤 Profile</button>
+    <button class="nav-btn" data-page="placement">📍 Placement</button>
+    <button class="nav-btn" data-page="logbook">📓 Logbook</button>
+    <button class="nav-btn" data-page="report">📄 Report</button>
+    <button class="nav-btn" data-page="ai">🤖 AI</button>
+    <button class="nav-btn" data-page="export">💾 Export</button>
+  </div>
+
+  <div id="page-home" class="page active">
+    <h2>🏠 Home Page</h2>
+    <p>Welcome to Practicum Report Builder! Click any button above to navigate.</p>
+    <button class="nav-btn" data-page="profile">Start Here →</button>
+  </div>
+
+  <div id="page-profile" class="page">
+    <h2>👤 Profile Page</h2>
+    <p>Enter your personal information here.</p>
+  </div>
+
+  <div id="page-placement" class="page">
+    <h2>📍 Placement Page</h2>
+    <p>Enter your placement details here.</p>
+  </div>
+
+  <div id="page-logbook" class="page">
+    <h2>📓 Logbook Page</h2>
+    <p>Record your daily activities here.</p>
+  </div>
+
+  <div id="page-report" class="page">
+    <h2>📄 Report Page</h2>
+    <p>Build your report here.</p>
+  </div>
+
+  <div id="page-ai" class="page">
+    <h2>🤖 AI Tools Page</h2>
+    <p>Use AI to enhance your writing.</p>
+  </div>
+
+  <div id="page-export" class="page">
+    <h2>💾 Export Page</h2>
+    <p>Download your report.</p>
+  </div>
+
+  <script>
+    // Simple navigation that definitely works
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const pageName = this.getAttribute('data-page');
+        
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(page => {
+          page.classList.remove('active');
+        });
+        
+        // Show selected page
+        const targetPage = document.getElementById('page-' + pageName);
+        if (targetPage) {
+          targetPage.classList.add('active');
+        }
+        
+        // Update button styles
+        document.querySelectorAll('.nav-btn').forEach(b => {
+          b.classList.remove('active');
+        });
+        this.classList.add('active');
+        
+        console.log('Switched to:', pageName);
+      });
+    });
+    
+    console.log('Navigation is working! Found', document.querySelectorAll('.nav-btn').length, 'buttons');
+  </script>
+</body>
+</html>
