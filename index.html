@@ -225,7 +225,6 @@
       border-left: 4px solid #f59e0b;
     }
 
-    /* Print styles for PDF export */
     @media print {
       .nav, .header, .btn-group, .premium-badge, .nav-bar, button:not(.no-print) {
         display: none !important;
@@ -235,9 +234,6 @@
         padding: 0 !important;
         margin: 0 !important;
       }
-      .preview-content {
-        padding: 20px !important;
-      }
     }
   </style>
 </head>
@@ -246,7 +242,7 @@
     <div class="header">
       <div>
         <h1>📝 Practicum Report Builder</h1>
-        <p>AI-powered report writing for Internships, School Practice, Legal Attachment & More</p>
+        <p>AI-powered report writing - Turns bullet points into professional paragraphs</p>
       </div>
       <div class="premium-badge" id="premiumBadge" onclick="unlockPremium()">
         ⭐ FREE Trial - Click to Unlock Premium
@@ -269,7 +265,7 @@
       <!-- HOME PAGE -->
       <div id="page-home" class="page active">
         <h2>✨ Welcome to Your AI-Powered Report Builder</h2>
-        <p style="color: #6b7280; margin-bottom: 20px;">Create professional reports for any practicum type with intelligent writing assistance</p>
+        <p style="color: #6b7280; margin-bottom: 20px;">Create professional practicum reports - Turn bullet points into paragraphs with AI</p>
         
         <div class="card-grid">
           <div class="card" onclick="document.querySelector('[data-page=\'profile\']').click()">
@@ -286,7 +282,7 @@
           </div>
           <div class="card" onclick="document.querySelector('[data-page=\'logbook\']').click()">
             <h4>📓 4. Logbook</h4>
-            <p>Record daily activities with tailored prompts</p>
+            <p>Record daily activities - AI will convert to paragraphs</p>
           </div>
           <div class="card" onclick="document.querySelector('[data-page=\'report\']').click()">
             <h4>📄 5. Generate Report</h4>
@@ -294,7 +290,7 @@
           </div>
           <div class="card" onclick="document.querySelector('[data-page=\'ai\']').click()">
             <h4>🤖 6. AI Enhancement</h4>
-            <p>Improve grammar, expand content, rewrite formally</p>
+            <p>Turn bullet points into paragraphs, expand content, improve grammar</p>
           </div>
           <div class="card" onclick="document.querySelector('[data-page=\'export\']').click()">
             <h4>💾 7. Export</h4>
@@ -336,23 +332,23 @@
         <div class="card-grid" id="placementTypesGrid">
           <div class="placement-card" data-type="internship" onclick="selectPlacementType('internship')">
             <h4>💼 Internship</h4>
-            <p>Corporate/Industry placement in business, IT, engineering, or private sector</p>
+            <p>Corporate/Industry placement in business, IT, engineering</p>
           </div>
           <div class="placement-card" data-type="school_practice" onclick="selectPlacementType('school_practice')">
-            <h4>📚 School Practice / Teaching Practice</h4>
-            <p>Teaching practicum in schools, lesson delivery, classroom management</p>
+            <h4>📚 School Practice / Teaching</h4>
+            <p>Teaching practicum in schools, lesson delivery</p>
           </div>
           <div class="placement-card" data-type="clinical_placement" onclick="selectPlacementType('clinical_placement')">
             <h4>🏥 Clinical Placement</h4>
-            <p>Medical, nursing, or healthcare practicum in hospitals/clinics</p>
+            <p>Medical, nursing, or healthcare practicum</p>
           </div>
           <div class="placement-card" data-type="law_attachment" onclick="selectPlacementType('law_attachment')">
-            <h4>⚖️ Legal Attachment / Law Practicum</h4>
+            <h4>⚖️ Legal Attachment</h4>
             <p>Court attendance, legal drafting, chambers attachment</p>
           </div>
           <div class="placement-card" data-type="industrial_training" onclick="selectPlacementType('industrial_training')">
             <h4>🏭 Industrial Training</h4>
-            <p>Engineering, manufacturing, technical hands-on training</p>
+            <p>Engineering, manufacturing, technical training</p>
           </div>
           <div class="placement-card" data-type="field_attachment" onclick="selectPlacementType('field_attachment')">
             <h4>🌾 Field Attachment</h4>
@@ -360,7 +356,7 @@
           </div>
           <div class="placement-card" data-type="practicum" onclick="selectPlacementType('practicum')">
             <h4>🎓 General Practicum</h4>
-            <p>Academic practice, research, or general professional attachment</p>
+            <p>Academic practice, research, general attachment</p>
           </div>
         </div>
         
@@ -390,9 +386,9 @@
         <div class="two-column">
           <div>
             <div class="form-group"><label>Date</label><input type="date" id="logDate"></div>
-            <div class="form-group"><label>Activity Title</label><input type="text" id="logTitle" placeholder="e.g., Lesson Delivery, Court Session, Ward Round"></div>
-            <div class="form-group"><label>Description</label><textarea id="logDesc" rows="4" placeholder="Describe what you did..."></textarea></div>
-            <div class="form-group"><label>Skills Learned</label><input type="text" id="logSkills" placeholder="e.g., Lesson planning, Legal drafting, Patient care"></div>
+            <div class="form-group"><label>Activity Title</label><input type="text" id="logTitle" placeholder="e.g., Lesson Delivery, Court Session"></div>
+            <div class="form-group"><label>Description (Bullet points OK)</label><textarea id="logDesc" rows="4" placeholder="List what you did, learned, observed...&#10;• Point 1&#10;• Point 2&#10;• Point 3"></textarea></div>
+            <div class="form-group"><label>Skills Learned</label><input type="text" id="logSkills" placeholder="e.g., Communication, Problem-solving"></div>
             <div class="form-group"><label>Challenges</label><input type="text" id="logChallenges" placeholder="Any difficulties?"></div>
             <button class="btn-primary" id="saveLogBtn">💾 Save Entry</button>
           </div>
@@ -418,10 +414,10 @@
           </div>
           <div>
             <h4 id="currentSectionTitle">Select a section</h4>
-            <textarea id="sectionContent" rows="12" placeholder="Write your content here... AI can help enhance it on the AI Tools page"></textarea>
+            <textarea id="sectionContent" rows="12" placeholder="Write your content here... Use bullet points and AI will expand them into paragraphs"></textarea>
             <div class="btn-group" style="margin-top: 12px;">
               <button class="btn-secondary" id="clearSectionBtn">Clear</button>
-              <button class="btn-primary" id="aiSuggestBtn">✨ Get AI Suggestion</button>
+              <button class="btn-primary" id="aiSuggestBtn">✨ AI: Expand Bullet Points</button>
             </div>
           </div>
         </div>
@@ -434,46 +430,49 @@
       <!-- AI TOOLS PAGE -->
       <div id="page-ai" class="page">
         <h2>🤖 AI Writing Assistant</h2>
-        <p style="color: #6b7280; margin-bottom: 20px;">Select a report section first, then click any tool to enhance your writing</p>
+        <p style="color: #6b7280; margin-bottom: 20px;">Select a report section, then click any tool to transform your writing</p>
         
         <div class="ai-grid">
-          <div class="ai-card" onclick="applyAITool('expand')">
-            <h4>📝 Expand My Points</h4>
-            <p>Add more detail to brief statements</p>
+          <div class="ai-card" onclick="applyAITool('expandBullets')">
+            <h4>📝 Turn Bullets into Paragraphs</h4>
+            <p>Convert bullet points into flowing paragraphs</p>
+          </div>
+          <div class="ai-card" onclick="applyAITool('expandContent')">
+            <h4>📊 Expand Brief Points</h4>
+            <p>Add detail and explanation to short statements</p>
           </div>
           <div class="ai-card" onclick="applyAITool('formal')">
             <h4>🎓 Rewrite Formally</h4>
             <p>Make your writing more professional</p>
           </div>
           <div class="ai-card" onclick="applyAITool('grammar')">
-            <h4>✅ Improve Grammar</h4>
-            <p>Fix spelling and grammar errors</p>
+            <h4>✅ Fix Grammar</h4>
+            <p>Correct spelling and grammar errors</p>
           </div>
-          <div class="ai-card" onclick="applyAITool('summarize')">
-            <h4>📊 Summarize Logbook</h4>
-            <p>Convert logbook entries to report format</p>
+          <div class="ai-card" onclick="applyAITool('logbookToParagraphs')">
+            <h4>📓 Convert Logbook to Report</h4>
+            <p>Turn all logbook entries into report paragraphs</p>
           </div>
           <div class="ai-card" onclick="applyAITool('recommendations')">
             <h4>💡 Generate Recommendations</h4>
-            <p>Create professional recommendations</p>
+            <p>Create professional recommendations section</p>
           </div>
           <div class="ai-card" onclick="applyAITool('conclusion')">
             <h4>🎯 Generate Conclusion</h4>
-            <p>Write a compelling conclusion</p>
+            <p>Write a comprehensive conclusion</p>
           </div>
           <div class="ai-card" onclick="applyAITool('introduction')">
             <h4>📖 Draft Introduction</h4>
             <p>Generate an introduction section</p>
           </div>
-          <div class="ai-card" onclick="applyAITool('activities')">
-            <h4>📋 Draft Activities Section</h4>
-            <p>Turn logbook into activities chapter</p>
-          </div>
         </div>
         
         <div style="background: #fef3c7; padding: 15px; border-radius: 12px; margin-top: 20px;">
-          <h4>💡 Pro Tip</h4>
-          <p>First, go to Report Builder and select a section. Then come back here and click any AI tool to enhance that section automatically.</p>
+          <h4>💡 How to Use</h4>
+          <p>1. Go to Report Builder and select a section<br>
+             2. Write your content as bullet points or short notes<br>
+             3. Click "Turn Bullets into Paragraphs" to expand<br>
+             4. Or use "Convert Logbook to Report" to generate activities chapter</p>
         </div>
         
         <div class="btn-group">
@@ -522,74 +521,427 @@
     // ============================================
     // APPLICATION STATE
     // ============================================
-    let profile = {};
-    let placementDetails = {};
     let placementType = 'internship';
     let logbookEntries = [];
     let reportContent = {};
     let currentSection = 'Title Page';
-    let isPremium = true;
     
     const placementTypes = {
       internship: { name: 'Internship', icon: '💼' },
-      school_practice: { name: 'School Practice / Teaching Practice', icon: '📚' },
+      school_practice: { name: 'School Practice', icon: '📚' },
       clinical_placement: { name: 'Clinical Placement', icon: '🏥' },
       law_attachment: { name: 'Legal Attachment', icon: '⚖️' },
       industrial_training: { name: 'Industrial Training', icon: '🏭' },
       field_attachment: { name: 'Field Attachment', icon: '🌾' },
-      practicum: { name: 'General Practicum', icon: '🎓' }
+      practicum: { name: 'Practicum', icon: '🎓' }
     };
     
     const sections = [
       'Title Page', 'Declaration', 'Acknowledgement', 'Abstract',
-      'Chapter 1: Introduction', 'Chapter 2: Background of Host Institution',
-      'Chapter 3: Activities Performed', 'Chapter 4: Skills and Learning Experience',
-      'Chapter 5: Challenges Encountered', 'Chapter 6: Recommendations',
-      'Chapter 7: Conclusion', 'References', 'Appendices'
+      'Chapter 1: Introduction', 'Chapter 2: Background',
+      'Chapter 3: Activities Performed', 'Chapter 4: Skills and Learning',
+      'Chapter 5: Challenges', 'Chapter 6: Recommendations',
+      'Chapter 7: Conclusion', 'References'
     ];
     
-    // Initialize report content
     sections.forEach(s => { reportContent[s] = ''; });
     
     // ============================================
-    // PLACEMENT TYPE SELECTION
+    // CORE AI FUNCTION - Turn Bullet Points into Paragraphs
     // ============================================
+    
+    function convertBulletsToParagraphs(text) {
+      if (!text) return '';
+      
+      // Detect bullet points (lines starting with •, -, *, or numbers)
+      const lines = text.split('\n');
+      let paragraphs = [];
+      let currentParagraph = '';
+      
+      for (let line of lines) {
+        line = line.trim();
+        if (!line) continue;
+        
+        // Check if line is a bullet point
+        const isBullet = /^[•\-*\d+.]\s/.test(line);
+        
+        if (isBullet) {
+          // End current paragraph if exists
+          if (currentParagraph) {
+            paragraphs.push(currentParagraph);
+            currentParagraph = '';
+          }
+          // Clean the bullet point
+          let bulletText = line.replace(/^[•\-*\d+.]\s+/, '');
+          // Capitalize first letter
+          bulletText = bulletText.charAt(0).toUpperCase() + bulletText.slice(1);
+          // Expand the bullet point into a proper sentence
+          let expanded = expandBulletPoint(bulletText);
+          paragraphs.push(expanded);
+        } else {
+          // Continue building paragraph
+          if (currentParagraph) {
+            currentParagraph += ' ' + line;
+          } else {
+            currentParagraph = line;
+          }
+        }
+      }
+      
+      if (currentParagraph) {
+        paragraphs.push(currentParagraph);
+      }
+      
+      return paragraphs.join('\n\n');
+    }
+    
+    function expandBulletPoint(bulletText) {
+      // Common expansions based on keywords
+      const lowerText = bulletText.toLowerCase();
+      
+      if (lowerText.includes('learned') || lowerText.includes('learnt')) {
+        return `One of the key takeaways from this experience was that ${bulletText}. This learning has significantly contributed to my professional development and understanding of workplace dynamics.`;
+      }
+      
+      if (lowerText.includes('challenge') || lowerText.includes('difficult')) {
+        return `A notable challenge encountered was ${bulletText}. To overcome this, I employed problem-solving strategies and sought guidance from supervisors, which ultimately turned the challenge into a valuable learning opportunity.`;
+      }
+      
+      if (lowerText.includes('skill') || lowerText.includes('ability')) {
+        return `This activity enabled me to develop ${bulletText}. These skills are essential for my future career and have enhanced my competence in professional settings.`;
+      }
+      
+      if (lowerText.includes('task') || lowerText.includes('duty') || lowerText.includes('responsibility')) {
+        return `One of my primary responsibilities was ${bulletText}. I approached this task with diligence and attention to detail, ensuring that all requirements were met according to organizational standards.`;
+      }
+      
+      if (lowerText.includes('meeting') || lowerText.includes('discussion')) {
+        return `I participated in ${bulletText}. This meeting provided valuable insights into organizational decision-making processes and enhanced my understanding of professional communication.`;
+      }
+      
+      if (lowerText.includes('project') || lowerText.includes('assignment')) {
+        return `I was involved in ${bulletText}. This project required collaboration, critical thinking, and application of theoretical knowledge to achieve desired outcomes.`;
+      }
+      
+      if (lowerText.includes('observe') || lowerText.includes('watched')) {
+        return `I had the opportunity to observe ${bulletText}. This observation was instrumental in understanding best practices and professional standards in the workplace.`;
+      }
+      
+      if (lowerText.includes('assist') || lowerText.includes('helped')) {
+        return `I assisted with ${bulletText}. This experience allowed me to contribute meaningfully while learning from experienced professionals.`;
+      }
+      
+      // Default expansion
+      return `${bulletText}. This activity was significant because it provided practical exposure to real-world applications of my academic training. The experience enhanced my understanding and prepared me for future professional responsibilities.`;
+    }
+    
+    function expandShortContent(content) {
+      if (!content) return '';
+      if (content.length > 200) return content;
+      
+      // Check if content has bullet points
+      if (/[•\-*\d+.]/.test(content)) {
+        return convertBulletsToParagraphs(content);
+      }
+      
+      // Expand short sentences
+      const sentences = content.split(/[.!?]+/);
+      let expanded = '';
+      
+      for (let sentence of sentences) {
+        sentence = sentence.trim();
+        if (sentence.length < 30 && sentence.length > 5) {
+          expanded += sentence + '. ' + getExpansionForSentence(sentence) + ' ';
+        } else if (sentence.length > 5) {
+          expanded += sentence + '. ';
+        }
+      }
+      
+      return expanded.trim();
+    }
+    
+    function getExpansionForSentence(sentence) {
+      const lower = sentence.toLowerCase();
+      
+      if (lower.includes('learn')) {
+        return 'This learning experience was valuable for my professional growth.';
+      }
+      if (lower.includes('task')) {
+        return 'Completing this task required attention to detail and adherence to professional standards.';
+      }
+      if (lower.includes('meeting')) {
+        return 'The meeting provided insights into organizational communication and decision-making.';
+      }
+      if (lower.includes('project')) {
+        return 'This project enhanced my problem-solving and collaboration abilities.';
+      }
+      if (lower.includes('skill')) {
+        return 'Developing this skill has improved my workplace competence.';
+      }
+      return 'This experience contributed significantly to my practical understanding of professional environments.';
+    }
+    
+    function convertLogbookToReport() {
+      if (logbookEntries.length === 0) {
+        return 'No logbook entries found. Please add logbook entries first.';
+      }
+      
+      let report = '';
+      let currentDate = '';
+      let dateGroup = [];
+      
+      for (let i = 0; i < logbookEntries.length; i++) {
+        const entry = logbookEntries[i];
+        
+        if (entry.date !== currentDate) {
+          if (dateGroup.length > 0) {
+            report += writeParagraphForEntries(dateGroup);
+          }
+          currentDate = entry.date;
+          dateGroup = [entry];
+        } else {
+          dateGroup.push(entry);
+        }
+      }
+      
+      if (dateGroup.length > 0) {
+        report += writeParagraphForEntries(dateGroup);
+      }
+      
+      return report;
+    }
+    
+    function writeParagraphForEntries(entries) {
+      const date = entries[0].date;
+      let paragraph = `On ${date}, `;
+      
+      const activities = entries.map(e => e.title.toLowerCase()).join(' and ');
+      paragraph += `I engaged in ${activities}. `;
+      
+      // Combine descriptions
+      const descriptions = entries.map(e => e.description).filter(d => d);
+      if (descriptions.length > 0) {
+        paragraph += `Specifically, ${descriptions.join(' Additionally, ')} `;
+      }
+      
+      // Add skills
+      const skills = entries.map(e => e.skills).filter(s => s);
+      if (skills.length > 0) {
+        paragraph += `Through these activities, I developed skills including ${skills.join(', ')}. `;
+      }
+      
+      // Add challenges
+      const challenges = entries.map(e => e.challenges).filter(c => c);
+      if (challenges.length > 0) {
+        paragraph += `I encountered challenges such as ${challenges[0]}, which I addressed through problem-solving and supervisor guidance. `;
+      }
+      
+      paragraph += `These experiences contributed significantly to my practical understanding of professional responsibilities and workplace expectations.\n\n`;
+      
+      return paragraph;
+    }
+    
+    function generateRecommendations() {
+      const org = document.getElementById('hostOrg')?.value || 'the organization';
+      const typeName = placementTypes[placementType]?.name || 'practicum';
+      
+      return `Based on my ${typeName} experience at ${org}, I offer the following recommendations:\n\n` +
+        `1. Future students should conduct thorough research about the organization's operations and expectations before commencing their practicum. This preparation will help them integrate more effectively into the workplace environment.\n\n` +
+        `2. The university should strengthen pre-placement orientation programs to better prepare students for professional workplace expectations, communication protocols, and ethical standards.\n\n` +
+        `3. Students should maintain consistent and detailed logbook documentation throughout the placement period, recording both successes and challenges to facilitate comprehensive report writing.\n\n` +
+        `4. The host organization should provide structured mentorship programs with regular feedback sessions to enhance student learning outcomes and professional development.\n\n` +
+        `5. Regular progress review meetings involving the university supervisor, host supervisor, and student would improve communication and ensure that learning objectives are being met throughout the practicum period.`;
+    }
+    
+    function generateConclusion() {
+      const org = document.getElementById('hostOrg')?.value || 'the host organization';
+      const typeName = placementTypes[placementType]?.name || 'practicum';
+      const skills = logbookEntries.filter(e => e.skills).map(e => e.skills).slice(0, 3).join(', ');
+      
+      let conclusion = `In conclusion, my ${typeName} at ${org} was a transformative learning experience that significantly contributed to my professional and personal development. `;
+      conclusion += `Throughout the placement period, I was exposed to real-world work environments that challenged me to apply theoretical knowledge gained from my academic programme. `;
+      
+      if (skills) {
+        conclusion += `I developed practical competencies including ${skills}, which are essential for my future career success. `;
+      }
+      
+      conclusion += `The experience successfully bridged the gap between classroom learning and professional practice, providing me with valuable insights into workplace dynamics. `;
+      conclusion += `I encountered various challenges that strengthened my problem-solving abilities, resilience, and adaptability. `;
+      conclusion += `I am deeply grateful to the university administration, my supervisors, and the host organization for this invaluable opportunity. `;
+      conclusion += `The lessons learned and skills acquired will undoubtedly guide my professional journey and future career endeavors.`;
+      
+      return conclusion;
+    }
+    
+    function generateIntroduction() {
+      const programme = document.getElementById('programme')?.value || 'my academic programme';
+      const org = document.getElementById('hostOrg')?.value || 'the host organization';
+      const typeName = placementTypes[placementType]?.name || 'Practicum';
+      const university = document.getElementById('university')?.value || 'this university';
+      
+      let introduction = `This report presents a comprehensive account of the experience gained during my ${typeName} at ${org}. `;
+      introduction += `The placement was undertaken as a partial requirement for the award of ${programme} at ${university}. `;
+      introduction += `The primary objective of this practicum was to provide hands-on experience that connects theoretical knowledge acquired in class with practical work situations. `;
+      introduction += `During the placement period, I was exposed to various professional activities that enhanced my understanding of organizational operations and workplace expectations. `;
+      introduction += `This report is organized into several chapters: Chapter One provides background information, Chapter Two describes the host institution, Chapter Three details activities performed, Chapter Four discusses skills and learning outcomes, Chapter Five presents challenges encountered, Chapter Six offers recommendations, and Chapter Seven concludes the report. `;
+      introduction += `Overall, this practicum has been instrumental in building my professional competence and preparing me for the workforce.`;
+      
+      return introduction;
+    }
+    
+    // ============================================
+    // AI TOOL DISPATCHER
+    // ============================================
+    
+    function applyAITool(tool) {
+      const content = document.getElementById('sectionContent')?.value || reportContent[currentSection] || '';
+      let result = '';
+      
+      switch(tool) {
+        case 'expandBullets':
+          if (!content) {
+            alert('Please write some bullet points or content first.');
+            return;
+          }
+          result = convertBulletsToParagraphs(content);
+          break;
+        case 'expandContent':
+          if (!content) {
+            alert('Please write some content first.');
+            return;
+          }
+          result = expandShortContent(content);
+          break;
+        case 'formal':
+          if (!content) {
+            alert('Please write some content first.');
+            return;
+          }
+          result = makeFormal(content);
+          break;
+        case 'grammar':
+          if (!content) {
+            alert('Please write some content first.');
+            return;
+          }
+          result = fixGrammar(content);
+          break;
+        case 'logbookToParagraphs':
+          result = convertLogbookToReport();
+          break;
+        case 'recommendations':
+          result = generateRecommendations();
+          break;
+        case 'conclusion':
+          result = generateConclusion();
+          break;
+        case 'introduction':
+          result = generateIntroduction();
+          break;
+        default:
+          result = content;
+      }
+      
+      if (document.getElementById('sectionContent')) {
+        document.getElementById('sectionContent').value = result;
+        reportContent[currentSection] = result;
+        alert(`✨ ${getToolDisplayName(tool)} applied successfully!`);
+        renderReportBuilder();
+      }
+    }
+    
+    function getToolDisplayName(tool) {
+      const names = {
+        expandBullets: 'Turn Bullets into Paragraphs',
+        expandContent: 'Expand Brief Points',
+        formal: 'Rewrite Formally',
+        grammar: 'Fix Grammar',
+        logbookToParagraphs: 'Convert Logbook to Report',
+        recommendations: 'Generate Recommendations',
+        conclusion: 'Generate Conclusion',
+        introduction: 'Draft Introduction'
+      };
+      return names[tool] || tool;
+    }
+    
+    function makeFormal(content) {
+      const replacements = {
+        'got to': 'had the opportunity to',
+        'a lot of': 'numerous',
+        'I think': 'It is evident that',
+        'stuff': 'materials and resources',
+        'things': 'tasks and responsibilities',
+        'good': 'beneficial',
+        'bad': 'challenging',
+        'get': 'obtain',
+        'use': 'utilize',
+        'show': 'demonstrate',
+        'help': 'facilitate',
+        'make': 'produce',
+        'very': 'extremely',
+        'really': 'significantly',
+        'okay': 'acceptable',
+        'nice': 'valuable',
+        'but': 'however',
+        'so': 'therefore',
+        'also': 'additionally'
+      };
+      
+      let formal = content;
+      for (const [informal, formalWord] of Object.entries(replacements)) {
+        const regex = new RegExp(`\\b${informal}\\b`, 'gi');
+        formal = formal.replace(regex, formalWord);
+      }
+      return formal;
+    }
+    
+    function fixGrammar(content) {
+      return content
+        .replace(/\s+/g, ' ')
+        .replace(/\.\.+/g, '.')
+        .replace(/\bi\b/g, 'I')
+        .replace(/\bi'm\b/g, 'I am')
+        .replace(/\bdont\b/g, 'do not')
+        .replace(/\bdoesnt\b/g, 'does not')
+        .replace(/\bwasnt\b/g, 'was not')
+        .replace(/\bcant\b/g, 'cannot');
+    }
+    
+    // ============================================
+    // NAVIGATION & UI FUNCTIONS
+    // ============================================
+    
     function selectPlacementType(type) {
       placementType = type;
-      
       document.querySelectorAll('.placement-card').forEach(card => {
         card.classList.remove('active');
         if (card.dataset.type === type) card.classList.add('active');
       });
       
-      const guidance = getPlacementGuidance(type);
+      const guidance = {
+        internship: 'Focus on corporate culture, professional skills, teamwork, project contributions.',
+        school_practice: 'Focus on lesson planning, teaching methods, classroom management, student assessment.',
+        clinical_placement: 'Focus on patient care, medical procedures, infection control, clinical competencies.',
+        law_attachment: 'Focus on court sessions, legal drafting, research, client meetings.',
+        industrial_training: 'Focus on technical skills, equipment handling, safety procedures.',
+        field_attachment: 'Focus on field visits, data collection, community engagement.',
+        practicum: 'Focus on professional development, workplace integration, practical application.'
+      };
+      
       const guidanceBox = document.getElementById('placementGuidance');
       guidanceBox.style.display = 'block';
-      guidanceBox.innerHTML = `<strong>📌 ${placementTypes[type].name} Tips:</strong><br>${guidance}`;
+      guidanceBox.innerHTML = `<strong>📌 ${placementTypes[type].name} Tips:</strong><br>${guidance[type]}`;
       
       updateDynamicFields(type);
     }
     
-    function getPlacementGuidance(type) {
-      const guidance = {
-        internship: 'Focus on corporate culture, professional skills, teamwork, project contributions, and industry exposure.',
-        school_practice: 'Focus on lesson planning, teaching methods, classroom management, student assessment, and learner engagement.',
-        clinical_placement: 'Focus on patient care, medical procedures, infection control, ethics, and clinical competencies.',
-        law_attachment: 'Focus on court sessions, legal drafting, research, client meetings, and professional ethics.',
-        industrial_training: 'Focus on technical skills, equipment handling, safety procedures, and production processes.',
-        field_attachment: 'Focus on field visits, data collection, community engagement, and practical observations.',
-        practicum: 'Focus on professional development, workplace integration, and practical application of academic knowledge.'
-      };
-      return guidance[type] || guidance.practicum;
-    }
-    
     function updateDynamicFields(type) {
       const container = document.getElementById('dynamicFields');
-      let fields = `
+      container.innerHTML = `
         <div class="two-column">
           <div>
-            <div class="form-group"><label>Host Organization/Institution</label><input type="text" id="hostOrg" placeholder="Organization name"></div>
-            <div class="form-group"><label>Department/Unit</label><input type="text" id="department" placeholder="Department you worked in"></div>
+            <div class="form-group"><label>Host Organization</label><input type="text" id="hostOrg" placeholder="Organization name"></div>
+            <div class="form-group"><label>Department/Unit</label><input type="text" id="department" placeholder="Department"></div>
             <div class="form-group"><label>Supervisor Name</label><input type="text" id="supervisor" placeholder="Supervisor's name"></div>
           </div>
           <div>
@@ -598,31 +950,10 @@
             <div class="form-group"><label>Location</label><input type="text" id="location" placeholder="City, Country"></div>
           </div>
         </div>
-        <div class="form-group"><label>Organization Mission/Functions</label><textarea id="mission" rows="3" placeholder="What does the organization do?"></textarea></div>
+        <div class="form-group"><label>Organization Mission</label><textarea id="mission" rows="3" placeholder="What does the organization do?"></textarea></div>
       `;
-      
-      container.innerHTML = fields;
-      
-      const guidanceBox = document.getElementById('placementSpecificGuidance');
-      guidanceBox.innerHTML = getDetailedGuidance(type);
     }
     
-    function getDetailedGuidance(type) {
-      const guidance = {
-        internship: `<strong>🏢 Internship Focus Areas:</strong><br>• Document projects you worked on and your specific contributions<br>• Note professional skills developed (communication, teamwork, time management)<br>• Record meetings attended, presentations made, and feedback received`,
-        school_practice: `<strong>📚 School Practice Focus Areas:</strong><br>• Record lesson plans prepared and schemes of work<br>• Document teaching methods used (lecture, group work, demonstration)<br>• Note classroom management strategies and student engagement`,
-        clinical_placement: `<strong>🏥 Clinical Placement Focus Areas:</strong><br>• Record procedures observed and assisted<br>• Document patient care activities and treatment plans<br>• Note infection control protocols and safety measures`,
-        law_attachment: `<strong>⚖️ Legal Attachment Focus Areas:</strong><br>• Record court sessions attended and observations made<br>• Document legal documents drafted (pleadings, contracts)<br>• Note legal research conducted and principles applied`,
-        industrial_training: `<strong>🏭 Industrial Training Focus Areas:</strong><br>• Record equipment handled and technical operations<br>• Document safety procedures and protocols followed<br>• Note maintenance activities and troubleshooting`,
-        field_attachment: `<strong>🌾 Field Attachment Focus Areas:</strong><br>• Record field visits and data collection methods<br>• Document community engagement and stakeholder interactions<br>• Note environmental observations and practical applications`,
-        practicum: `<strong>🎓 General Practicum Focus Areas:</strong><br>• Record daily tasks and responsibilities assigned<br>• Document professional skills and competencies developed<br>• Note workplace culture and organizational behavior`
-      };
-      return guidance[type] || guidance.practicum;
-    }
-    
-    // ============================================
-    // NAVIGATION
-    // ============================================
     document.querySelectorAll('.nav-btn').forEach(btn => {
       btn.addEventListener('click', function() {
         const pageName = this.dataset.page;
@@ -630,24 +961,11 @@
         document.getElementById(`page-${pageName}`).classList.add('active');
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
-        
         if (pageName === 'preview') updatePreview();
         if (pageName === 'report') renderReportBuilder();
-        if (pageName === 'details') updateDynamicFields(placementType);
-        if (pageName === 'logbook') updateLogbookGuidance();
       });
     });
     
-    function updateLogbookGuidance() {
-      const container = document.getElementById('logbookGuidance');
-      if (container && placementType) {
-        container.innerHTML = getDetailedGuidance(placementType);
-      }
-    }
-    
-    // ============================================
-    // LOGBOOK FUNCTIONS
-    // ============================================
     function saveLogbookEntry() {
       const entry = {
         id: Date.now(),
@@ -672,7 +990,7 @@
       document.getElementById('logSkills').value = '';
       document.getElementById('logChallenges').value = '';
       
-      alert('Entry saved!');
+      alert('Entry saved! AI can now convert this to report paragraphs.');
     }
     
     function renderLogbookEntries() {
@@ -688,7 +1006,7 @@
         <div class="log-entry">
           <strong>📅 ${entry.date}</strong>
           <h4>${escapeHtml(entry.title)}</h4>
-          <p>${escapeHtml(entry.description)}</p>
+          <p>${escapeHtml(entry.description.substring(0, 100))}${entry.description.length > 100 ? '...' : ''}</p>
           ${entry.skills ? `<p><strong>Skills:</strong> ${escapeHtml(entry.skills)}</p>` : ''}
           <button onclick="deleteLogEntry(${entry.id})" style="padding: 5px 10px; font-size: 12px; background: #ef4444; color: white; margin-top: 8px;">Delete</button>
         </div>
@@ -700,11 +1018,6 @@
       renderLogbookEntries();
     }
     
-    document.getElementById('saveLogBtn')?.addEventListener('click', saveLogbookEntry);
-    
-    // ============================================
-    // REPORT BUILDER
-    // ============================================
     function renderReportBuilder() {
       const navContainer = document.getElementById('sectionNav');
       if (navContainer) {
@@ -737,6 +1050,98 @@
       renderReportBuilder();
     }
     
+    function updatePreview() {
+      const studentName = document.getElementById('fullName')?.value || 'Student Name';
+      const regNumber = document.getElementById('regNumber')?.value || '';
+      const university = document.getElementById('university')?.value || 'University';
+      const org = document.getElementById('hostOrg')?.value || 'Organization';
+      const typeName = placementTypes[placementType]?.name || 'Practicum';
+      
+      let html = `
+        <div style="text-align: center; margin-bottom: 40px;">
+          <h1 style="color: #10b981;">${escapeHtml(studentName)}</h1>
+          <h3>${typeName} Report</h3>
+          <p>${escapeHtml(university)}</p>
+          ${regNumber ? `<p><strong>Registration:</strong> ${escapeHtml(regNumber)}</p>` : ''}
+          <p><strong>Host Organization:</strong> ${escapeHtml(org)}</p>
+        </div>
+      `;
+      
+      for (const [section, content] of Object.entries(reportContent)) {
+        if (content && content.trim()) {
+          html += `
+            <div style="margin-bottom: 35px; page-break-inside: avoid;">
+              <h2 style="color: #10b981; border-bottom: 2px solid #10b981; padding-bottom: 8px;">${escapeHtml(section)}</h2>
+              <div style="line-height: 1.6;">${escapeHtml(content).replace(/\n/g, '<br>')}</div>
+            </div>
+          `;
+        }
+      }
+      
+      document.getElementById('previewContent').innerHTML = html;
+    }
+    
+    function exportToWord() {
+      updatePreview();
+      const studentName = document.getElementById('fullName')?.value || 'Student';
+      const content = document.getElementById('previewContent')?.innerHTML || '';
+      
+      const fullHtml = `<!DOCTYPE html>
+      <html>
+      <head><meta charset="UTF-8"><title>Practicum Report - ${studentName}</title>
+      <style>body{font-family:Calibri;margin:2.54cm;line-height:1.5}h1{color:#10b981}h2{color:#8b5cf6;border-bottom:2px solid #10b981;}</style>
+      </head><body>${content}</body></html>`;
+      
+      const blob = new Blob([fullHtml], { type: 'application/msword' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `Practicum_Report_${studentName.replace(/\s/g, '_')}.doc`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+      alert('✅ Report exported to Word!');
+    }
+    
+    function exportToPDF() {
+      updatePreview();
+      const element = document.getElementById('previewContent');
+      if (!element || !element.innerHTML.trim()) {
+        alert('No content to export.');
+        return;
+      }
+      
+      const studentName = document.getElementById('fullName')?.value || 'Student';
+      const opt = {
+        margin: [0.5, 0.5, 0.5, 0.5],
+        filename: `Practicum_Report_${studentName.replace(/\s/g, '_')}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+      
+      html2pdf().set(opt).from(element).save().then(() => {
+        alert('✅ PDF exported successfully!');
+      }).catch(() => {
+        alert('PDF export failed. Please use Print option.');
+      });
+    }
+    
+    function unlockPremium() {
+      document.getElementById('premiumBadge').innerHTML = '⭐ PREMIUM ACTIVE';
+      document.getElementById('premiumBadge').classList.add('premium');
+      alert('✨ Premium unlocked! All AI features are now available.');
+    }
+    
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+    
+    document.getElementById('saveLogBtn')?.addEventListener('click', saveLogbookEntry);
     document.getElementById('clearSectionBtn')?.addEventListener('click', () => {
       if (confirm('Clear this section?')) {
         reportContent[currentSection] = '';
@@ -753,434 +1158,21 @@
     document.getElementById('aiSuggestBtn')?.addEventListener('click', () => {
       const content = document.getElementById('sectionContent').value;
       if (!content) {
-        alert('Please write some content first, then AI can help improve it.');
+        alert('Please write some content first (bullet points work great!).');
         return;
       }
-      const improved = improveWithAI(content, currentSection);
-      document.getElementById('sectionContent').value = improved;
-      reportContent[currentSection] = improved;
-      alert('AI suggestion applied! Check the improved content.');
+      const expanded = convertBulletsToParagraphs(content);
+      document.getElementById('sectionContent').value = expanded;
+      reportContent[currentSection] = expanded;
+      alert('✨ Bullet points converted to paragraphs!');
+      renderReportBuilder();
     });
-    
-    // ============================================
-    // AI TOOLS - FULLY FUNCTIONAL
-    // ============================================
-    function applyAITool(tool) {
-      const content = document.getElementById('sectionContent')?.value || reportContent[currentSection] || '';
-      
-      if (!content && tool !== 'summarize' && tool !== 'recommendations' && tool !== 'conclusion' && tool !== 'introduction' && tool !== 'activities') {
-        alert('Please write some content in the current section first, or use a generation tool.');
-        return;
-      }
-      
-      let result = '';
-      switch(tool) {
-        case 'expand':
-          result = expandContent(content);
-          break;
-        case 'formal':
-          result = makeFormal(content);
-          break;
-        case 'grammar':
-          result = fixGrammar(content);
-          break;
-        case 'summarize':
-          result = summarizeLogbookForReport();
-          break;
-        case 'recommendations':
-          result = generateRecommendations();
-          break;
-        case 'conclusion':
-          result = generateConclusion();
-          break;
-        case 'introduction':
-          result = generateIntroduction();
-          break;
-        case 'activities':
-          result = generateActivitiesFromLogbook();
-          break;
-        default:
-          result = content;
-      }
-      
-      if (document.getElementById('sectionContent')) {
-        document.getElementById('sectionContent').value = result;
-        reportContent[currentSection] = result;
-        alert(`✨ ${getToolName(tool)} applied successfully!`);
-        renderReportBuilder();
-      } else {
-        alert('Go to Report Builder first, select a section, then use AI tools.');
-      }
-    }
-    
-    function getToolName(tool) {
-      const names = {
-        expand: 'Expand My Points',
-        formal: 'Rewrite Formally',
-        grammar: 'Improve Grammar',
-        summarize: 'Summarize Logbook',
-        recommendations: 'Generate Recommendations',
-        conclusion: 'Generate Conclusion',
-        introduction: 'Draft Introduction',
-        activities: 'Draft Activities Section'
-      };
-      return names[tool] || tool;
-    }
-    
-    function expandContent(content) {
-      if (!content) return 'Write something first, then AI will expand it with more details and examples.';
-      
-      if (content.length < 100) {
-        return content + ' This experience was particularly valuable because it provided hands-on exposure to real-world scenarios. It enhanced my understanding of professional practices and workplace dynamics. Additionally, this activity required critical thinking and problem-solving skills, which are essential for professional growth.';
-      }
-      
-      // Add transitional phrases to expand content
-      const sentences = content.split(/[.!?]+/);
-      let expanded = '';
-      for (let i = 0; i < sentences.length; i++) {
-        const s = sentences[i].trim();
-        if (s.length > 10) {
-          expanded += s + '. ';
-          if (i < sentences.length - 1 && s.length < 40) {
-            expanded += 'Furthermore, ';
-          }
-        }
-      }
-      return expanded || content;
-    }
-    
-    function makeFormal(content) {
-      if (!content) return 'Add your content first.';
-      
-      const replacements = {
-        'got to': 'had the opportunity to',
-        'a lot of': 'numerous',
-        'I think': 'It is evident that',
-        'stuff': 'materials and resources',
-        'things': 'tasks and responsibilities',
-        'good': 'beneficial',
-        'bad': 'challenging',
-        'get': 'obtain',
-        'use': 'utilize',
-        'show': 'demonstrate',
-        'help': 'facilitate',
-        'make': 'produce',
-        'very': 'extremely',
-        'really': 'significantly',
-        'okay': 'acceptable',
-        'nice': 'valuable',
-        'big': 'substantial',
-        'small': 'minimal',
-        'but': 'however',
-        'so': 'therefore',
-        'also': 'additionally'
-      };
-      
-      let formal = content;
-      for (const [informal, formalWord] of Object.entries(replacements)) {
-        const regex = new RegExp(`\\b${informal}\\b`, 'gi');
-        formal = formal.replace(regex, formalWord);
-      }
-      return formal;
-    }
-    
-    function fixGrammar(content) {
-      if (!content) return 'Write your content first.';
-      
-      return content
-        .replace(/\s+/g, ' ')
-        .replace(/\.\.+/g, '.')
-        .replace(/,\s*\./g, '.')
-        .replace(/\s+([.,!?;:])/g, '$1')
-        .replace(/^\s+|\s+$/g, '')
-        .replace(/\bi\b/g, 'I')
-        .replace(/\bi'm\b/g, 'I am')
-        .replace(/\bdont\b/g, 'do not')
-        .replace(/\bdoesnt\b/g, 'does not')
-        .replace(/\bwasnt\b/g, 'was not')
-        .replace(/\bwerent\b/g, 'were not')
-        .replace(/\bcant\b/g, 'cannot')
-        .replace(/\bwont\b/g, 'will not');
-    }
-    
-    function summarizeLogbookForReport() {
-      if (logbookEntries.length === 0) {
-        return 'No logbook entries found. Please add logbook entries first by going to the Logbook page.';
-      }
-      
-      let summary = 'Based on my logbook records, the following activities were performed during the practicum period:\n\n';
-      summary += logbookEntries.map((entry, i) => {
-        return `${i + 1}. On ${entry.date}: ${entry.title}. ${entry.description.substring(0, 120)}${entry.description.length > 120 ? '...' : ''}`;
-      }).join('\n\n');
-      
-      if (logbookEntries.length > 0) {
-        const skills = logbookEntries.filter(e => e.skills).map(e => e.skills).join(', ');
-        if (skills) {
-          summary += `\n\nKey skills developed during this period included: ${skills}.`;
-        }
-      }
-      
-      return summary;
-    }
-    
-    function generateRecommendations() {
-      const org = document.getElementById('hostOrg')?.value || 'the organization';
-      const typeName = placementTypes[placementType]?.name || 'practicum';
-      const challenges = logbookEntries.filter(e => e.challenges).map(e => e.challenges).slice(0, 2);
-      
-      let recommendations = `Based on my ${typeName} experience at ${org}, I offer the following recommendations:\n\n`;
-      recommendations += `1. Future students undertaking similar placements should conduct thorough research about the organization's operations and expectations before the commencement of the practicum.\n\n`;
-      recommendations += `2. The university should strengthen pre-placement orientation programs to better prepare students for workplace expectations and professional conduct.\n\n`;
-      recommendations += `3. Students should maintain consistent and detailed logbook documentation throughout the placement period to facilitate easier report writing.\n\n`;
-      recommendations += `4. The host organization should provide structured mentorship programs with regular feedback sessions to enhance student learning outcomes.\n\n`;
-      
-      if (challenges.length > 0) {
-        recommendations += `5. To address challenges such as "${challenges[0]}", students should establish clear communication channels with supervisors and seek guidance proactively.\n\n`;
-      }
-      
-      recommendations += `6. Regular progress review meetings between the university, host organization, and student would improve the overall practicum experience.`;
-      
-      return recommendations;
-    }
-    
-    function generateConclusion() {
-      const org = document.getElementById('hostOrg')?.value || 'the host organization';
-      const typeName = placementTypes[placementType]?.name || 'practicum';
-      const startDate = document.getElementById('startDate')?.value || 'the placement period';
-      const skills = logbookEntries.filter(e => e.skills).map(e => e.skills).slice(0, 3).join(', ');
-      
-      let conclusion = `In conclusion, my ${typeName} at ${org} was a transformative learning experience that significantly contributed to my professional and personal development. `;
-      conclusion += `Throughout ${startDate}, I was exposed to real-world work environments that challenged me to apply theoretical knowledge gained from my academic programme. `;
-      
-      if (skills) {
-        conclusion += `I developed practical competencies including ${skills}, which are essential for my future career. `;
-      }
-      
-      conclusion += `The experience successfully bridged the gap between classroom learning and professional practice. `;
-      conclusion += `I encountered various challenges that strengthened my problem-solving abilities and resilience. `;
-      conclusion += `I am deeply grateful to the university administration, my supervisors, and the host organization for this invaluable opportunity. `;
-      conclusion += `The lessons learned and skills acquired will undoubtedly guide my professional journey and future endeavors.`;
-      
-      return conclusion;
-    }
-    
-    function generateIntroduction() {
-      const programme = document.getElementById('programme')?.value || 'my academic programme';
-      const org = document.getElementById('hostOrg')?.value || 'the host organization';
-      const typeName = placementTypes[placementType]?.name || 'Practicum';
-      const university = document.getElementById('university')?.value || 'this university';
-      
-      let introduction = `This report presents a comprehensive account of the experience gained during my ${typeName} at ${org}. `;
-      introduction += `The placement was undertaken as a partial requirement for the award of ${programme} at ${university}. `;
-      introduction += `The primary objective of this practicum was to provide hands-on experience that connects theoretical knowledge acquired in class with practical work situations. `;
-      introduction += `During the placement period, I was exposed to various professional activities, including [list key activities]. `;
-      introduction += `This report is organized into several chapters: Chapter One provides background information, Chapter Two describes the host institution, Chapter Three details activities performed, Chapter Four discusses skills and learning outcomes, Chapter Five presents challenges encountered, Chapter Six offers recommendations, and Chapter Seven concludes the report. `;
-      introduction += `Overall, this practicum has been instrumental in building my professional competence and preparing me for the workforce.`;
-      
-      return introduction;
-    }
-    
-    function generateActivitiesFromLogbook() {
-      if (logbookEntries.length === 0) {
-        return 'No logbook entries found. Please add logbook entries first by going to the Logbook page.';
-      }
-      
-      let activities = `During my practicum period, I engaged in the following key activities:\n\n`;
-      
-      activities += logbookEntries.map((entry, i) => {
-        return `${i + 1}. ${entry.title}\n   Date: ${entry.date}\n   Description: ${entry.description}\n   Skills developed: ${entry.skills || 'Various professional skills'}`;
-      }).join('\n\n');
-      
-      return activities;
-    }
-    
-    function improveWithAI(content, section) {
-      if (!content) return 'Write some content first, then click AI Suggestion for improvements.';
-      
-      let improved = content;
-      improved = makeFormal(improved);
-      improved = fixGrammar(improved);
-      
-      if (section.includes('Recommendations') && improved.length < 300) {
-        improved += '\n\n' + generateRecommendations();
-      }
-      
-      if (section.includes('Conclusion') && improved.length < 250) {
-        improved += '\n\n' + generateConclusion();
-      }
-      
-      if (section.includes('Introduction') && improved.length < 250) {
-        improved += '\n\n' + generateIntroduction();
-      }
-      
-      if (section.includes('Activities') && logbookEntries.length > 0 && improved.length < 200) {
-        improved += '\n\n' + generateActivitiesFromLogbook();
-      }
-      
-      return improved;
-    }
-    
-    // ============================================
-    // PREVIEW FUNCTION
-    // ============================================
-    function updatePreview() {
-      const studentName = document.getElementById('fullName')?.value || 'Student Name';
-      const regNumber = document.getElementById('regNumber')?.value || '';
-      const university = document.getElementById('university')?.value || 'University';
-      const faculty = document.getElementById('faculty')?.value || '';
-      const programme = document.getElementById('programme')?.value || '';
-      const org = document.getElementById('hostOrg')?.value || 'Organization';
-      const supervisor = document.getElementById('supervisor')?.value || '';
-      const location = document.getElementById('location')?.value || '';
-      const startDate = document.getElementById('startDate')?.value || '';
-      const endDate = document.getElementById('endDate')?.value || '';
-      const typeName = placementTypes[placementType]?.name || 'Practicum';
-      
-      let html = `
-        <div style="text-align: center; margin-bottom: 40px;">
-          <h1 style="color: #10b981;">${escapeHtml(studentName)}</h1>
-          <h3>${typeName} Report</h3>
-          <p>${escapeHtml(university)}</p>
-          ${regNumber ? `<p><strong>Registration Number:</strong> ${escapeHtml(regNumber)}</p>` : ''}
-          ${faculty ? `<p><strong>Faculty:</strong> ${escapeHtml(faculty)}</p>` : ''}
-          ${programme ? `<p><strong>Programme:</strong> ${escapeHtml(programme)}</p>` : ''}
-          <p><strong>Host Organization:</strong> ${escapeHtml(org)}</p>
-          ${supervisor ? `<p><strong>Supervisor:</strong> ${escapeHtml(supervisor)}</p>` : ''}
-          ${location ? `<p><strong>Location:</strong> ${escapeHtml(location)}</p>` : ''}
-          ${startDate || endDate ? `<p><strong>Period:</strong> ${startDate} - ${endDate}</p>` : ''}
-        </div>
-      `;
-      
-      for (const [section, content] of Object.entries(reportContent)) {
-        if (content && content.trim()) {
-          html += `
-            <div style="margin-bottom: 35px; page-break-inside: avoid;">
-              <h2 style="color: #10b981; border-bottom: 2px solid #10b981; padding-bottom: 8px; margin-bottom: 15px;">${escapeHtml(section)}</h2>
-              <div style="line-height: 1.6;">${escapeHtml(content).replace(/\n/g, '<br>')}</div>
-            </div>
-          `;
-        }
-      }
-      
-      if (logbookEntries.length > 0 && !reportContent['Chapter 3: Activities Performed']) {
-        html += `
-          <div style="margin-bottom: 35px;">
-            <h2 style="color: #10b981; border-bottom: 2px solid #10b981; padding-bottom: 8px;">Logbook Summary</h2>
-            ${logbookEntries.map(e => `<p><strong>${escapeHtml(e.date)}:</strong> ${escapeHtml(e.title)} - ${escapeHtml(e.description.substring(0, 100))}</p>`).join('')}
-          </div>
-        `;
-      }
-      
-      document.getElementById('previewContent').innerHTML = html;
-    }
-    
-    // ============================================
-    // EXPORT FUNCTIONS - FIXED
-    // ============================================
-    function exportToWord() {
-      const studentName = document.getElementById('fullName')?.value || 'Student';
-      updatePreview();
-      const content = document.getElementById('previewContent')?.innerHTML || '';
-      
-      const fullHtml = `<!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <title>Practicum Report - ${studentName}</title>
-        <style>
-          body {
-            font-family: 'Calibri', 'Arial', sans-serif;
-            margin: 2.54cm;
-            line-height: 1.5;
-            font-size: 12pt;
-          }
-          h1 { color: #10b981; font-size: 24pt; text-align: center; }
-          h2 { color: #8b5cf6; font-size: 18pt; border-bottom: 2px solid #10b981; padding-bottom: 8px; margin-top: 25px; }
-          .header { text-align: center; margin-bottom: 40px; }
-          @media print {
-            body { margin: 2.54cm; }
-          }
-        </style>
-      </head>
-      <body>
-        ${content}
-      </body>
-      </html>`;
-      
-      const blob = new Blob([fullHtml], { type: 'application/msword' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `Practicum_Report_${studentName.replace(/\s/g, '_')}.doc`;
-      link.click();
-      URL.revokeObjectURL(link.href);
-      alert('✅ Report exported to Word successfully!');
-    }
-    
-    function exportToPDF() {
-      updatePreview();
-      const element = document.getElementById('previewContent');
-      
-      if (!element || !element.innerHTML.trim()) {
-        alert('No content to export. Please add content to your report first.');
-        return;
-      }
-      
-      const studentName = document.getElementById('fullName')?.value || 'Student';
-      
-      const opt = {
-        margin: [0.5, 0.5, 0.5, 0.5],
-        filename: `Practicum_Report_${studentName.replace(/\s/g, '_')}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
-        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-      };
-      
-      // Clone the element to avoid affecting the page
-      const cloneElement = element.cloneNode(true);
-      cloneElement.style.padding = '20px';
-      cloneElement.style.backgroundColor = 'white';
-      
-      // Create a temporary container
-      const tempContainer = document.createElement('div');
-      tempContainer.appendChild(cloneElement);
-      tempContainer.style.position = 'absolute';
-      tempContainer.style.left = '-9999px';
-      tempContainer.style.top = '-9999px';
-      document.body.appendChild(tempContainer);
-      
-      html2pdf().set(opt).from(cloneElement).save().then(() => {
-        document.body.removeChild(tempContainer);
-        alert('✅ PDF exported successfully!');
-      }).catch(err => {
-        document.body.removeChild(tempContainer);
-        console.error('PDF export error:', err);
-        alert('PDF export failed. Please try using the Print option instead.');
-      });
-    }
-    
-    function unlockPremium() {
-      isPremium = true;
-      const badge = document.getElementById('premiumBadge');
-      badge.innerHTML = '⭐ PREMIUM ACTIVE';
-      badge.classList.add('premium');
-      alert('✨ Premium features unlocked! You now have access to all AI writing tools, exports, and premium content.');
-    }
-    
-    function escapeHtml(str) {
-      if (!str) return '';
-      return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-      });
-    }
     
     // Initialize
     renderLogbookEntries();
     renderReportBuilder();
     updateDynamicFields('internship');
-    console.log('✅ App ready! All features working including AI tools and PDF export.');
+    console.log('✅ App ready! AI features: Turn bullet points into paragraphs, expand content, convert logbook to report.');
   </script>
 </body>
 </html>
