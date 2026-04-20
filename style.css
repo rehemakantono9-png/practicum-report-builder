@@ -839,3 +839,348 @@ textarea {
   color: white;
   border-color: #3b82f6;
 }
+/* ============================================ */
+/* ENHANCEMENTS - ADD TO EXISTING CSS
+/* ============================================ */
+
+/* 1. SMOOTH SCROLLING & BETTER INTERACTIONS */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 2. IMPROVED BUTTON HOVER EFFECTS */
+.primary-btn, .secondary-btn, button[class*="btn"] {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.primary-btn::before, .secondary-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.primary-btn:active::before, .secondary-btn:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* 3. GLASSMORPHISM EFFECTS FOR CARDS */
+.card, .dashboard-stat, .saved-entry, .preview-section {
+  backdrop-filter: blur(0px);
+  transition: all 0.3s ease;
+}
+
+.card:hover, .dashboard-stat:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* 4. ANIMATED GRADIENT BORDERS FOR ACTIVE ITEMS */
+.placement-card.active, .workmode-card.active, .report-section-item.active {
+  position: relative;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(135deg, var(--primary), #8b5cf6) border-box;
+  border: 2px solid transparent;
+  animation: borderPulse 2s ease-in-out infinite;
+}
+
+@keyframes borderPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  }
+}
+
+/* 5. LOADING SPINNER IMPROVEMENTS */
+.loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  margin-left: -12px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* 6. BETTER FORM FOCUS STATES */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
+}
+
+/* 7. TOOLTIP STYLES */
+[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+
+[data-tooltip]:before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  background: var(--dark);
+  color: white;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 1000;
+}
+
+[data-tooltip]:hover:before {
+  opacity: 1;
+}
+
+/* 8. SCROLLBAR IMPROVEMENTS */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+  transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* 9. ANIMATED PROGRESS BAR */
+.progress-fill {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* 10. BADGE ENHANCEMENTS */
+.ready-badge, .inprogress-badge, .premium-badge, .free-badge {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.ready-badge:hover, .premium-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 11. SIDEBAR ENHANCEMENTS */
+.sidebar {
+  transition: all 0.3s ease;
+}
+
+.nav-link {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0;
+  background: var(--primary);
+  transition: height 0.3s ease;
+}
+
+.nav-link:hover::before, .nav-link.active::before {
+  height: 60%;
+}
+
+/* 12. CARD GRID IMPROVEMENTS */
+.card-grid, .dashboard-grid, .tool-grid {
+  gap: 20px;
+}
+
+/* 13. HOVER LIFT EFFECT FOR ALL INTERACTIVE ELEMENTS */
+.placement-card, .workmode-card, .report-section-item, .tool-item, 
+.saved-entry, .dashboard-stat, .project-box {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.placement-card:hover, .workmode-card:hover, .report-section-item:hover, 
+.tool-item:hover, .saved-entry:hover, .dashboard-stat:hover, .project-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 14. RESPONSIVE TYPOGRAPHY IMPROVEMENTS */
+@media (max-width: 768px) {
+  .hero-banner h2 {
+    font-size: 1.5rem;
+  }
+  
+  .card-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .dashboard-stat strong {
+    font-size: 1.1rem;
+  }
+}
+
+/* 15. PRINT STYLES (for exports) */
+@media print {
+  .sidebar, .nav-menu, .button-row, .hero-banner, .feature-banner {
+    display: none !important;
+  }
+  
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+  
+  .main-content {
+    padding: 0;
+  }
+  
+  .card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}
+
+/* 16. FOCUS VISIBLE FOR ACCESSIBILITY */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* 17. SUCCESS/ERROR MESSAGE ANIMATIONS */
+.notification {
+  animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 18. PREMIUM FEATURE HIGHLIGHT */
+.premium-feature {
+  position: relative;
+}
+
+.premium-feature::after {
+  content: '⭐ PREMIUM';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 19. SMOOTH PAGE TRANSITIONS */
+.page {
+  animation: fadeInUp 0.4s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 20. DARK MODE SUPPORT (Optional) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --surface-2: #334155;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --border: #334155;
+  }
+  
+  /* Adjust card backgrounds for dark mode */
+  .card, .dashboard-stat, .saved-entry, .preview-section {
+    background: var(--surface);
+  }
+  
+  /* Adjust input backgrounds for dark mode */
+  input, textarea, select {
+    background: var(--surface-2);
+    color: var(--text);
+    border-color: var(--border);
+  }
+}
