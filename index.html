@@ -91,12 +91,6 @@
             padding-left: 0.8rem;
         }
 
-        .card h3 {
-            font-size: 1rem;
-            margin: 1rem 0 0.5rem;
-            color: #1a4a6f;
-        }
-
         /* Forms */
         input, select, textarea {
             width: 100%;
@@ -159,10 +153,6 @@
         .log-date {
             font-weight: bold;
             color: #1a4a6f;
-        }
-
-        .log-actions {
-            margin-top: 0.5rem;
         }
 
         .delete-btn {
@@ -254,17 +244,6 @@
             100% { opacity: 0; visibility: hidden; }
         }
 
-        /* Utility */
-        .premium-only {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .premium-unlocked .premium-only {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
         .flex-between {
             display: flex;
             justify-content: space-between;
@@ -279,6 +258,16 @@
             border-radius: 20px;
             font-size: 0.7rem;
         }
+
+        .premium-only {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .premium-unlocked .premium-only {
+            opacity: 1;
+            pointer-events: auto;
+        }
     </style>
 </head>
 <body>
@@ -290,7 +279,7 @@
                 <button id="upgradeHeaderBtn" class="upgrade-btn">Upgrade to Premium</button>
             </div>
         </h1>
-        <p>AI-powered • Fill logbook → Auto-generate report</p>
+        <p>AI-powered • Fill logbook → Auto-generate complete report</p>
     </div>
 
     <div class="container">
@@ -422,7 +411,6 @@
             if (saved) {
                 const data = JSON.parse(saved);
                 logbookEntries = data.logbookEntries || [];
-                // Restore form values
                 if (data.studentName) document.getElementById('studentName').value = data.studentName;
                 if (data.studentId) document.getElementById('studentId').value = data.studentId;
                 if (data.university) document.getElementById('university').value = data.university;
@@ -458,7 +446,6 @@
             localStorage.setItem('internshipReportData', JSON.stringify(data));
         }
 
-        // Check free trial
         function checkTrial() {
             if (trialEnds && new Date() < new Date(trialEnds)) {
                 isPremium = true;
@@ -505,7 +492,6 @@
             }
         }
 
-        // Add log entry
         function addLogEntry() {
             const date = document.getElementById('logDate').value;
             const activity = document.getElementById('logActivity').value;
@@ -533,7 +519,6 @@
                 challenges
             });
 
-            // Clear form
             document.getElementById('logDate').value = '';
             document.getElementById('logActivity').value = '';
             document.getElementById('logDescription').value = '';
@@ -581,7 +566,6 @@
             updatePremiumUI();
         }
 
-        // Generate report from logbook (Premium feature)
         function generateReport() {
             if (!isPremium) {
                 showModal();
@@ -607,7 +591,6 @@
             const endDate = document.getElementById('endDate').value || '';
             const currentDate = new Date().toLocaleDateString('en-GB');
 
-            // Chapter 3: Activities from logbook
             let chapter3 = '';
             logbookEntries.forEach(entry => {
                 chapter3 += `
@@ -620,19 +603,16 @@
                 `;
             });
 
-            // Chapter 4: Extract all unique skills
             const allSkills = [...new Set(logbookEntries.flatMap(e => 
                 e.skills ? e.skills.split(',').map(s => s.trim()) : []
             ))];
             let chapter4 = `<p>During this internship, I developed the following professional competencies: <strong>${allSkills.join(', ') || 'Various practical skills'}</strong>.</p>`;
 
-            // Chapter 5: Extract challenges
             const allChallenges = logbookEntries.filter(e => e.challenges).map(e => e.challenges);
             let chapter5 = allChallenges.length > 0 
                 ? `<ul>${allChallenges.map(c => `<li>${escapeHtml(c)}</li>`).join('')}</ul>`
                 : `<p>Various challenges were encountered and successfully overcome during the internship period.</p>`;
 
-            // Full report HTML
             const reportHTML = `
                 <div class="report-document">
                     <div style="text-align: center; margin-bottom: 2rem;">
@@ -656,7 +636,7 @@
                     <p>I wish to express my sincere gratitude to my university supervisor, ${escapeHtml(supervisor)}, and workplace supervisor, ${escapeHtml(workSupervisor)}, for their guidance and support throughout this internship.</p>
 
                     <h2>ABSTRACT</h2>
-                    <p>This report documents the internship experience at ${escapeHtml(orgName)} from ${startDate} to ${endDate}. The placement provided valuable practical exposure in ${escapeHtml(department)}. Key activities included daily tasks detailed in the logbook. Significant skills were developed, and challenges were successfully overcome.</p>
+                    <p>This report documents the internship experience at ${escapeHtml(orgName)} from ${startDate} to ${endDate}. The placement provided valuable practical exposure in ${escapeHtml(department)}.</p>
 
                     <h2>CHAPTER ONE: INTRODUCTION</h2>
                     <p>This internship was undertaken at ${escapeHtml(orgName)} in the ${escapeHtml(department)} department. The primary objectives were to apply theoretical knowledge, gain practical skills, and develop professional competencies.</p>
@@ -669,7 +649,6 @@
 
                     <h2>CHAPTER FOUR: SKILLS AND LEARNING OUTCOMES</h2>
                     ${chapter4}
-                    <p>These skills will significantly benefit my future career development.</p>
 
                     <h2>CHAPTER FIVE: CHALLENGES AND SOLUTIONS</h2>
                     ${chapter5}
@@ -682,7 +661,7 @@
                     </ul>
 
                     <h2>CHAPTER SEVEN: CONCLUSION</h2>
-                    <p>The internship at ${escapeHtml(orgName)} was a transformative learning experience. The practical exposure gained will undoubtedly guide my future professional endeavors.</p>
+                    <p>The internship at ${escapeHtml(orgName)} was a transformative learning experience. The practical exposure gained will guide my future professional endeavors.</p>
 
                     <h2>REFERENCES</h2>
                     <p>${escapeHtml(university)} Internship Guidelines Handbook (${new Date().getFullYear()})</p>
@@ -696,7 +675,6 @@
             showAlert('Report generated successfully! You can now export to PDF/Word.', 'success');
         }
 
-        // Export functions
         function exportToPDF() {
             if (!isPremium) {
                 showModal();
@@ -732,7 +710,6 @@
             URL.revokeObjectURL(link.href);
         }
 
-        // UI Helpers
         function showAlert(message, type = 'info') {
             const alert = document.createElement('div');
             alert.className = 'alert';
@@ -761,34 +738,43 @@
             });
         }
 
-        // Pesapal payment (placeholder - integrate your actual endpoint)
+        // Pesapal payment integration
         function initPesapalPayment() {
             const email = document.getElementById('studentName')?.value || 'student@example.com';
             const name = document.getElementById('studentName')?.value || 'Student';
             
-            showAlert('Pesapal integration ready. Add your Netlify function endpoint to process payment.', 'info');
-            // In production, uncomment and use your actual endpoint:
-            /*
+            // Your backend URL after renaming
+            const backendUrl = 'https://internship-report-payments-backend.netlify.app';
+            
+            showAlert('Connecting to payment gateway...', 'info');
+            
+            // Call your Netlify function for payment
             fetch('/.netlify/functions/pesapal-submit-order', {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ amount: 25000, email, name })
             })
             .then(res => res.json())
             .then(data => {
-                if (data.redirect_url) window.location.href = data.redirect_url;
+                if (data.redirect_url) {
+                    window.location.href = data.redirect_url;
+                } else {
+                    showAlert('Payment error. Please try again.', 'warning');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                // Demo fallback
+                if (confirm('Demo Mode: Click OK to simulate successful payment and unlock premium')) {
+                    localStorage.setItem('premiumUnlocked', 'true');
+                    localStorage.removeItem('trialEnds');
+                    isPremium = true;
+                    updatePremiumUI();
+                    closeModal();
+                    showAlert('Premium unlocked! (Demo mode)', 'success');
+                    renderLogbook();
+                }
             });
-            */
-            
-            // For demo: Simulate successful payment
-            if (confirm('Demo: Click OK to simulate successful payment and unlock premium')) {
-                localStorage.setItem('premiumUnlocked', 'true');
-                localStorage.removeItem('trialEnds');
-                isPremium = true;
-                updatePremiumUI();
-                closeModal();
-                showAlert('Premium unlocked! (Demo mode)', 'success');
-                renderLogbook();
-            }
         }
 
         // Event listeners
@@ -802,17 +788,14 @@
         document.getElementById('startTrialBtn').onclick = startFreeTrial;
         document.getElementById('closeModalBtn').onclick = closeModal;
 
-        // Auto-save on input changes
         const inputs = ['studentName', 'studentId', 'university', 'programme', 'supervisor', 'orgName', 'department', 'orgLocation', 'workSupervisor', 'startDate', 'endDate'];
         inputs.forEach(id => {
             const el = document.getElementById(id);
             if (el) el.onchange = () => saveData();
         });
 
-        // Initialize
         loadData();
         
-        // Load html2pdf for export
         const script = document.createElement('script');
         script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
         document.head.appendChild(script);
