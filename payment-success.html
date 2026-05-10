@@ -56,28 +56,27 @@
     <div class="panel">
         <div class="brand">🔷 REMMIE KOMM HUB</div>
         <h1>✔ Payment Successful!</h1>
-        <p id="status">Generating your document...</p>
+        <p id="status">Generating your Internship Report...</p>
         <div id="loader" class="loader"></div>
         
-        <div id="cvPreview" style="display:none;"></div>
+        <div id="reportPreview" style="display:none;"></div>
         
         <div id="final-actions" style="display:none; margin-top: 20px;">
-            <button onclick="downloadPDF()" class="btn">📥 Download Again</button>
-            <button onclick="location.href='https://internship-report-builder.netlify.app/'" class="btn" style="background: #28a745;">🏠 Back to Home</button>
+            <button onclick="downloadPDF()" class="btn">📥 Download Report Again</button>
+            <button onclick="location.href='https://internship-report-builder.netlify.app/'" class="btn" style="background: #28a745;">🏠 Create Another Report</button>
         </div>
     </div>
 
     <script>
         function downloadPDF() {
-            const el = document.getElementById('cvPreview');
-            const productType = localStorage.getItem('productType') || 'document';
-            const filename = productType === 'cv' ? 'Remmie_Komm_Hub_CV.pdf' : 'Remmie_Komm_Hub_Internship_Report.pdf';
+            const el = document.getElementById('reportPreview');
+            const filename = 'Remmie_Komm_Hub_Internship_Report.pdf';
             
             html2pdf().from(el).set({
                 margin: 0.5,
                 filename: filename,
                 html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
             }).save().then(() => {
                 document.getElementById('status').innerText = "Download Complete!";
                 document.getElementById('final-actions').style.display = "block";
@@ -85,21 +84,31 @@
         }
 
         window.onload = function() {
-            const data = JSON.parse(localStorage.getItem('campusCV_Data'));
-            const productType = localStorage.getItem('productType') || 'cv';
+            const data = JSON.parse(localStorage.getItem('internshipReportData'));
+            const reportHTML = localStorage.getItem('generatedReportHTML');
             
-            let productTitle = productType === 'cv' ? 'CV Builder' : 'Internship Report Builder';
-            document.getElementById('status').innerHTML = `Your ${productTitle} is ready!<br>Generating download...`;
+            document.getElementById('status').innerHTML = `Your Internship Report is ready!<br>Generating download...`;
             
-            if (data && data.html) {
-                document.getElementById('cvPreview').innerHTML = `<div style="font-family: 'Times New Roman', serif;">${data.html}</div>`;
+            if (data || reportHTML) {
+                const content = reportHTML || (data ? generateReportFromData(data) : '');
+                document.getElementById('reportPreview').innerHTML = `<div style="font-family: 'Times New Roman', serif; padding: 20px;">${content}</div>`;
                 setTimeout(downloadPDF, 1000);
             } else {
-                document.getElementById('status').innerText = "Document ready. Click download below.";
+                document.getElementById('status').innerText = "Report ready. Click download below.";
                 document.getElementById('loader').style.display = "none";
                 document.getElementById('final-actions').style.display = "block";
             }
         };
+        
+        function generateReportFromData(data) {
+            return `
+                <h1 style="text-align:center;">INTERNSHIP REPORT</h1>
+                <p style="text-align:center;">${data.studentName || 'Student Name'}</p>
+                <p style="text-align:center;">${data.university || 'University'}</p>
+                <hr>
+                <p>Thank you for using Remmie Komm Hub. Your complete internship report has been generated.</p>
+            `;
+        }
     </script>
 </body>
 </html>
