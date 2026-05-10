@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Remmie Komm Hub - Payment Success</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #0d2b3e, #1a4a6f);
+            color: white;
+        }
+        .panel {
+            max-width: 500px;
+            margin: auto;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            color: #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 { color: #28a745; }
+        .brand { 
+            color: #1a4a6f; 
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1a4a6f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .btn {
+            background: #1a4a6f;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: bold;
+        }
+        .btn:hover { background: #0d2b3e; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="panel">
+        <div class="brand">🔷 REMMIE KOMM HUB</div>
+        <h1>✔ Payment Successful!</h1>
+        <p id="status">Generating your document...</p>
+        <div id="loader" class="loader"></div>
+        
+        <div id="cvPreview" style="display:none;"></div>
+        
+        <div id="final-actions" style="display:none; margin-top: 20px;">
+            <button onclick="downloadPDF()" class="btn">📥 Download Again</button>
+            <button onclick="location.href='https://internship-report-builder.netlify.app/'" class="btn" style="background: #28a745;">🏠 Back to Home</button>
+        </div>
+    </div>
+
+    <script>
+        function downloadPDF() {
+            const el = document.getElementById('cvPreview');
+            const productType = localStorage.getItem('productType') || 'document';
+            const filename = productType === 'cv' ? 'Remmie_Komm_Hub_CV.pdf' : 'Remmie_Komm_Hub_Internship_Report.pdf';
+            
+            html2pdf().from(el).set({
+                margin: 0.5,
+                filename: filename,
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            }).save().then(() => {
+                document.getElementById('status').innerText = "Download Complete!";
+                document.getElementById('final-actions').style.display = "block";
+            });
+        }
+
+        window.onload = function() {
+            const data = JSON.parse(localStorage.getItem('campusCV_Data'));
+            const productType = localStorage.getItem('productType') || 'cv';
+            
+            let productTitle = productType === 'cv' ? 'CV Builder' : 'Internship Report Builder';
+            document.getElementById('status').innerHTML = `Your ${productTitle} is ready!<br>Generating download...`;
+            
+            if (data && data.html) {
+                document.getElementById('cvPreview').innerHTML = `<div style="font-family: 'Times New Roman', serif;">${data.html}</div>`;
+                setTimeout(downloadPDF, 1000);
+            } else {
+                document.getElementById('status').innerText = "Document ready. Click download below.";
+                document.getElementById('loader').style.display = "none";
+                document.getElementById('final-actions').style.display = "block";
+            }
+        };
+    </script>
+</body>
+</html>
