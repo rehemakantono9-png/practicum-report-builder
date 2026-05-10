@@ -848,4 +848,355 @@
             
             const recUniversity = document.getElementById('recUniversity').value || 'Recommendations to the university.';
             const recOrganization = document.getElementById('recOrganization').value || 'Recommendations to the organization.';
-            const recStudents = document.getElementById('recStudents').value ||
+            const recStudents = document.getElementById('recStudents').value || 'Recommendations to future students.';
+            
+            const currentDate = new Date().toLocaleDateString('en-GB');
+            
+            // Format dates
+            const formatDate = (dateStr) => {
+                if (!dateStr) return '';
+                const d = new Date(dateStr);
+                return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+            };
+            
+            const startFormatted = formatDate(startDate);
+            const endFormatted = formatDate(endDate);
+            
+            // Build Chapter 3 from logbook
+            let chapter3Content = '';
+            logbookEntries.forEach(entry => {
+                if (entry.date && entry.activity) {
+                    chapter3Content += `
+                        <div style="margin-bottom:1.5rem;">
+                            <h4>${entry.date}: ${escapeHtml(entry.activity)}</h4>
+                            <p>${escapeHtml(entry.description || 'No description provided.')}</p>
+                            ${entry.skills ? `<p><strong>Skills developed:</strong> ${escapeHtml(entry.skills)}</p>` : ''}
+                            ${entry.challenges ? `<p><strong>Challenges encountered:</strong> ${escapeHtml(entry.challenges)}</p>` : ''}
+                        </div>
+                    `;
+                }
+            });
+            
+            // Build staff table
+            let staffTable = '';
+            staffEntries.forEach(staff => {
+                if (staff.name) {
+                    staffTable += `
+                        <tr>
+                            <td style="border:1px solid #ccc; padding:6px;">${escapeHtml(staff.name)}</td>
+                            <td style="border:1px solid #ccc; padding:6px;">${escapeHtml(staff.position)}</td>
+                            <td style="border:1px solid #ccc; padding:6px;">${escapeHtml(staff.responsibilities)}</td>
+                        </tr>
+                    `;
+                }
+            });
+            
+            // Build theories
+            let theoriesContent = '';
+            theoryEntries.forEach(theory => {
+                if (theory.name) {
+                    theoriesContent += `
+                        <p><strong>${escapeHtml(theory.name)}:</strong> ${escapeHtml(theory.explanation)}</p>
+                    `;
+                }
+            });
+            
+            // Build appendices
+            let appendicesContent = '';
+            appendixEntries.forEach((app, idx) => {
+                if (app.title) {
+                    appendicesContent += `
+                        <div style="margin-bottom:1rem;">
+                            <h4>Appendix ${String.fromCharCode(65+idx)}: ${escapeHtml(app.title)}</h4>
+                            <p>${escapeHtml(app.description)}</p>
+                        </div>
+                    `;
+                }
+            });
+            
+            // Extract unique skills
+            const allSkills = [];
+            logbookEntries.forEach(entry => {
+                if (entry.skills) {
+                    entry.skills.split(',').forEach(s => {
+                        const skill = s.trim();
+                        if (skill && !allSkills.includes(skill)) allSkills.push(skill);
+                    });
+                }
+            });
+            const skillsFromLog = allSkills.join(', ');
+            
+            return `
+                <div style="font-family: 'Times New Roman', Georgia, serif; line-height: 1.5; max-width: 800px; margin: 0 auto;">
+                    
+                    <!-- TITLE PAGE -->
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <h1 style="text-transform: uppercase; font-size: 1.3rem;">${escapeHtml(university)}</h1>
+                        <h2 style="font-size: 1.1rem;">${escapeHtml(faculty)}</h2>
+                        <h3 style="font-size: 1rem; margin: 1rem 0;">FIELD ATTACHMENT/INTERNSHIP REPORT CARRIED OUT AT ${escapeHtml(orgName)}${branch ? ' - ' + escapeHtml(branch) : ''}</h3>
+                        <h1 style="font-size: 1.5rem; margin: 2rem 0; text-transform: uppercase;">${escapeHtml(studentName)}</h1>
+                        <p>${escapeHtml(studentId)}</p>
+                        <p style="margin-top: 2rem;">THE INTERNSHIP REPORT SUBMITTED TO THE DEPARTMENT OF ${escapeHtml(department)}, ${escapeHtml(faculty)} IN PARTIAL FULFILMENT OF THE REQUIREMENT FOR THE AWARD OF A ${escapeHtml(programme)} OF ${escapeHtml(university)}.</p>
+                        <p style="margin-top: 2rem;">${currentDate}</p>
+                    </div>
+                    
+                    <div style="page-break-before: avoid;">&nbsp;</div>
+                    
+                    <!-- DECLARATION -->
+                    <div style="margin-top: 2rem;">
+                        <h2 style="text-align: center; text-transform: uppercase;">DECLARATION</h2>
+                        <p>I ${escapeHtml(studentName)}, a student of ${escapeHtml(university)}, ${escapeHtml(faculty)}, declare that the information in this field attachment report is entirely a result of my effort and I have fully written this report based on the truth and cited all activities and duties that I undertook during my field attachment training for the period with ${escapeHtml(orgName)} and it has never been submitted to any institution of higher learning by anyone else.</p>
+                        <p style="margin-top: 2rem;">Signature: _________________ Date: _________________</p>
+                        <p>${escapeHtml(studentName)}</p>
+                    </div>
+                    
+                    <!-- APPROVAL -->
+                    <div style="margin-top: 2rem;">
+                        <h2 style="text-align: center; text-transform: uppercase;">APPROVAL</h2>
+                        <p>This is to certify that this internship report by ${escapeHtml(studentName)} has been submitted with my approval as the authorized and nominated supervisor.</p>
+                        <p style="margin-top: 1rem;">Signature: _________________ Date: _________________</p>
+                        <p><strong>${escapeHtml(academicSupervisor)}</strong><br>UNIVERSITY SUPERVISOR<br>${escapeHtml(faculty)}, ${escapeHtml(university)}</p>
+                        <p style="margin-top: 1rem;">Signature: _________________ Date: _________________</p>
+                        <p><strong>${escapeHtml(workSupervisor)}</strong><br>AGENCY SUPERVISOR<br>${escapeHtml(orgName)}</p>
+                    </div>
+                    
+                    <!-- DEDICATION -->
+                    <div style="margin-top: 2rem;">
+                        <h2 style="text-align: center; text-transform: uppercase;">DEDICATION</h2>
+                        <p>To produce a report of this kind requires a lot of guidance, encouragement and material. It also calls for determination cooperation and self-sacrifice. Therefore, this internship report is dedicated to my family members who have supported me and tirelessly inspired me to struggle up to this academic echelon.</p>
+                    </div>
+                    
+                    <!-- ACKNOWLEDGEMENT -->
+                    <div style="margin-top: 2rem;">
+                        <h2 style="text-align: center; text-transform: uppercase;">ACKNOWLEDGEMENT</h2>
+                        <p>First and foremost, I thank the Almighty God who enabled me to finish my fieldwork well without any disruption. Secondly, I extend my sincere gratitude to my lectures at the ${escapeHtml(faculty)} who have equipped me with academic knowledge and skills which has bestowed upon me great confidence to face the fieldwork challenges courageously. To the utmost, I appreciate my supervisors ${escapeHtml(academicSupervisor)} from the university, ${escapeHtml(workSupervisor)} and the entire Staff of ${escapeHtml(orgName)} for the relentless guidance, advice and for a very close supervision of my work which has helped me gain hands on experience. Finally, with at most humbleness, I extend special thanks to my family members for their support, not disregarding my colleagues that I worked with in the field since it was such a great experience as we shared and overcame several challenges together.</p>
+                    </div>
+                    
+                    <!-- CHAPTER 1 -->
+                    <div style="margin-top: 2rem;">
+                        <h2>CHAPTER ONE: GENERAL INTRODUCTION</h2>
+                        <h3>1.0 Introduction</h3>
+                        <p>This chapter presents the background to the internship exercise, objectives of the internship programme, background of the organisation and the activities of the organisation and its clients.</p>
+                        
+                        <h3>1.1 Background to the Internship Exercise</h3>
+                        <p>Internship is a practical course that enables the student to apply what he or she learnt in the class theoretically into practical part. The internship was undertaken at ${escapeHtml(orgName)} from ${startFormatted} to ${endFormatted}. The intention of the internship exercise was basically to introduce the student to a supervised training in order to apply theoretical knowledge into practical work in the working environment. It also intended to offer the student an opportunity to gain relevant work experience for career development purposes and also get familiar with the organisation environment and culture.</p>
+                        
+                        <h3>1.2 Objectives of the Internship Programme</h3>
+                        <ul>
+                            <li>To introduce the student to work in applied settings so that she becomes familiar with the organisation environment and culture.</li>
+                            <li>To offer student an opportunity to gain relevant work experience for career development purposes.</li>
+                            <li>To help the student gain understanding of the profession as practiced.</li>
+                        </ul>
+                        
+                        <h3>1.3 Background of the Organisation</h3>
+                        <p><strong>1.3.1 Name of the Agency</strong><br>${escapeHtml(orgName)}${branch ? ' - ' + escapeHtml(branch) : ''}</p>
+                        <p><strong>1.3.2 Address of the Agency</strong><br>${escapeHtml(orgAddress)}</p>
+                        <p><strong>1.3.3 History of the Organisation</strong><br>${escapeHtml(orgHistory)}</p>
+                        <p><strong>1.3.4 Vision</strong><br>${escapeHtml(orgVision)}</p>
+                        <p><strong>1.3.5 Mission</strong><br>${escapeHtml(orgMission)}</p>
+                        <p><strong>1.3.6 Core Values</strong><br>${escapeHtml(orgValues)}</p>
+                        <p><strong>1.3.7 Service Principles</strong><br>${escapeHtml(orgPrinciples)}</p>
+                        
+                        <h3>1.4 Activities of the Agency and its Clients</h3>
+                        <p>The agency engages in various activities including humanitarian services, community development, health promotion, and capacity building. The clients served include vulnerable populations, community members, youth, women, and persons with disabilities.</p>
+                    </div>
+                    
+                    <!-- CHAPTER 2 -->
+                    <div style="margin-top: 2rem;">
+                        <h2>CHAPTER TWO: MANAGEMENT OF THE INTERNSHIP EXERCISE</h2>
+                        <h3>2.0 Introduction</h3>
+                        <p>This chapter presents the department of attachment, responsibilities assigned to the student, names of officers worked with, and the role of the workplace supervisor.</p>
+                        
+                        <h3>2.1 Department of Attachment</h3>
+                        <p>The student was attached to the ${escapeHtml(deptName)}. This department is headed by ${escapeHtml(deptHead)}.</p>
+                        <p><strong>Role of the Department:</strong> ${escapeHtml(deptRole)}</p>
+                        
+                        <h3>2.2 Responsibilities Assigned to the Student</h3>
+                        <p>${chapter3Content || 'Various responsibilities were assigned and successfully executed during the internship period.'}</p>
+                        
+                        <h3>2.3 Agency Workers and Their Responsibilities</h3>
+                        ${staffTable ? `
+                        <table style="width:100%; border-collapse:collapse; margin:1rem 0;">
+                            <thead>
+                                <tr><th style="border:1px solid #ccc; padding:8px; background:#f0f0f0;">Name</th><th style="border:1px solid #ccc; padding:8px; background:#f0f0f0;">Position</th><th style="border:1px solid #ccc; padding:8px; background:#f0f0f0;">Responsibilities</th></tr>
+                            </thead>
+                            <tbody>${staffTable}</tbody>
+                        </table>
+                        ` : '<p>Staff members worked with during the internship.</p>'}
+                        
+                        <h3>2.4 Role of Agency Supervisor</h3>
+                        <p>${escapeHtml(supervisorRole)}</p>
+                    </div>
+                    
+                    <!-- CHAPTER 3 -->
+                    <div style="margin-top: 2rem;">
+                        <h2>CHAPTER THREE: PRESENTATION OF FINDINGS</h2>
+                        <h3>3.0 Introduction</h3>
+                        <p>This chapter presents the major lessons learnt, skills gained, relevance of theories learnt in class, personal contribution to the organisation, and problems encountered.</p>
+                        
+                        <h3>3.1 Knowledge Acquired</h3>
+                        <p>${escapeHtml(knowledgeGained)}</p>
+                        
+                        <h3>3.2 Skills Gained</h3>
+                        <p>During the internship, the student developed the following professional competencies: <strong>${escapeHtml(skillsGained || skillsFromLog)}</strong>.</p>
+                        
+                        <h3>3.3 Relevance of Theories Learnt in Class</h3>
+                        ${theoriesContent || '<p>The theoretical knowledge acquired in class was successfully applied to practical fieldwork situations, bridging the gap between academic learning and professional practice.</p>'}
+                        
+                        <h3>3.4 Personal Contribution to the Organization</h3>
+                        <p>${escapeHtml(personalContribution)}</p>
+                        
+                        <h3>3.5 Problems Encountered During Internship</h3>
+                        <p><strong>Within the Organisation:</strong> ${escapeHtml(internalChallenges)}</p>
+                        <p><strong>Outside the Organisation (With Clients/Community):</strong> ${escapeHtml(externalChallenges)}</p>
+                        <p><strong>Solutions and Coping Strategies:</strong> ${escapeHtml(challengeSolutions)}</p>
+                    </div>
+                    
+                    <!-- CHAPTER 4 -->
+                    <div style="margin-top: 2rem;">
+                        <h2>CHAPTER FOUR: CONCLUSION AND RECOMMENDATIONS</h2>
+                        <h3>4.1 Summary of Findings</h3>
+                        <p>The internship training at ${escapeHtml(orgName)} provided valuable practical exposure and professional development. The student successfully applied theoretical knowledge, developed relevant skills, and contributed meaningfully to the organization's activities. Despite various challenges encountered, the overall learning objectives were achieved.</p>
+                        
+                        <h3>4.2 Conclusion</h3>
+                        <p>It can be concluded that working with ${escapeHtml(orgName)} has been a valuable experience for the student. The organization provided a conducive atmosphere that enabled the acquisition of relevant knowledge and skills. The practical exposure gained will significantly benefit the student's future career development.</p>
+                        
+                        <h3>4.3 Recommendations</h3>
+                        <p><strong>To ${escapeHtml(university)}:</strong> ${escapeHtml(recUniversity)}</p>
+                        <p><strong>To ${escapeHtml(orgName)}:</strong> ${escapeHtml(recOrganization)}</p>
+                        <p><strong>To Future Students:</strong> ${escapeHtml(recStudents)}</p>
+                    </div>
+                    
+                    <!-- REFERENCES -->
+                    <div style="margin-top: 2rem;">
+                        <h2>REFERENCES</h2>
+                        <p>${escapeHtml(university)} Internship Guidelines Handbook (${new Date().getFullYear()})</p>
+                        <p>${escapeHtml(orgName)} Organization Policies and Procedures Manual</p>
+                        <p>Library research, interviews, and organizational documents</p>
+                    </div>
+                    
+                    <!-- APPENDICES -->
+                    ${appendicesContent ? `
+                    <div style="margin-top: 2rem;">
+                        <h2>APPENDICES</h2>
+                        ${appendicesContent}
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Export functions
+        function exportToPDF() {
+            if (!isPremium) {
+                showModal();
+                showAlert('Export to PDF is a premium feature', 'warning');
+                return;
+            }
+            if (!generatedReport) {
+                showAlert('Please generate the report first (Step 10)', 'warning');
+                return;
+            }
+            const element = document.getElementById('reportContent');
+            const studentName = document.getElementById('studentName').value || 'Student';
+            html2pdf().from(element).set({
+                margin: 0.5,
+                filename: `Internship_Report_${studentName}.pdf`,
+                html2canvas: { scale: 2, letterRendering: true },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            }).save().then(() => {
+                showAlert('PDF downloaded successfully!', 'success');
+            });
+        }
+
+        // Payment
+        function initPesapalPayment() {
+            const email = document.getElementById('studentName')?.value || 'student@example.com';
+            const name = document.getElementById('studentName')?.value || 'Student';
+            showAlert('Connecting to Remmie Komm Hub payment gateway...', 'info');
+            if (confirm('Demo: Click OK to simulate successful payment and unlock premium')) {
+                localStorage.setItem('premiumUnlocked', 'true');
+                localStorage.removeItem('trialEnds');
+                isPremium = true;
+                updatePremiumUI();
+                closeModal();
+                showAlert('Premium unlocked! (Demo mode)', 'success');
+            }
+        }
+
+        // Helpers
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert';
+            if (type === 'warning') alertDiv.classList.add('warning');
+            alertDiv.innerText = message;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 3000);
+        }
+
+        function showModal() {
+            document.getElementById('premiumModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('premiumModal').classList.remove('active');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        // Event listeners
+        document.getElementById('generateReportBtn').onclick = generateReport;
+        document.getElementById('exportPDFBtn').onclick = exportToPDF;
+        document.getElementById('upgradeBtn').onclick = showModal;
+        document.getElementById('payWithPesapalBtn').onclick = initPesapalPayment;
+        document.getElementById('startTrialBtn').onclick = startFreeTrial;
+        document.getElementById('closeModalBtn').onclick = closeModal;
+
+        // Auto-save on inputs
+        const allInputs = document.querySelectorAll('input, select, textarea');
+        allInputs.forEach(el => {
+            if (el.id && el.id !== '') {
+                el.onchange = () => saveData();
+            }
+        });
+
+        // Initialize
+        loadData();
+        
+        // Load html2pdf
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+        document.head.appendChild(script);
+        
+        // Make functions global
+        window.nextStep = nextStep;
+        window.prevStep = prevStep;
+        window.addStaff = addStaff;
+        window.updateStaff = updateStaff;
+        window.removeStaff = removeStaff;
+        window.addLogEntry = addLogEntry;
+        window.updateLogEntry = updateLogEntry;
+        window.removeLogEntry = removeLogEntry;
+        window.addTheory = addTheory;
+        window.updateTheory = updateTheory;
+        window.removeTheory = removeTheory;
+        window.addAppendix = addAppendix;
+        window.updateAppendix = updateAppendix;
+        window.removeAppendix = removeAppendix;
+        window.startFreeTrial = startFreeTrial;
+        window.initPesapalPayment = initPesapalPayment;
+        window.closeModal = closeModal;
+        window.showModal = showModal;
+        window.exportToPDF = exportToPDF;
+        window.generateReport = generateReport;
+    </script>
+</body>
+</html>
