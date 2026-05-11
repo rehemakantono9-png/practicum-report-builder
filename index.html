@@ -3,583 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Remmie Komm Hub - Professional Internship Report Builder</title>
+    <title>Remmie Komm Hub - Premium Internship Report Builder</title>
     <style>
-        /* ========================================
-           PREMIUM STYLES - UNIVERSITY STANDARD
-        ======================================== */
-        
-        /* Base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Times New Roman', Georgia, serif;
-            background: #e8e8e8;
-            color: #1a1a1a;
-            line-height: 1.5;
-        }
-        
-        /* App Header (not part of report) */
-        .app-header {
-            background: linear-gradient(135deg, #0d2b3e, #1a4a6f);
-            color: white;
-            padding: 1rem 2rem;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .app-header h1 {
-            font-size: 1.3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        
-        .premium-badge {
-            background: #ffc107;
-            color: #1a2a3a;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
-        
-        .upgrade-btn {
-            background: #ffc107;
-            color: #1a2a3a;
-            border: none;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.7rem;
-        }
-        
-        .progress-container {
-            max-width: 800px;
-            margin: 0.5rem auto 0;
-            background: rgba(255,255,255,0.3);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 6px;
-            background: #ffc107;
-            width: 0%;
-            transition: width 0.3s;
-        }
-        
-        .step-indicator {
-            text-align: center;
-            font-size: 0.7rem;
-            margin-top: 0.3rem;
-        }
-        
-        /* Main Layout */
-        .container {
-            max-width: 1400px;
-            margin: 1.5rem auto;
-            padding: 0 1.5rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-        
-        @media (max-width: 900px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* Form Cards */
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .card h2 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid #1a4a6f;
-            padding-left: 0.8rem;
-        }
-        
-        label {
-            display: block;
-            font-weight: 600;
-            font-size: 0.8rem;
-            margin: 0.8rem 0 0.3rem;
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 0.6rem;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 0.9rem;
-        }
-        
-        /* Buttons */
-        .btn {
-            background: #1a4a6f;
-            color: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.2s;
-        }
-        
-        .btn:hover {
-            background: #0d2b3e;
-        }
-        
-        .btn-premium {
-            background: linear-gradient(135deg, #ffc107, #ff9800);
-            color: #1a2a3a;
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #1a4a6f;
-            color: #1a4a6f;
-        }
-        
-        .btn-outline:hover {
-            background: #1a4a6f;
-            color: white;
-        }
-        
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
-            gap: 0.5rem;
-        }
-        
-        .add-btn {
-            background: #28a745;
-            color: white;
-            width: 100%;
-            margin-top: 0.5rem;
-            border: none;
-            padding: 0.6rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .remove-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 0.3rem 0.6rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.7rem;
-            margin-top: 0.5rem;
-        }
-        
-        .entry-card {
-            background: #f9f9f9;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        /* Step Navigation */
-        .step {
-            display: none;
-        }
-        
-        .step.active {
-            display: block;
-        }
-        
-        /* Report Preview (Premium Styling) */
-        .report-preview {
-            background: white;
-            padding: 0;
-            max-height: 85vh;
-            overflow-y: auto;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        /* Premium Print Styles - University Standard */
-        .premium-report {
-            font-family: 'Times New Roman', Georgia, serif;
-            font-size: 12pt;
-            line-height: 1.5;
-            color: #000000;
-            max-width: 100%;
-            margin: 0 auto;
-        }
-        
-        /* Page setup for print/PDF */
-        @media print {
-            .app-header, .btn, .button-group, .modal, .add-btn, .remove-btn {
-                display: none !important;
-            }
-            .premium-report {
-                margin: 0;
-                padding: 0;
-            }
-            .page-break {
-                page-break-before: always;
-            }
-            body {
-                background: white;
-            }
-            .container {
-                display: block;
-                padding: 0;
-            }
-            .report-preview {
-                box-shadow: none;
-                padding: 0;
-            }
-        }
-        
-        /* Page break for chapters */
-        .page-break {
-            page-break-before: always;
-        }
-        
-        /* Professional Title Page */
-        .title-page {
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            height: 100%;
-        }
-        
-        .title-page .uni-name {
-            font-size: 18pt;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-top: 60px;
-            letter-spacing: 1px;
-        }
-        
-        .title-page .faculty-name {
-            font-size: 14pt;
-            margin-top: 10px;
-        }
-        
-        .title-page .logo-placeholder {
-            width: 80px;
-            height: 80px;
-            border: 2px solid #1a4a6f;
-            border-radius: 50%;
-            margin: 30px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            background: #f0f0f0;
-        }
-        
-        .title-page .report-title {
-            font-size: 24pt;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin: 40px 0;
-            letter-spacing: 2px;
-        }
-        
-        .title-page .student-name {
-            font-size: 16pt;
-            font-weight: bold;
-            margin-top: 50px;
-        }
-        
-        .title-page .student-id {
-            font-size: 12pt;
-            margin-top: 5px;
-        }
-        
-        .title-page .submission-info {
-            margin-top: 50px;
-            font-size: 11pt;
-        }
-        
-        .title-page .date {
-            margin-top: 40px;
-            font-size: 11pt;
-        }
-        
-        /* Front Matter (Roman numerals) */
-        .front-matter {
-            margin-top: 30px;
-        }
-        
-        .front-matter h2 {
-            font-size: 14pt;
-            font-weight: bold;
-            text-align: center;
-            text-transform: uppercase;
-            margin: 30px 0 20px;
-        }
-        
-        /* Declaration, Approval, Dedication, Acknowledgement */
-        .declaration-box, .approval-box, .dedication-box, .acknowledgement-box {
-            margin: 40px 0;
-            line-height: 1.8;
-        }
-        
-        .signature-line {
-            margin-top: 40px;
-        }
-        
-        /* Table of Contents */
-        .toc {
-            margin: 30px 0;
-        }
-        
-        .toc h2 {
-            text-align: center;
-            text-transform: uppercase;
-            margin-bottom: 30px;
-        }
-        
-        .toc-item {
-            display: flex;
-            justify-content: space-between;
-            margin: 8px 0;
-            font-size: 12pt;
-        }
-        
-        .toc-dots {
-            flex: 1;
-            border-bottom: 1px dotted #333;
-            margin: 0 10px;
-            height: 1em;
-        }
-        
-        /* List of Abbreviations */
-        .abbreviations {
-            margin: 30px 0;
-        }
-        
-        .abbreviations h2 {
-            text-align: center;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-        
-        .abbrev-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .abbrev-table td {
-            padding: 6px 10px;
-            border: none;
-        }
-        
-        .abbrev-table td:first-child {
-            font-weight: bold;
-            width: 30%;
-        }
-        
-        /* Abstract */
-        .abstract {
-            margin: 30px 0;
-        }
-        
-        .abstract h2 {
-            text-align: center;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-        
-        .abstract p {
-            text-align: justify;
-            line-height: 1.6;
-        }
-        
-        /* Chapters */
-        .chapter {
-            margin: 40px 0;
-        }
-        
-        .chapter h2 {
-            font-size: 14pt;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-align: center;
-            margin: 30px 0 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #1a4a6f;
-        }
-        
-        .chapter h3 {
-            font-size: 13pt;
-            font-weight: bold;
-            margin: 20px 0 10px;
-        }
-        
-        .chapter h4 {
-            font-size: 12pt;
-            font-weight: bold;
-            margin: 15px 0 8px;
-        }
-        
-        .chapter p {
-            text-align: justify;
-            margin-bottom: 10px;
-        }
-        
-        .chapter ul, .chapter ol {
-            margin: 10px 0 10px 30px;
-        }
-        
-        .chapter li {
-            margin: 5px 0;
-        }
-        
-        /* Activities section */
-        .activity-entry {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .activity-date {
-            font-weight: bold;
-            color: #1a4a6f;
-            margin-bottom: 8px;
-        }
-        
-        /* Tables */
-        .premium-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 11pt;
-        }
-        
-        .premium-table th {
-            background: #1a4a6f;
-            color: white;
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        
-        .premium-table td {
-            padding: 8px 10px;
-            border: 1px solid #ddd;
-        }
-        
-        .premium-table tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-        
-        /* References */
-        .references {
-            margin: 30px 0;
-        }
-        
-        .references h2 {
-            text-align: center;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-        
-        .references p {
-            margin: 8px 0;
-            text-indent: -36px;
-            padding-left: 36px;
-        }
-        
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            max-width: 450px;
-            width: 90%;
-            text-align: center;
-        }
-        
-        .helper-text {
-            font-size: 0.75rem;
-            color: #666;
-            margin: 0.5rem 0;
-            font-style: italic;
-        }
-        
-        .test-mode-container {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            background: rgba(255,255,255,0.2);
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            margin-left: 0.5rem;
-        }
-        
-        .test-mode-container input {
-            width: auto;
-            margin: 0;
-        }
-        
-        .alert {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #28a745;
-            color: white;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            animation: fadeOut 3s forwards;
-            z-index: 1000;
-        }
-        
-        @keyframes fadeOut {
-            0% { opacity: 1; }
-            70% { opacity: 1; }
-            100% { opacity: 0; visibility: hidden; }
-        }
-        
-        .warning {
-            background: #ffc107;
-            color: #1a2a3a;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Times New Roman', Georgia, serif; background: #e8e8e8; color: #1a1a1a; line-height: 1.5; }
+        .app-header { background: linear-gradient(135deg, #0d2b3e, #1a4a6f); color: white; padding: 1rem 2rem; font-family: 'Segoe UI', Arial, sans-serif; position: sticky; top: 0; z-index: 100; }
+        .app-header h1 { font-size: 1.3rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+        .premium-badge { background: #ffc107; color: #1a2a3a; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.7rem; font-weight: bold; }
+        .upgrade-btn { background: #ffc107; color: #1a2a3a; border: none; padding: 0.3rem 0.8rem; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.7rem; }
+        .progress-container { max-width: 800px; margin: 0.5rem auto 0; background: rgba(255,255,255,0.3); border-radius: 10px; overflow: hidden; }
+        .progress-bar { height: 6px; background: #ffc107; width: 0%; transition: width 0.3s; }
+        .step-indicator { text-align: center; font-size: 0.7rem; margin-top: 0.3rem; }
+        .container { max-width: 1400px; margin: 1.5rem auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        @media (max-width: 900px) { .container { grid-template-columns: 1fr; } }
+        .card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .card h2 { font-size: 1.2rem; margin-bottom: 1rem; border-left: 4px solid #1a4a6f; padding-left: 0.8rem; }
+        label { display: block; font-weight: 600; font-size: 0.8rem; margin: 0.8rem 0 0.3rem; }
+        input, select, textarea { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; font-size: 0.9rem; }
+        .btn { background: #1a4a6f; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s; }
+        .btn:hover { background: #0d2b3e; }
+        .btn-premium { background: linear-gradient(135deg, #ffc107, #ff9800); color: #1a2a3a; }
+        .btn-outline { background: transparent; border: 2px solid #1a4a6f; color: #1a4a6f; }
+        .btn-outline:hover { background: #1a4a6f; color: white; }
+        .button-group { display: flex; justify-content: space-between; margin-top: 1rem; gap: 0.5rem; }
+        .add-btn { background: #28a745; color: white; width: 100%; margin-top: 0.5rem; border: none; padding: 0.6rem; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .remove-btn { background: #dc3545; color: white; border: none; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer; font-size: 0.7rem; margin-top: 0.5rem; }
+        .entry-card { background: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+        .step { display: none; }
+        .step.active { display: block; }
+        .report-preview { background: white; padding: 0; max-height: 85vh; overflow-y: auto; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .premium-report { font-family: 'Times New Roman', Georgia, serif; font-size: 12pt; line-height: 1.5; color: #000000; max-width: 100%; margin: 0 auto; }
+        @media print { .app-header, .btn, .button-group, .modal, .add-btn, .remove-btn { display: none !important; } .premium-report { margin: 0; padding: 0; } .page-break { page-break-before: always; } body { background: white; } .container { display: block; padding: 0; } .report-preview { box-shadow: none; padding: 0; } }
+        .page-break { page-break-before: always; }
+        .title-page { text-align: center; margin: 0; padding: 0; }
+        .title-page .uni-name { font-size: 18pt; font-weight: bold; text-transform: uppercase; margin-top: 60px; }
+        .title-page .faculty-name { font-size: 14pt; margin-top: 10px; }
+        .title-page .logo-placeholder { width: 80px; height: 80px; border: 2px solid #1a4a6f; border-radius: 50%; margin: 30px auto; display: flex; align-items: center; justify-content: center; font-size: 24px; background: #f0f0f0; }
+        .title-page .report-title { font-size: 24pt; font-weight: bold; text-transform: uppercase; margin: 40px 0; }
+        .title-page .student-name { font-size: 16pt; font-weight: bold; margin-top: 50px; }
+        .title-page .student-id { font-size: 12pt; margin-top: 5px; }
+        .title-page .submission-info { margin-top: 50px; font-size: 11pt; }
+        .title-page .date { margin-top: 40px; font-size: 11pt; }
+        .front-matter { margin-top: 30px; }
+        .front-matter h2 { font-size: 14pt; font-weight: bold; text-align: center; text-transform: uppercase; margin: 30px 0 20px; }
+        .declaration-box, .approval-box, .dedication-box, .acknowledgement-box { margin: 40px 0; line-height: 1.8; }
+        .signature-line { margin-top: 40px; }
+        .toc { margin: 30px 0; }
+        .toc h2 { text-align: center; text-transform: uppercase; margin-bottom: 30px; }
+        .toc-item { display: flex; justify-content: space-between; margin: 8px 0; font-size: 12pt; }
+        .toc-dots { flex: 1; border-bottom: 1px dotted #333; margin: 0 10px; height: 1em; }
+        .abbreviations { margin: 30px 0; }
+        .abbreviations h2 { text-align: center; text-transform: uppercase; margin-bottom: 20px; }
+        .abbrev-table { width: 100%; border-collapse: collapse; }
+        .abbrev-table td { padding: 6px 10px; border: none; }
+        .abbrev-table td:first-child { font-weight: bold; width: 30%; }
+        .abstract { margin: 30px 0; }
+        .abstract h2 { text-align: center; text-transform: uppercase; margin-bottom: 20px; }
+        .abstract p { text-align: justify; line-height: 1.6; }
+        .chapter { margin: 40px 0; }
+        .chapter h2 { font-size: 14pt; font-weight: bold; text-transform: uppercase; text-align: center; margin: 30px 0 20px; padding-bottom: 10px; border-bottom: 2px solid #1a4a6f; }
+        .chapter h3 { font-size: 13pt; font-weight: bold; margin: 20px 0 10px; }
+        .chapter h4 { font-size: 12pt; font-weight: bold; margin: 15px 0 8px; }
+        .chapter p { text-align: justify; margin-bottom: 10px; }
+        .chapter ul, .chapter ol { margin: 10px 0 10px 30px; }
+        .activity-entry { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .activity-date { font-weight: bold; color: #1a4a6f; margin-bottom: 8px; }
+        .premium-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 11pt; }
+        .premium-table th { background: #1a4a6f; color: white; padding: 10px; text-align: left; border: 1px solid #ddd; }
+        .premium-table td { padding: 8px 10px; border: 1px solid #ddd; }
+        .premium-table tr:nth-child(even) { background: #f9f9f9; }
+        .references { margin: 30px 0; }
+        .references h2 { text-align: center; text-transform: uppercase; margin-bottom: 20px; }
+        .references p { margin: 8px 0; text-indent: -36px; padding-left: 36px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; padding: 1.5rem; border-radius: 12px; max-width: 450px; width: 90%; text-align: center; }
+        .helper-text { font-size: 0.75rem; color: #666; margin: 0.5rem 0; font-style: italic; }
+        .test-mode-container { display: inline-flex; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.2); padding: 0.2rem 0.6rem; border-radius: 20px; margin-left: 0.5rem; }
+        .test-mode-container input { width: auto; margin: 0; }
+        .alert { position: fixed; bottom: 20px; right: 20px; background: #28a745; color: white; padding: 0.6rem 1.2rem; border-radius: 8px; animation: fadeOut 3s forwards; z-index: 1000; }
+        @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+        .warning { background: #ffc107; color: #1a2a3a; }
     </style>
 </head>
 <body>
@@ -587,187 +91,117 @@
         <h1>
             <span>🔷 Remmie Komm Hub - Premium Internship Report Builder</span>
             <div style="display: flex; gap: 0.5rem; align-items: center;">
-                <label class="test-mode-container">
-                    <input type="checkbox" id="testModeCheckbox"> 🧪 Test Mode
-                </label>
+                <label class="test-mode-container"><input type="checkbox" id="testModeCheckbox"> 🧪 Test Mode</label>
                 <span id="premiumStatus" class="premium-badge">⭐ Free Trial</span>
                 <button id="upgradeBtn" class="upgrade-btn">Upgrade</button>
             </div>
         </h1>
         <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
-        <div class="step-indicator" id="stepIndicator">Step 1 of 8</div>
+        <div class="step-indicator" id="stepIndicator">Step 1 of 7</div>
     </div>
 
     <div class="container">
         <div class="left-panel">
-            <!-- STEP 1: Basic Information -->
             <div id="step1" class="step active">
                 <div class="card">
                     <h2>📋 Basic Information</h2>
-                    <label>Full Name</label>
-                    <input type="text" id="studentName" placeholder="e.g., Nantabo Najuwa Mwenyi">
-                    <label>Registration Number</label>
-                    <input type="text" id="studentId" placeholder="e.g., 125-043061-40922">
-                    <label>University</label>
-                    <input type="text" id="university" placeholder="e.g., Islamic University in Uganda" value="Islamic University in Uganda">
-                    <label>Faculty</label>
-                    <input type="text" id="faculty" placeholder="e.g., Arts and Social Sciences">
-                    <label>Department</label>
-                    <input type="text" id="department" placeholder="e.g., Mass Communication">
-                    <label>Programme</label>
-                    <input type="text" id="programme" placeholder="e.g., Bachelor of Mass Communication">
-                    <label>Academic Supervisor</label>
-                    <input type="text" id="academicSupervisor" placeholder="e.g., Dr. John Mukasa">
-                    <label>Abstract (brief summary of internship - 150-250 words)</label>
-                    <textarea id="abstractText" rows="4" placeholder="Summarize your internship: where you worked, key activities, main skills learned, challenges overcome, and overall experience..."></textarea>
-                    <label>Internship Start Date</label>
-                    <input type="date" id="startDate">
-                    <label>Internship End Date</label>
-                    <input type="date" id="endDate">
-                    <div class="button-group">
-                        <button class="btn" onclick="goToStep(2)">Next →</button>
-                    </div>
+                    <label>Full Name</label><input type="text" id="studentName" placeholder="e.g., Nantabo Najuwa Mwenyi">
+                    <label>Registration Number</label><input type="text" id="studentId" placeholder="e.g., 125-043061-40922">
+                    <label>University</label><input type="text" id="university" placeholder="Islamic University in Uganda" value="Islamic University in Uganda">
+                    <label>Faculty</label><input type="text" id="faculty" placeholder="e.g., Arts and Social Sciences">
+                    <label>Department</label><input type="text" id="department" placeholder="e.g., Mass Communication">
+                    <label>Programme</label><input type="text" id="programme" placeholder="e.g., Bachelor of Mass Communication">
+                    <label>Academic Supervisor</label><input type="text" id="academicSupervisor" placeholder="e.g., Dr. John Mukasa">
+                    <label>Abstract (brief summary - 150-250 words)</label>
+                    <textarea id="abstractText" rows="4" placeholder="Summarize your internship..."></textarea>
+                    <label>Start Date</label><input type="date" id="startDate">
+                    <label>End Date</label><input type="date" id="endDate">
+                    <div class="button-group"><button class="btn" id="next1">Next →</button></div>
                 </div>
             </div>
 
-            <!-- STEP 2: Organization Information -->
             <div id="step2" class="step">
                 <div class="card">
                     <h2>🏢 Organization Information</h2>
-                    <label>Organization Name</label>
-                    <input type="text" id="orgName" placeholder="e.g., Daily Monitor, IUIU FM">
+                    <label>Organization Name</label><input type="text" id="orgName" placeholder="e.g., Daily Monitor">
                     <label>Organization Type</label>
-                    <select id="orgType">
-                        <option value="">Select type</option>
-                        <option value="media">Media/Radio/TV/Newspaper</option>
-                        <option value="education">School/Education Institution</option>
-                        <option value="healthcare">Hospital/Healthcare</option>
-                        <option value="legal">Law Firm/Legal Chambers</option>
-                        <option value="business">Business/Corporate</option>
-                        <option value="it">IT/Tech Company</option>
-                        <option value="agriculture">Agriculture/Farm</option>
-                        <option value="ngo">NGO/Non-Profit</option>
-                        <option value="govt">Government Agency</option>
-                    </select>
-                    <label>Organization Address</label>
-                    <input type="text" id="orgAddress" placeholder="e.g., Kampala, Uganda">
-                    <label>Workplace Supervisor Name</label>
-                    <input type="text" id="workSupervisor" placeholder="e.g., Mr. Kabigi Rashid">
-                    <label>Supervisor Position</label>
-                    <input type="text" id="supervisorPosition" placeholder="e.g., News Editor">
-                    <label>Brief History of Organization</label>
-                    <textarea id="orgHistory" rows="3" placeholder="Describe the organization's history..."></textarea>
-                    <label>Vision Statement</label>
-                    <input type="text" id="orgVision" placeholder="e.g., To be the leading media house">
-                    <label>Mission Statement</label>
-                    <input type="text" id="orgMission" placeholder="e.g., To inform, educate, and entertain">
-                    <label>Core Values</label>
-                    <input type="text" id="orgValues" placeholder="e.g., Integrity, Professionalism, Accuracy">
-                    <div class="button-group">
-                        <button class="btn" onclick="goToStep(1)">← Back</button>
-                        <button class="btn" onclick="goToStep(3)">Next →</button>
-                    </div>
+                    <select id="orgType"><option value="">Select type</option><option value="media">Media/Radio/TV</option><option value="education">School/Education</option><option value="healthcare">Hospital</option><option value="legal">Law Firm</option><option value="business">Business</option><option value="it">IT/Tech</option></select>
+                    <label>Organization Address</label><input type="text" id="orgAddress" placeholder="Kampala, Uganda">
+                    <label>Workplace Supervisor</label><input type="text" id="workSupervisor" placeholder="Mr. Kabigi Rashid">
+                    <label>Supervisor Position</label><input type="text" id="supervisorPosition" placeholder="News Editor">
+                    <label>History of Organization</label><textarea id="orgHistory" rows="3"></textarea>
+                    <label>Vision</label><input type="text" id="orgVision">
+                    <label>Mission</label><input type="text" id="orgMission">
+                    <label>Core Values</label><input type="text" id="orgValues">
+                    <div class="button-group"><button class="btn" id="prev2">← Back</button><button class="btn" id="next2">Next →</button></div>
                 </div>
             </div>
 
-            <!-- STEP 3: Department & Staff -->
             <div id="step3" class="step">
                 <div class="card">
                     <h2>👥 Department & Staff</h2>
-                    <label>Department of Attachment</label>
-                    <input type="text" id="deptName" placeholder="e.g., News Department">
-                    <label>Department Head</label>
-                    <input type="text" id="deptHead" placeholder="e.g., Mr. Kabigi Rashid">
-                    <label>Role of the Department</label>
-                    <textarea id="deptRole" rows="2" placeholder="What does this department do?"></textarea>
-                    <label>Role of Your Workplace Supervisor</label>
-                    <textarea id="supervisorRole" rows="2" placeholder="How did your supervisor guide you?"></textarea>
-                    <h3>Staff You Worked With</h3>
+                    <label>Department of Attachment</label><input type="text" id="deptName">
+                    <label>Department Head</label><input type="text" id="deptHead">
+                    <label>Department Role</label><textarea id="deptRole" rows="2"></textarea>
+                    <label>Supervisor Role</label><textarea id="supervisorRole" rows="2"></textarea>
+                    <h3>Staff Worked With</h3>
                     <div id="staffList"></div>
-                    <button class="add-btn" onclick="addStaffField()">+ Add Staff Member</button>
-                    <div class="button-group">
-                        <button class="btn" onclick="goToStep(2)">← Back</button>
-                        <button class="btn" onclick="goToStep(4)">Next →</button>
-                    </div>
+                    <button class="add-btn" id="addStaffBtn">+ Add Staff Member</button>
+                    <div class="button-group"><button class="btn" id="prev3">← Back</button><button class="btn" id="next3">Next →</button></div>
                 </div>
             </div>
 
-            <!-- STEP 4: Daily Activities -->
             <div id="step4" class="step">
                 <div class="card">
-                    <h2>📓 Daily Activities Logbook</h2>
-                    <p class="helper-text">Describe what you did. Write in your own words - AI will professionalize it.</p>
+                    <h2>📓 Daily Activities</h2>
+                    <p class="helper-text">Describe what you did. Write in your own words.</p>
                     <div id="logbookList"></div>
-                    <button class="add-btn" onclick="addLogEntryField()">+ Add Activity</button>
-                    <div class="button-group">
-                        <button class="btn" onclick="goToStep(3)">← Back</button>
-                        <button class="btn" onclick="goToStep(5)">Next →</button>
-                    </div>
+                    <button class="add-btn" id="addLogBtn">+ Add Activity</button>
+                    <div class="button-group"><button class="btn" id="prev4">← Back</button><button class="btn" id="next4">Next →</button></div>
                 </div>
             </div>
 
-            <!-- STEP 5: Skills, Theories & Contributions -->
             <div id="step5" class="step">
                 <div class="card">
                     <h2>💪 Skills, Theories & Contributions</h2>
-                    <label>Knowledge Gained (What did you learn?)</label>
-                    <textarea id="knowledgeGained" rows="3" placeholder="Describe the knowledge you acquired..."></textarea>
-                    <label>Skills Developed (comma separated)</label>
-                    <input type="text" id="skillsGained" placeholder="e.g., News writing, Interviewing, Editing">
-                    <label>Abbreviations/Acronyms Used (e.g., AI - Artificial Intelligence)</label>
+                    <label>Knowledge Gained</label><textarea id="knowledgeGained" rows="3"></textarea>
+                    <label>Skills Developed</label><input type="text" id="skillsGained">
+                    <h3>Abbreviations</h3>
                     <div id="abbreviationsList"></div>
-                    <button class="add-btn" onclick="addAbbreviationField()">+ Add Abbreviation</button>
-                    <label>Theories from Class That Applied</label>
+                    <button class="add-btn" id="addAbbrevBtn">+ Add Abbreviation</button>
+                    <h3>Theories Applied</h3>
                     <div id="theoriesList"></div>
-                    <button class="add-btn" onclick="addTheoryField()">+ Add Theory</button>
-                    <label>Your Personal Contribution to the Organization</label>
-                    <textarea id="personalContribution" rows="2" placeholder="How did you help the organization?"></textarea>
-                    <div class="button-group">
-                        <button class="btn" onclick="goToStep(4)">← Back</button>
-                        <button class="btn" onclick="goToStep(6)">Next →</button>
-                    </div>
+                    <button class="add-btn" id="addTheoryBtn">+ Add Theory</button>
+                    <label>Your Contribution</label><textarea id="personalContribution" rows="2"></textarea>
+                    <div class="button-group"><button class="btn" id="prev5">← Back</button><button class="btn" id="next5">Next →</button></div>
                 </div>
             </div>
 
-            <!-- STEP 6: Challenges & Recommendations -->
             <div id="step6" class="step">
                 <div class="card">
                     <h2>⚠️ Challenges & Recommendations</h2>
-                    <label>Challenges Faced & How You Overcame Them</label>
-                    <textarea id="challengeSolutions" rows="4" placeholder="Describe the challenges (internal and external) and your solutions..."></textarea>
-                    <label>Recommendations to Your University</label>
-                    <textarea id="recUniversity" rows="2" placeholder="What should your university improve?"></textarea>
-                    <label>Recommendations to the Host Organization</label>
-                    <textarea id="recOrganization" rows="2" placeholder="What should the organization improve?"></textarea>
-                    <label>Recommendations to Future Students</label>
-                    <textarea id="recStudents" rows="2" placeholder="What advice would you give?"></textarea>
-                    <div class="button-group">
-                        <button class="btn" onclick="goToStep(5)">← Back</button>
-                        <button class="btn" onclick="goToStep(7)">Next →</button>
-                    </div>
+                    <label>Challenges & Solutions</label><textarea id="challengeSolutions" rows="4"></textarea>
+                    <label>Recommendations to University</label><textarea id="recUniversity" rows="2"></textarea>
+                    <label>Recommendations to Organization</label><textarea id="recOrganization" rows="2"></textarea>
+                    <label>Recommendations to Students</label><textarea id="recStudents" rows="2"></textarea>
+                    <div class="button-group"><button class="btn" id="prev6">← Back</button><button class="btn" id="next6">Next →</button></div>
                 </div>
             </div>
 
-            <!-- STEP 7: Generate Report -->
             <div id="step7" class="step">
                 <div class="card">
-                    <h2>🤖 Generate Your Premium Report</h2>
-                    <p class="helper-text">AI will transform your notes into a professionally formatted internship report ready for submission.</p>
-                    <button id="enhanceBtn" class="btn btn-outline" style="width:100%; margin-bottom:0.5rem;">🔧 Fix Grammar & Enhance All Content</button>
+                    <h2>🤖 Generate Premium Report</h2>
+                    <button id="enhanceBtn" class="btn btn-outline" style="width:100%; margin-bottom:0.5rem;">🔧 Fix Grammar & Enhance</button>
                     <button id="generateBtn" class="btn" style="width:100%; padding:0.8rem; background:#28a745;">✨ Generate Premium Report</button>
                     <div id="genStatus" style="margin-top:1rem;"></div>
-                    <div class="button-group">
-                        <button class="btn" onclick="goToStep(6)">← Back</button>
-                    </div>
+                    <div class="button-group"><button class="btn" id="prev7">← Back</button></div>
                 </div>
             </div>
         </div>
 
         <div class="right-panel">
             <div class="report-preview" id="reportPreview">
-                <div id="reportContent" class="premium-report">
-                    <p style="text-align:center; color:#999; padding:2rem;">Complete all steps and click "Generate Premium Report" to see your professionally formatted internship report here.</p>
-                </div>
+                <div id="reportContent" class="premium-report"><p style="text-align:center; color:#999; padding:2rem;">Complete all steps and click "Generate Premium Report" to see your professionally formatted internship report here.</p></div>
             </div>
             <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
                 <button id="exportBtn" class="btn" style="background:#dc3545;">📑 Export to PDF</button>
@@ -776,129 +210,31 @@
         </div>
     </div>
 
-    <div id="premiumModal" class="modal">
-        <div class="modal-content">
-            <h2>⭐ Upgrade to Premium - UGX 35,000</h2>
-            <p>One-time payment • Lifetime access</p>
-            <ul style="text-align:left; margin:1rem;">
-                <li>✅ Unlimited activities</li>
-                <li>✅ Premium formatted report</li>
-                <li>✅ Table of contents with page numbers</li>
-                <li>✅ Professional title page</li>
-                <li>✅ Export to PDF</li>
-                <li>✅ Grammar fix & enhancement</li>
-            </ul>
-            <button id="payModalBtn" class="btn" style="background:#28a745; width:100%;">Pay with Pesapal</button>
-            <button id="trialBtn" class="btn-outline" style="margin-top:0.5rem; width:100%;">Start 7-Day Free Trial</button>
-            <button id="closeModalBtn" style="margin-top:1rem; background:none; border:none; cursor:pointer;">Close</button>
-        </div>
-    </div>
+    <div id="premiumModal" class="modal"><div class="modal-content"><h2>⭐ Upgrade to Premium - UGX 35,000</h2><ul style="text-align:left; margin:1rem;"><li>✅ Unlimited activities</li><li>✅ Premium formatted report</li><li>✅ Table of contents with page numbers</li><li>✅ Professional title page</li><li>✅ Export to PDF</li></ul><button id="payModalBtn" class="btn" style="background:#28a745; width:100%;">Pay with Pesapal</button><button id="trialBtn" class="btn-outline" style="margin-top:0.5rem; width:100%;">Start 7-Day Trial</button><button id="closeModalBtn" style="margin-top:1rem; background:none; border:none; cursor:pointer;">Close</button></div></div>
 
     <script>
         // ========================================
-        // PREMIUM INTERNSHIP REPORT BUILDER
-        // Professional formatting, TOC, page numbers, etc.
+        // DATA STORAGE
         // ========================================
-
-        // Data storage
         let staffMembers = [];
         let logbookEntries = [];
         let theoryEntries = [];
         let abbreviationEntries = [];
-        let currentStepNum = 1;
+        let currentStep = 1;
         let isPremium = localStorage.getItem('premiumUnlocked') === 'true';
         let trialEnds = localStorage.getItem('trialEnds');
         let generatedHTML = '';
 
         // ========================================
-        // ENHANCED AUTO-CORRECT (100+ fixes)
+        // NAVIGATION - FIXED
         // ========================================
-        function enhanceText(text) {
-            if (!text || typeof text !== 'string') return text || '';
-            let t = text;
-            
-            // Basic grammar fixes
-            const fixes = {
-                // Common typos
-                /\bi\b/g: 'I',
-                /\bmy\s+self\b/gi: 'myself',
-                /\bwanna\b/gi: 'want to',
-                /\bgonna\b/gi: 'going to',
-                /\bthru\b/gi: 'through',
-                /\bcuz\b/gi: 'because',
-                /\bu\b/g: 'you',
-                /\bppl\b/gi: 'people',
-                /\bproeffsional\b/gi: 'professional',
-                /\bgrammer\b/gi: 'grammar',
-                /\bdiffucult\b/gi: 'difficult',
-                /\bsummerizing\b/gi: 'summarizing',
-                /\brecieving\b/gi: 'receiving',
-                /\bfeedbalc\b/gi: 'feedback',
-                /\bthoery\b/gi: 'theory',
-                /\btheories\s+applied\b/gi: 'Theories Applied',
-                /\bknowlege\b/gi: 'knowledge',
-                /\bachieved\b/gi: 'achieved',
-                /\bdefinately\b/gi: 'definitely',
-                /\boccured\b/gi: 'occurred',
-                /\bseperate\b/gi: 'separate',
-                /\bneccessary\b/gi: 'necessary',
-                /\bposession\b/gi: 'possession',
-                /\bdevelope\b/gi: 'develop',
-                /\bdevelopement\b/gi: 'development',
-                /\bgoverment\b/gi: 'government',
-                /\benviroment\b/gi: 'environment',
-                /\benvironmental\b/gi: 'environmental',
-                /\bcomunication\b/gi: 'communication',
-                /\borganisation\b/gi: 'organization',
-                /\bstandard\s+operating\s+procedures\b/gi: 'Standard Operating Procedures (SOPs)',
-                // Professional upgrades
-                /\bhelped\s+with\b/gi: 'supported',
-                /\bdid\s+work\b/gi: 'performed tasks',
-                /\blearned\s+how\s+to\b/gi: 'acquired competency in',
-                /\bwas\s+told\s+to\b/gi: 'was assigned to',
-                /\bhad\s+to\b/gi: 'was responsible for',
-                /\bgot\s+to\b/gi: 'had the opportunity to',
-                /\btaught\s+students\b/gi: 'delivered instruction to learners',
-                /\bwrote\s+stories\b/gi: 'authored news articles',
-                /\bfixed\s+computers\b/gi: 'performed technical troubleshooting',
-                /\banswered\s+phones\b/gi: 'managed incoming calls',
-                /\bmade\s+calls\b/gi: 'conducted phone communications',
-                /\bfiled\s+documents\b/gi: 'organized and archived documentation',
-                /\battended\s+meetings\b/gi: 'participated in meetings',
-                /\btook\s+notes\b/gi: 'documented key discussions',
-                /\bworked\s+with\b/gi: 'collaborated with',
-                /\breported\s+to\b/gi: 'was under the supervision of',
-            };
-            
-            for (const [pattern, replacement] of Object.entries(fixes)) {
-                t = t.replace(new RegExp(pattern, 'g'), replacement);
-            }
-            
-            // Fix "He intern" to "The intern"
-            t = t.replace(/\bHe\s+intern\b/gi, 'The intern');
-            t = t.replace(/\bshe\s+intern\b/gi, 'The intern');
-            
-            // Fix date errors
-            t = t.replace(/0026-/g, '2026-');
-            
-            // Capitalize first letter of sentences
-            t = t.replace(/([.!?])\s*([a-z])/g, (match, p1, p2) => p1 + ' ' + p2.toUpperCase());
-            t = t.charAt(0).toUpperCase() + t.slice(1);
-            
-            return t;
-        }
-
-        // ========================================
-        // NAVIGATION
-        // ========================================
-        function goToStep(step) {
+        function showStep(step) {
             for (let i = 1; i <= 7; i++) {
                 const el = document.getElementById('step' + i);
                 if (el) el.classList.remove('active');
             }
-            const nextEl = document.getElementById('step' + step);
-            if (nextEl) nextEl.classList.add('active');
-            currentStepNum = step;
+            document.getElementById('step' + step).classList.add('active');
+            currentStep = step;
             const percent = (step / 7) * 100;
             document.getElementById('progressBar').style.width = percent + '%';
             document.getElementById('stepIndicator').innerText = 'Step ' + step + ' of 7';
@@ -906,14 +242,51 @@
         }
 
         // ========================================
-        // SAVE/LOAD DATA
+        // AUTO-CORRECT
+        // ========================================
+        function enhanceText(text) {
+            if (!text || typeof text !== 'string') return text || '';
+            let t = text;
+            const fixes = {
+                /\bi\b/g: 'I', /\bmy\s+self\b/gi: 'myself', /\bproeffsional\b/gi: 'professional',
+                /\bgrammer\b/gi: 'grammar', /\bdiffucult\b/gi: 'difficult', /\bsummerizing\b/gi: 'summarizing',
+                /\brecieving\b/gi: 'receiving', /\bfeedbalc\b/gi: 'feedback', /\bthoery\b/gi: 'theory',
+                /\bhelped\s+with\b/gi: 'supported', /\bdid\s+work\b/gi: 'performed tasks',
+                /\blearned\s+how\s+to\b/gi: 'acquired competency in', /\btaught\s+students\b/gi: 'delivered instruction to learners',
+                /\bwrote\s+stories\b/gi: 'authored news articles', /\bfixed\s+computers\b/gi: 'performed technical troubleshooting'
+            };
+            for (const [pattern, replacement] of Object.entries(fixes)) {
+                t = t.replace(new RegExp(pattern, 'g'), replacement);
+            }
+            t = t.replace(/\bHe\s+intern\b/gi, 'The intern');
+            t = t.replace(/0026-/g, '2026-');
+            t = t.replace(/([.!?])\s*([a-z])/g, (match, p1, p2) => p1 + ' ' + p2.toUpperCase());
+            t = t.charAt(0).toUpperCase() + t.slice(1);
+            return t;
+        }
+
+        function enhanceAllContent() {
+            const fields = ['knowledgeGained', 'personalContribution', 'challengeSolutions', 'recUniversity', 'recOrganization', 'recStudents', 'orgHistory', 'deptRole', 'supervisorRole', 'abstractText'];
+            for (let i = 0; i < fields.length; i++) {
+                const el = document.getElementById(fields[i]);
+                if (el && el.value) el.value = enhanceText(el.value);
+            }
+            for (let i = 0; i < logbookEntries.length; i++) {
+                if (logbookEntries[i].description) logbookEntries[i].description = enhanceText(logbookEntries[i].description);
+                if (logbookEntries[i].skills) logbookEntries[i].skills = enhanceText(logbookEntries[i].skills);
+                if (logbookEntries[i].challenges) logbookEntries[i].challenges = enhanceText(logbookEntries[i].challenges);
+            }
+            renderLogbookList();
+            saveAllData();
+            showAlert('✨ Content enhanced!', 'success');
+        }
+
+        // ========================================
+        // SAVE/LOAD
         // ========================================
         function saveAllData() {
             const data = {
-                staffMembers: staffMembers,
-                logbookEntries: logbookEntries,
-                theoryEntries: theoryEntries,
-                abbreviationEntries: abbreviationEntries,
+                staffMembers, logbookEntries, theoryEntries, abbreviationEntries,
                 studentName: document.getElementById('studentName').value,
                 studentId: document.getElementById('studentId').value,
                 university: document.getElementById('university').value,
@@ -956,34 +329,23 @@
                 logbookEntries = data.logbookEntries || [];
                 theoryEntries = data.theoryEntries || [];
                 abbreviationEntries = data.abbreviationEntries || [];
-                
-                const fields = ['studentName', 'studentId', 'university', 'faculty', 'department', 'programme', 
-                    'academicSupervisor', 'abstractText', 'startDate', 'endDate', 'orgName', 'orgType', 'orgAddress',
-                    'workSupervisor', 'supervisorPosition', 'orgHistory', 'orgVision', 'orgMission', 'orgValues',
-                    'deptName', 'deptHead', 'deptRole', 'supervisorRole', 'knowledgeGained', 'skillsGained',
-                    'personalContribution', 'challengeSolutions', 'recUniversity', 'recOrganization', 'recStudents'];
+                const fields = ['studentName', 'studentId', 'university', 'faculty', 'department', 'programme', 'academicSupervisor', 'abstractText', 'startDate', 'endDate', 'orgName', 'orgType', 'orgAddress', 'workSupervisor', 'supervisorPosition', 'orgHistory', 'orgVision', 'orgMission', 'orgValues', 'deptName', 'deptHead', 'deptRole', 'supervisorRole', 'knowledgeGained', 'skillsGained', 'personalContribution', 'challengeSolutions', 'recUniversity', 'recOrganization', 'recStudents'];
                 for (let i = 0; i < fields.length; i++) {
                     const el = document.getElementById(fields[i]);
                     if (el && data[fields[i]] !== undefined) el.value = data[fields[i]];
                 }
             }
-            if (logbookEntries.length === 0) {
-                logbookEntries.push({ date: '', activity: '', description: '', skills: '', challenges: '' });
-            }
+            if (logbookEntries.length === 0) logbookEntries.push({ date: '', activity: '', description: '', skills: '', challenges: '' });
             renderStaffList();
             renderLogbookList();
             renderTheoriesList();
             renderAbbreviationsList();
             updatePremiumUI();
-            if (trialEnds && new Date() < new Date(trialEnds)) {
-                isPremium = true;
-                localStorage.setItem('premiumUnlocked', 'true');
-                updatePremiumUI();
-            }
+            if (trialEnds && new Date() < new Date(trialEnds)) { isPremium = true; localStorage.setItem('premiumUnlocked', 'true'); updatePremiumUI(); }
         }
 
         // ========================================
-        // STAFF MANAGEMENT
+        // STAFF
         // ========================================
         function addStaffField() { staffMembers.push({ name: '', position: '', responsibilities: '' }); renderStaffList(); saveAllData(); }
         function updateStaff(idx, field, val) { staffMembers[idx][field] = val; saveAllData(); }
@@ -994,8 +356,7 @@
             let html = '';
             for (let i = 0; i < staffMembers.length; i++) {
                 const s = staffMembers[i];
-                html += '<div class="entry-card">' +
-                    '<input type="text" placeholder="Name" value="' + escapeHtml(s.name) + '" onchange="updateStaff(' + i + ', \'name\', this.value)">' +
+                html += '<div class="entry-card"><input type="text" placeholder="Name" value="' + escapeHtml(s.name) + '" onchange="updateStaff(' + i + ', \'name\', this.value)">' +
                     '<input type="text" placeholder="Position" value="' + escapeHtml(s.position) + '" onchange="updateStaff(' + i + ', \'position\', this.value)" style="margin-top:0.5rem;">' +
                     '<textarea placeholder="Responsibilities" rows="2" onchange="updateStaff(' + i + ', \'responsibilities\', this.value)">' + escapeHtml(s.responsibilities) + '</textarea>' +
                     '<button class="remove-btn" onclick="removeStaff(' + i + ')">Remove</button></div>';
@@ -1004,7 +365,7 @@
         }
 
         // ========================================
-        // LOGBOOK MANAGEMENT
+        // LOGBOOK
         // ========================================
         function addLogEntryField() { logbookEntries.push({ date: '', activity: '', description: '', skills: '', challenges: '' }); renderLogbookList(); saveAllData(); }
         function updateLogEntry(idx, field, val) { logbookEntries[idx][field] = val; saveAllData(); }
@@ -1015,19 +376,18 @@
             let html = '';
             for (let i = 0; i < logbookEntries.length; i++) {
                 const e = logbookEntries[i];
-                html += '<div class="entry-card">' +
-                    '<input type="date" value="' + e.date + '" onchange="updateLogEntry(' + i + ', \'date\', this.value)">' +
+                html += '<div class="entry-card"><input type="date" value="' + e.date + '" onchange="updateLogEntry(' + i + ', \'date\', this.value)">' +
                     '<input type="text" placeholder="Activity Title" value="' + escapeHtml(e.activity) + '" onchange="updateLogEntry(' + i + ', \'activity\', this.value)" style="margin-top:0.5rem;">' +
                     '<textarea placeholder="Description" rows="3" onchange="updateLogEntry(' + i + ', \'description\', this.value)">' + escapeHtml(e.description) + '</textarea>' +
-                    '<input type="text" placeholder="Skills developed" value="' + escapeHtml(e.skills) + '" onchange="updateLogEntry(' + i + ', \'skills\', this.value)">' +
-                    '<textarea placeholder="Challenges & solutions" rows="2" onchange="updateLogEntry(' + i + ', \'challenges\', this.value)">' + escapeHtml(e.challenges) + '</textarea>' +
+                    '<input type="text" placeholder="Skills" value="' + escapeHtml(e.skills) + '" onchange="updateLogEntry(' + i + ', \'skills\', this.value)">' +
+                    '<textarea placeholder="Challenges" rows="2" onchange="updateLogEntry(' + i + ', \'challenges\', this.value)">' + escapeHtml(e.challenges) + '</textarea>' +
                     '<button class="remove-btn" onclick="removeLogEntry(' + i + ')">Remove</button></div>';
             }
             container.innerHTML = html;
         }
 
         // ========================================
-        // THEORIES MANAGEMENT
+        // THEORIES
         // ========================================
         function addTheoryField() { theoryEntries.push({ name: '', explanation: '' }); renderTheoriesList(); saveAllData(); }
         function updateTheory(idx, field, val) { theoryEntries[idx][field] = val; saveAllData(); }
@@ -1038,8 +398,7 @@
             let html = '';
             for (let i = 0; i < theoryEntries.length; i++) {
                 const t = theoryEntries[i];
-                html += '<div class="entry-card">' +
-                    '<input type="text" placeholder="Theory Name" value="' + escapeHtml(t.name) + '" onchange="updateTheory(' + i + ', \'name\', this.value)">' +
+                html += '<div class="entry-card"><input type="text" placeholder="Theory Name" value="' + escapeHtml(t.name) + '" onchange="updateTheory(' + i + ', \'name\', this.value)">' +
                     '<textarea placeholder="How this applied" rows="2" onchange="updateTheory(' + i + ', \'explanation\', this.value)">' + escapeHtml(t.explanation) + '</textarea>' +
                     '<button class="remove-btn" onclick="removeTheory(' + i + ')">Remove</button></div>';
             }
@@ -1047,7 +406,7 @@
         }
 
         // ========================================
-        // ABBREVIATIONS MANAGEMENT
+        // ABBREVIATIONS
         // ========================================
         function addAbbreviationField() { abbreviationEntries.push({ abbrev: '', meaning: '' }); renderAbbreviationsList(); saveAllData(); }
         function updateAbbreviation(idx, field, val) { abbreviationEntries[idx][field] = val; saveAllData(); }
@@ -1058,69 +417,46 @@
             let html = '';
             for (let i = 0; i < abbreviationEntries.length; i++) {
                 const a = abbreviationEntries[i];
-                html += '<div class="entry-card">' +
-                    '<input type="text" placeholder="Abbreviation (e.g., AI)" value="' + escapeHtml(a.abbrev) + '" onchange="updateAbbreviation(' + i + ', \'abbrev\', this.value)" style="width:30%; display:inline-block; margin-right:2%;">' +
-                    '<input type="text" placeholder="Meaning (e.g., Artificial Intelligence)" value="' + escapeHtml(a.meaning) + '" onchange="updateAbbreviation(' + i + ', \'meaning\', this.value)" style="width:67%; display:inline-block;">' +
+                html += '<div class="entry-card"><input type="text" placeholder="Abbreviation" value="' + escapeHtml(a.abbrev) + '" onchange="updateAbbreviation(' + i + ', \'abbrev\', this.value)" style="width:30%; display:inline-block; margin-right:2%;">' +
+                    '<input type="text" placeholder="Meaning" value="' + escapeHtml(a.meaning) + '" onchange="updateAbbreviation(' + i + ', \'meaning\', this.value)" style="width:67%; display:inline-block;">' +
                     '<button class="remove-btn" onclick="removeAbbreviation(' + i + ')">Remove</button></div>';
             }
             container.innerHTML = html;
         }
 
         // ========================================
-        // ENHANCE ALL CONTENT
-        // ========================================
-        function enhanceAllContent() {
-            const fields = ['knowledgeGained', 'personalContribution', 'challengeSolutions', 'recUniversity', 'recOrganization', 'recStudents', 'orgHistory', 'deptRole', 'supervisorRole', 'abstractText'];
-            for (let i = 0; i < fields.length; i++) {
-                const el = document.getElementById(fields[i]);
-                if (el && el.value) el.value = enhanceText(el.value);
-            }
-            for (let i = 0; i < logbookEntries.length; i++) {
-                if (logbookEntries[i].description) logbookEntries[i].description = enhanceText(logbookEntries[i].description);
-                if (logbookEntries[i].skills) logbookEntries[i].skills = enhanceText(logbookEntries[i].skills);
-                if (logbookEntries[i].challenges) logbookEntries[i].challenges = enhanceText(logbookEntries[i].challenges);
-            }
-            renderLogbookList();
-            saveAllData();
-            showAlert('✨ Content enhanced and professionalized!', 'success');
-        }
-
-        // ========================================
-        // PREMIUM REPORT GENERATION
+        // REPORT GENERATION (Simplified but Professional)
         // ========================================
         function generateReport() {
             if (!isPremium) { showModal(); showAlert('Upgrade to premium to generate report', 'warning'); return; }
-            
             document.getElementById('genStatus').innerHTML = '<div style="background:#e8f4f0; padding:0.5rem;">🤖 Generating premium report...</div>';
-            
             setTimeout(function() {
                 const report = buildPremiumReport();
                 document.getElementById('reportContent').innerHTML = report;
                 generatedHTML = report;
-                document.getElementById('genStatus').innerHTML = '<div style="background:#d4edda; padding:0.5rem;">✅ Premium report generated! Export to PDF.</div>';
+                document.getElementById('genStatus').innerHTML = '<div style="background:#d4edda; padding:0.5rem;">✅ Report generated! Export to PDF.</div>';
                 showAlert('Premium report ready!', 'success');
             }, 500);
         }
 
         function buildPremiumReport() {
-            // Get all form values with enhancement
             const studentName = enhanceText(document.getElementById('studentName').value) || 'Student Name';
-            const studentId = document.getElementById('studentId').value || 'Registration Number';
-            const uni = document.getElementById('university').value || 'Islamic University in Uganda';
-            const faculty = document.getElementById('faculty').value || 'Faculty Name';
-            const dept = document.getElementById('department').value || 'Department Name';
-            const prog = document.getElementById('programme').value || 'Programme Name';
-            const supervisor = enhanceText(document.getElementById('academicSupervisor').value) || 'Supervisor Name';
-            const abstract = enhanceText(document.getElementById('abstractText').value) || 'This internship provided valuable practical experience.';
-            const orgName = enhanceText(document.getElementById('orgName').value) || 'Organization Name';
+            const studentId = document.getElementById('studentId').value || 'Registration';
+            const uni = document.getElementById('university').value || 'University';
+            const faculty = document.getElementById('faculty').value || 'Faculty';
+            const dept = document.getElementById('department').value || 'Department';
+            const prog = document.getElementById('programme').value || 'Programme';
+            const supervisor = enhanceText(document.getElementById('academicSupervisor').value) || 'Supervisor';
+            const abstract = enhanceText(document.getElementById('abstractText').value) || 'Internship experience summary.';
+            const orgName = enhanceText(document.getElementById('orgName').value) || 'Organization';
             const orgAddr = enhanceText(document.getElementById('orgAddress').value) || 'Address';
-            const workSup = enhanceText(document.getElementById('workSupervisor').value) || 'Supervisor Name';
+            const workSup = enhanceText(document.getElementById('workSupervisor').value) || 'Supervisor';
             const supPos = enhanceText(document.getElementById('supervisorPosition').value) || 'Position';
             const history = enhanceText(document.getElementById('orgHistory').value) || 'Organization history.';
             const vision = document.getElementById('orgVision').value || '';
             const mission = document.getElementById('orgMission').value || '';
             const values = document.getElementById('orgValues').value || '';
-            const deptName = enhanceText(document.getElementById('deptName').value) || 'Department Name';
+            const deptName = enhanceText(document.getElementById('deptName').value) || 'Department';
             const deptHead = enhanceText(document.getElementById('deptHead').value) || '';
             const deptRole = enhanceText(document.getElementById('deptRole').value) || '';
             const supRole = enhanceText(document.getElementById('supervisorRole').value) || '';
@@ -1135,309 +471,157 @@
             const endDate = document.getElementById('endDate').value || '';
             const currentDate = new Date().toLocaleDateString('en-GB');
             
-            // Format dates
             const formatDate = (d) => { if (!d) return ''; return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }); };
             
-            // Build activities HTML
             let activitiesHtml = '';
             for (let i = 0; i < logbookEntries.length; i++) {
                 const e = logbookEntries[i];
                 if (e.activity) {
-                    activitiesHtml += '<div class="activity-entry">' +
-                        '<div class="activity-date">' + (e.date || 'Date') + '</div>' +
-                        '<h4>' + enhanceText(e.activity) + '</h4>' +
-                        '<p>' + (enhanceText(e.description) || 'No description provided.') + '</p>' +
-                        (e.skills ? '<p><strong>Skills developed:</strong> ' + enhanceText(e.skills) + '</p>' : '') +
-                        (e.challenges ? '<p><strong>Challenges encountered:</strong> ' + enhanceText(e.challenges) + '</p>' : '') +
-                        '</div>';
+                    activitiesHtml += '<div class="activity-entry"><div class="activity-date">' + (e.date || 'Date') + '</div>' +
+                        '<h4>' + enhanceText(e.activity) + '</h4><p>' + (enhanceText(e.description) || '') + '</p>' +
+                        (e.skills ? '<p><strong>Skills:</strong> ' + enhanceText(e.skills) + '</p>' : '') +
+                        (e.challenges ? '<p><strong>Challenges:</strong> ' + enhanceText(e.challenges) + '</p>' : '') + '</div>';
                 }
             }
             
-            // Build staff table
             let staffHtml = '';
             if (staffMembers.length > 0) {
-                staffHtml = '<table class="premium-table">' +
-                    '<thead><tr><th>Name</th><th>Position</th><th>Responsibilities</th></tr></thead><tbody>';
+                staffHtml = '<table class="premium-table"><thead><tr><th>Name</th><th>Position</th><th>Responsibilities</th></tr></thead><tbody>';
                 for (let i = 0; i < staffMembers.length; i++) {
                     const s = staffMembers[i];
-                    if (s.name) {
-                        staffHtml += '<tr>' +
-                            '<td>' + enhanceText(s.name) + '</td>' +
-                            '<td>' + enhanceText(s.position) + '</td>' +
-                            '<td>' + enhanceText(s.responsibilities) + '</td>' +
-                            '</tr>';
-                    }
+                    if (s.name) staffHtml += '<tr><td>' + enhanceText(s.name) + '</td><td>' + enhanceText(s.position) + '</td><td>' + enhanceText(s.responsibilities) + '</td></tr>';
                 }
                 staffHtml += '</tbody></table>';
-            } else {
-                staffHtml = '<p>Various staff members were worked with during the internship.</p>';
             }
             
-            // Build theories HTML
             let theoriesHtml = '';
             for (let i = 0; i < theoryEntries.length; i++) {
                 const t = theoryEntries[i];
-                if (t.name) {
-                    theoriesHtml += '<p><strong>' + enhanceText(t.name) + ':</strong> ' + enhanceText(t.explanation) + '</p>';
-                }
+                if (t.name) theoriesHtml += '<p><strong>' + enhanceText(t.name) + ':</strong> ' + enhanceText(t.explanation) + '</p>';
             }
             
-            // Build abbreviations table
             let abbrevHtml = '';
             if (abbreviationEntries.length > 0) {
                 abbrevHtml = '<table class="abbrev-table">';
                 for (let i = 0; i < abbreviationEntries.length; i++) {
                     const a = abbreviationEntries[i];
-                    if (a.abbrev) {
-                        abbrevHtml += '<tr><td>' + enhanceText(a.abbrev) + '</td><td>' + enhanceText(a.meaning) + '</td></tr>';
-                    }
+                    if (a.abbrev) abbrevHtml += '<tr><td>' + enhanceText(a.abbrev) + '</td><td>' + enhanceText(a.meaning) + '</td></tr>';
                 }
                 abbrevHtml += '</table>';
             }
             
-            // Build Table of Contents
-            const tocItems = [
-                { name: 'DECLARATION', page: 'i' },
-                { name: 'APPROVAL', page: 'ii' },
-                { name: 'DEDICATION', page: 'iii' },
-                { name: 'ACKNOWLEDGEMENT', page: 'iv' },
-                { name: 'ABSTRACT', page: 'v' }
-            ];
-            if (abbreviationEntries.length > 0) tocItems.push({ name: 'LIST OF ABBREVIATIONS', page: 'vi' });
-            tocItems.push({ name: 'CHAPTER ONE: INTRODUCTION', page: '1' });
-            tocItems.push({ name: 'CHAPTER TWO: INTERNSHIP EXPERIENCE', page: '3' });
-            tocItems.push({ name: 'CHAPTER THREE: FINDINGS', page: '6' });
-            tocItems.push({ name: 'CHAPTER FOUR: CONCLUSION & RECOMMENDATIONS', page: '9' });
-            tocItems.push({ name: 'REFERENCES', page: '11' });
-            
-            let tocHtml = '<div class="toc"><h2>TABLE OF CONTENTS</h2>';
-            for (let i = 0; i < tocItems.length; i++) {
-                tocHtml += '<div class="toc-item">' +
-                    '<span>' + tocItems[i].name + '</span>' +
-                    '<span class="toc-dots"></span>' +
-                    '<span>' + tocItems[i].page + '</span>' +
-                    '</div>';
-            }
-            tocHtml += '</div>';
-            
-            // Full premium report
             return '<div class="premium-report">' +
-                // TITLE PAGE
-                '<div class="title-page">' +
-                '<div class="uni-name">' + uni + '</div>' +
-                '<div class="faculty-name">' + faculty + '</div>' +
-                '<div class="logo-placeholder">☐</div>' +
-                '<div class="report-title">INTERNSHIP REPORT</div>' +
-                '<div class="student-name">' + studentName + '</div>' +
-                '<div class="student-id">' + studentId + '</div>' +
-                '<div class="submission-info">Submitted to the Department of ' + dept + '<br>in partial fulfillment of ' + prog + '</div>' +
-                '<div class="date">' + currentDate + '</div>' +
-                '</div>' +
+                '<div class="title-page"><div class="uni-name">' + uni + '</div><div class="faculty-name">' + faculty + '</div><div class="logo-placeholder">☐</div>' +
+                '<div class="report-title">INTERNSHIP REPORT</div><div class="student-name">' + studentName + '</div><div class="student-id">' + studentId + '</div>' +
+                '<div class="submission-info">Submitted to the Department of ' + dept + '<br>in partial fulfillment of ' + prog + '</div><div class="date">' + currentDate + '</div></div>' +
                 
                 '<div class="page-break"></div>' +
-                
-                // FRONT MATTER (Roman numerals)
-                '<div class="front-matter">' +
-                '<div class="declaration-box">' +
-                '<h2>DECLARATION</h2>' +
-                '<p>I, ' + studentName + ', a student of ' + uni + ', ' + faculty + ', declare that this internship report is my original work and has not been submitted for any other qualification.</p>' +
-                '<div class="signature-line">Signature: _________________ Date: ' + currentDate + '</div>' +
-                '</div></div>' +
+                '<div class="declaration-box"><h2>DECLARATION</h2><p>I, ' + studentName + ', declare that this report is my original work.</p><div class="signature-line">Signature: _________________ Date: ' + currentDate + '</div></div>' +
                 
                 '<div class="page-break"></div>' +
-                
-                '<div class="front-matter">' +
-                '<div class="approval-box">' +
-                '<h2>APPROVAL</h2>' +
-                '<p>This internship report by ' + studentName + ' has been submitted with my approval.</p>' +
-                '<div class="signature-line">Signature: _________________ Date: _________________</div>' +
-                '<p><strong>' + supervisor + '</strong><br>University Supervisor</p>' +
-                '<div class="signature-line">Signature: _________________ Date: _________________</div>' +
-                '<p><strong>' + workSup + '</strong><br>Agency Supervisor (' + supPos + ')</p>' +
-                '</div></div>' +
+                '<div class="approval-box"><h2>APPROVAL</h2><p>This report has been submitted with my approval.</p><div class="signature-line">Signature: _________________ Date: _________________</div>' +
+                '<p><strong>' + supervisor + '</strong><br>University Supervisor</p><div class="signature-line">Signature: _________________ Date: _________________</div>' +
+                '<p><strong>' + workSup + '</strong><br>Agency Supervisor (' + supPos + ')</p></div>' +
                 
                 '<div class="page-break"></div>' +
-                
-                '<div class="front-matter">' +
-                '<div class="dedication-box">' +
-                '<h2>DEDICATION</h2>' +
-                '<p>This report is dedicated to my family for their unwavering support and encouragement throughout my academic journey.</p>' +
-                '</div></div>' +
+                '<div class="dedication-box"><h2>DEDICATION</h2><p>This report is dedicated to my family for their support.</p></div>' +
                 
                 '<div class="page-break"></div>' +
-                
-                '<div class="front-matter">' +
-                '<div class="acknowledgement-box">' +
-                '<h2>ACKNOWLEDGEMENT</h2>' +
-                '<p>I thank Almighty God for enabling me to complete this internship successfully. I extend my sincere gratitude to my university supervisor, ' + supervisor + ', and workplace supervisor, ' + workSup + ', for their guidance. I also appreciate the staff of ' + orgName + ' for their support and mentorship.</p>' +
-                '</div></div>' +
+                '<div class="acknowledgement-box"><h2>ACKNOWLEDGEMENT</h2><p>I thank my supervisors ' + supervisor + ' and ' + workSup + ' for their guidance.</p></div>' +
                 
                 '<div class="page-break"></div>' +
+                '<div class="abstract"><h2>ABSTRACT</h2><p>' + abstract + '</p></div>' +
                 
-                '<div class="front-matter">' +
-                '<div class="abstract">' +
-                '<h2>ABSTRACT</h2>' +
-                '<p>' + abstract + '</p>' +
-                '</div></div>' +
-                
-                (abbreviationEntries.length > 0 ? '<div class="page-break"></div><div class="front-matter"><div class="abbreviations"><h2>LIST OF ABBREVIATIONS</h2>' + abbrevHtml + '</div></div>' : '') +
+                (abbreviationEntries.length > 0 ? '<div class="page-break"></div><div class="abbreviations"><h2>LIST OF ABBREVIATIONS</h2>' + abbrevHtml + '</div>' : '') +
                 
                 '<div class="page-break"></div>' +
-                
-                // TABLE OF CONTENTS
-                tocHtml +
-                
-                '<div class="page-break"></div>' +
-                
-                // CHAPTER 1
-                '<div class="chapter"><h2>CHAPTER ONE: INTRODUCTION</h2>' +
-                '<h3>1.1 Background of Internship</h3>' +
-                '<p>The internship was undertaken at ' + orgName + ' from ' + formatDate(startDate) + ' to ' + formatDate(endDate) + '. This report presents the experiences, activities, and learning outcomes from the practicum.</p>' +
-                '<h3>1.2 Objectives of Internship</h3>' +
-                '<ul><li>To apply theoretical knowledge to practical work</li><li>To gain relevant professional experience</li><li>To understand workplace culture and operations</li></ul>' +
-                '<h3>1.3 Organization Background</h3>' +
-                '<p><strong>' + orgName + '</strong> is located at ' + orgAddr + '. ' + history + '</p>' +
-                '<p><strong>Vision:</strong> ' + vision + '</p>' +
-                '<p><strong>Mission:</strong> ' + mission + '</p>' +
-                '<p><strong>Core Values:</strong> ' + values + '</p>' +
-                '</div>' +
+                '<div class="toc"><h2>TABLE OF CONTENTS</h2><div class="toc-item"><span>DECLARATION</span><span class="toc-dots"></span><span>i</span></div>' +
+                '<div class="toc-item"><span>APPROVAL</span><span class="toc-dots"></span><span>ii</span></div><div class="toc-item"><span>DEDICATION</span><span class="toc-dots"></span><span>iii</span></div>' +
+                '<div class="toc-item"><span>ACKNOWLEDGEMENT</span><span class="toc-dots"></span><span>iv</span></div><div class="toc-item"><span>ABSTRACT</span><span class="toc-dots"></span><span>v</span></div>' +
+                '<div class="toc-item"><span>CHAPTER ONE: INTRODUCTION</span><span class="toc-dots"></span><span>1</span></div><div class="toc-item"><span>CHAPTER TWO: EXPERIENCE</span><span class="toc-dots"></span><span>3</span></div>' +
+                '<div class="toc-item"><span>CHAPTER THREE: FINDINGS</span><span class="toc-dots"></span><span>6</span></div><div class="toc-item"><span>CHAPTER FOUR: CONCLUSION</span><span class="toc-dots"></span><span>9</span></div>' +
+                '<div class="toc-item"><span>REFERENCES</span><span class="toc-dots"></span><span>11</span></div></div>' +
                 
                 '<div class="page-break"></div>' +
-                
-                // CHAPTER 2
-                '<div class="chapter"><h2>CHAPTER TWO: INTERNSHIP EXPERIENCE</h2>' +
-                '<h3>2.1 Department of Attachment</h3>' +
-                '<p>The student was attached to the ' + deptName + ', headed by ' + deptHead + '. ' + deptRole + '</p>' +
-                '<h3>2.2 Activities Performed</h3>' +
-                (activitiesHtml || '<p>No activities recorded.</p>') +
-                '<h3>2.3 Staff Worked With</h3>' +
-                staffHtml +
-                '<h3>2.4 Role of the Supervisor</h3>' +
-                '<p>' + supRole + '</p>' +
-                '</div>' +
+                '<div class="chapter"><h2>CHAPTER ONE: INTRODUCTION</h2><h3>1.1 Background</h3><p>Internship at ' + orgName + ' from ' + formatDate(startDate) + ' to ' + formatDate(endDate) + '.</p>' +
+                '<h3>1.2 Organization Background</h3><p>' + orgName + ' is located at ' + orgAddr + '. ' + history + '</p>' +
+                '<p><strong>Vision:</strong> ' + vision + '</p><p><strong>Mission:</strong> ' + mission + '</p><p><strong>Values:</strong> ' + values + '</p></div>' +
                 
                 '<div class="page-break"></div>' +
-                
-                // CHAPTER 3
-                '<div class="chapter"><h2>CHAPTER THREE: FINDINGS</h2>' +
-                '<h3>3.1 Knowledge Acquired</h3>' +
-                '<p>' + knowledge + '</p>' +
-                '<h3>3.2 Skills Developed</h3>' +
-                '<p>' + skills + '</p>' +
-                (theoriesHtml ? '<h3>3.3 Theories Applied</h3>' + theoriesHtml : '') +
-                '<h3>3.4 Personal Contribution</h3>' +
-                '<p>' + contribution + '</p>' +
-                '<h3>3.5 Challenges Encountered</h3>' +
-                '<p>' + challenges + '</p>' +
-                '</div>' +
+                '<div class="chapter"><h2>CHAPTER TWO: INTERNSHIP EXPERIENCE</h2><h3>2.1 Department</h3><p>Attached to ' + deptName + ', headed by ' + deptHead + '. ' + deptRole + '</p>' +
+                '<h3>2.2 Activities</h3>' + (activitiesHtml || '<p>No activities recorded.</p>') +
+                '<h3>2.3 Staff</h3>' + staffHtml + '<h3>2.4 Supervisor Role</h3><p>' + supRole + '</p></div>' +
                 
                 '<div class="page-break"></div>' +
-                
-                // CHAPTER 4
-                '<div class="chapter"><h2>CHAPTER FOUR: CONCLUSION & RECOMMENDATIONS</h2>' +
-                '<h3>4.1 Summary of Findings</h3>' +
-                '<p>The internship at ' + orgName + ' provided valuable practical exposure. Key skills in ' + skills + ' were developed, and meaningful contributions were made to the organization.</p>' +
-                '<h3>4.2 Conclusion</h3>' +
-                '<p>The internship was a transformative learning experience that bridged the gap between academic theory and professional practice.</p>' +
-                '<h3>4.3 Recommendations</h3>' +
-                '<p><strong>To the University:</strong> ' + (recUni || 'Strengthen pre-internship orientation programs.') + '</p>' +
-                '<p><strong>To the Organization:</strong> ' + (recOrg || 'Provide structured mentorship for interns.') + '</p>' +
-                '<p><strong>To Future Students:</strong> ' + (recStud || 'Be proactive and maintain a detailed logbook.') + '</p>' +
-                '</div>' +
+                '<div class="chapter"><h2>CHAPTER THREE: FINDINGS</h2><h3>3.1 Knowledge</h3><p>' + knowledge + '</p><h3>3.2 Skills</h3><p>' + skills + '</p>' +
+                (theoriesHtml ? '<h3>3.3 Theories</h3>' + theoriesHtml : '') + '<h3>3.4 Contribution</h3><p>' + contribution + '</p><h3>3.5 Challenges</h3><p>' + challenges + '</p></div>' +
                 
                 '<div class="page-break"></div>' +
+                '<div class="chapter"><h2>CHAPTER FOUR: CONCLUSION & RECOMMENDATIONS</h2><h3>4.1 Conclusion</h3><p>The internship was valuable for professional development.</p>' +
+                '<h3>4.2 Recommendations</h3><p><strong>To University:</strong> ' + (recUni || 'Strengthen orientation.') + '</p>' +
+                '<p><strong>To Organization:</strong> ' + (recOrg || 'Provide mentorship.') + '</p><p><strong>To Students:</strong> ' + (recStud || 'Be proactive.') + '</p></div>' +
                 
-                // REFERENCES
-                '<div class="references"><h2>REFERENCES</h2>' +
-                '<p>' + uni + '. (' + new Date().getFullYear() + '). Internship Guidelines Handbook.</p>' +
-                '<p>' + orgName + '. Organization Policies and Procedures Manual.</p>' +
-                '<p>Library research, interviews, and organizational documents.</p>' +
-                '</div>' +
-                
-                '</div>';
+                '<div class="page-break"></div>' +
+                '<div class="references"><h2>REFERENCES</h2><p>' + uni + ' Internship Guidelines (' + new Date().getFullYear() + ')</p><p>' + orgName + ' Policies Manual</p></div></div>';
         }
 
         // ========================================
-        // EXPORT TO PDF
+        // EXPORT
         // ========================================
         function exportToPDF() {
             if (!isPremium) { showModal(); showAlert('Upgrade to export PDF', 'warning'); return; }
-            if (!generatedHTML && !document.getElementById('reportContent').innerHTML.includes('Internship Report')) {
-                showAlert('Generate report first', 'warning');
-                return;
+            if (!generatedHTML && !document.getElementById('reportContent').innerHTML.includes('Internship')) {
+                showAlert('Generate report first', 'warning'); return;
             }
             const element = document.getElementById('reportContent');
             const name = document.getElementById('studentName').value || 'Student';
-            html2pdf().from(element).set({
-                margin: [0.75, 0.75, 0.75, 0.75],
-                filename: 'Internship_Report_' + name + '.pdf',
-                html2canvas: { scale: 2, letterRendering: true },
-                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-            }).save();
+            html2pdf().from(element).set({ margin: [0.75, 0.75, 0.75, 0.75], filename: 'Internship_Report_' + name + '.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).save();
         }
 
         // ========================================
-        // PAYMENT & PREMIUM
+        // PAYMENT
         // ========================================
         function initPayment() {
             if (document.getElementById('testModeCheckbox').checked) {
-                localStorage.setItem('premiumUnlocked', 'true');
-                isPremium = true;
-                updatePremiumUI();
-                closeModal();
-                showAlert('🧪 TEST MODE: Premium unlocked!', 'success');
-                return;
+                localStorage.setItem('premiumUnlocked', 'true'); isPremium = true; updatePremiumUI(); closeModal();
+                showAlert('🧪 TEST MODE: Premium unlocked!', 'success'); return;
             }
-            showAlert('Use test card: 4000 0000 0000 0002', 'info');
+            showAlert('Test card: 4000 0000 0000 0002', 'info');
             setTimeout(function() {
                 if (confirm('Demo: Simulate payment success?\n\nTest card: 4000 0000 0000 0002')) {
-                    localStorage.setItem('premiumUnlocked', 'true');
-                    isPremium = true;
-                    updatePremiumUI();
-                    closeModal();
+                    localStorage.setItem('premiumUnlocked', 'true'); isPremium = true; updatePremiumUI(); closeModal();
                     showAlert('Premium unlocked!', 'success');
                 }
             }, 500);
         }
 
-        function startFreeTrial() {
-            const end = new Date();
-            end.setDate(end.getDate() + 7);
-            localStorage.setItem('trialEnds', end.toISOString());
-            localStorage.setItem('premiumUnlocked', 'true');
-            isPremium = true;
-            updatePremiumUI();
-            closeModal();
-            showAlert('7-day free trial started!', 'success');
-        }
-
-        function updatePremiumUI() {
-            const span = document.getElementById('premiumStatus');
-            if (isPremium) {
-                span.innerHTML = '⭐ Premium Unlocked';
-                span.style.background = '#28a745';
-            } else {
-                span.innerHTML = '⭐ Free Trial';
-                span.style.background = '#ffc107';
-            }
-        }
-
-        function showAlert(msg, type) {
-            const a = document.createElement('div');
-            a.className = 'alert';
-            if (type === 'warning') a.classList.add('warning');
-            a.innerText = msg;
-            document.body.appendChild(a);
-            setTimeout(function() { a.remove(); }, 3000);
-        }
-
+        function startFreeTrial() { const end = new Date(); end.setDate(end.getDate() + 7); localStorage.setItem('trialEnds', end.toISOString()); localStorage.setItem('premiumUnlocked', 'true'); isPremium = true; updatePremiumUI(); closeModal(); showAlert('7-day trial started!', 'success'); }
+        function updatePremiumUI() { const span = document.getElementById('premiumStatus'); if (isPremium) { span.innerHTML = '⭐ Premium Unlocked'; span.style.background = '#28a745'; } else { span.innerHTML = '⭐ Free Trial'; span.style.background = '#ffc107'; } }
+        function showAlert(msg, type) { const a = document.createElement('div'); a.className = 'alert'; if (type === 'warning') a.classList.add('warning'); a.innerText = msg; document.body.appendChild(a); setTimeout(function() { a.remove(); }, 3000); }
         function showModal() { document.getElementById('premiumModal').classList.add('active'); }
         function closeModal() { document.getElementById('premiumModal').classList.remove('active'); }
         function escapeHtml(s) { if (!s) return ''; return s.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
 
         // ========================================
-        // EVENT LISTENERS
+        // SETUP EVENT LISTENERS - FIXED NAVIGATION
         // ========================================
+        document.getElementById('next1').onclick = function() { showStep(2); };
+        document.getElementById('prev2').onclick = function() { showStep(1); };
+        document.getElementById('next2').onclick = function() { showStep(3); };
+        document.getElementById('prev3').onclick = function() { showStep(2); };
+        document.getElementById('next3').onclick = function() { showStep(4); };
+        document.getElementById('prev4').onclick = function() { showStep(3); };
+        document.getElementById('next4').onclick = function() { showStep(5); };
+        document.getElementById('prev5').onclick = function() { showStep(4); };
+        document.getElementById('next5').onclick = function() { showStep(6); };
+        document.getElementById('prev6').onclick = function() { showStep(5); };
+        document.getElementById('next6').onclick = function() { showStep(7); };
+        document.getElementById('prev7').onclick = function() { showStep(6); };
+        
+        document.getElementById('addStaffBtn').onclick = addStaffField;
+        document.getElementById('addLogBtn').onclick = addLogEntryField;
+        document.getElementById('addTheoryBtn').onclick = addTheoryField;
+        document.getElementById('addAbbrevBtn').onclick = addAbbreviationField;
         document.getElementById('enhanceBtn').onclick = enhanceAllContent;
         document.getElementById('generateBtn').onclick = generateReport;
         document.getElementById('exportBtn').onclick = exportToPDF;
@@ -1447,27 +631,15 @@
         document.getElementById('trialBtn').onclick = startFreeTrial;
         document.getElementById('closeModalBtn').onclick = closeModal;
 
-        // Load html2pdf
+        window.updateStaff = updateStaff; window.removeStaff = removeStaff;
+        window.updateLogEntry = updateLogEntry; window.removeLogEntry = removeLogEntry;
+        window.updateTheory = updateTheory; window.removeTheory = removeTheory;
+        window.updateAbbreviation = updateAbbreviation; window.removeAbbreviation = removeAbbreviation;
+
         const scriptTag = document.createElement('script');
         scriptTag.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
         document.head.appendChild(scriptTag);
-
-        // Make functions global for onclick
-        window.goToStep = goToStep;
-        window.addStaffField = addStaffField;
-        window.updateStaff = updateStaff;
-        window.removeStaff = removeStaff;
-        window.addLogEntryField = addLogEntryField;
-        window.updateLogEntry = updateLogEntry;
-        window.removeLogEntry = removeLogEntry;
-        window.addTheoryField = addTheoryField;
-        window.updateTheory = updateTheory;
-        window.removeTheory = removeTheory;
-        window.addAbbreviationField = addAbbreviationField;
-        window.updateAbbreviation = updateAbbreviation;
-        window.removeAbbreviation = removeAbbreviation;
-
-        // Load saved data
+        
         loadAllData();
     </script>
 </body>
