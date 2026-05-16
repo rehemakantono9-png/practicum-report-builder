@@ -132,7 +132,7 @@
                 </div>
             </div>
 
-            <!-- STEP 2: Daily Logbook (AI will process this) -->
+            <!-- STEP 2: Daily Logbook -->
             <div id="step2" class="step">
                 <div class="card">
                     <h2>📓 Daily Logbook</h2>
@@ -167,7 +167,7 @@
                 <div class="card">
                     <h2>🤖 AI Generate Your Report</h2>
                     <p class="helper-text">Click the button below. AI will transform your logbook entries into a professional internship report.</p>
-                    <p class="helper-text">💡 This uses Groq AI (free for you). Each generation costs less than UGX 500.</p>
+                    <p class="helper-text">💡 This uses Groq AI (free tier available).</p>
                     <button id="generateBtn" class="btn" style="width:100%; padding:0.8rem; background:#28a745;">✨ AI Generate Professional Report</button>
                     <div id="genStatus" style="margin-top:1rem;"></div>
                     <div class="button-group"><button class="btn" onclick="goToStep(3)">← Back</button></div>
@@ -190,8 +190,7 @@
 
     <script>
         // ========================================
-        // AI-POWERED INTERNSHIP REPORT BUILDER
-        // Uses Groq AI (free tier available)
+        // AI-POWERED INTERNSHIP REPORT BUILDER - COMPLETE WORKING VERSION
         // ========================================
 
         let logbookEntries = [];
@@ -234,7 +233,7 @@
                 const e = logbookEntries[i];
                 html += '<div class="entry-card">' +
                     '<input type="date" value="' + e.date + '" onchange="updateLogEntry(' + i + ', \'date\', this.value)">' +
-                    '<input type="text" placeholder="Activity Title (e.g., Attended editorial meeting)" value="' + escapeHtml(e.activity) + '" onchange="updateLogEntry(' + i + ', \'activity\', this.value)" style="margin-top:0.5rem;">' +
+                    '<input type="text" placeholder="Activity Title" value="' + escapeHtml(e.activity) + '" onchange="updateLogEntry(' + i + ', \'activity\', this.value)" style="margin-top:0.5rem;">' +
                     '<textarea placeholder="Describe what you did in simple words. Include what you learned, any challenges..." rows="4" onchange="updateLogEntry(' + i + ', \'description\', this.value)">' + escapeHtml(e.description) + '</textarea>' +
                     '<button class="remove-btn" onclick="removeLogEntry(' + i + ')">Remove</button></div>';
             }
@@ -287,15 +286,15 @@
         }
 
         // ========================================
-        // AI REPORT GENERATION (via Groq)
+        // AI REPORT GENERATION - WORKING VERSION
         // ========================================
         async function generateReport() {
             if (!isPremium) { showModal(); showAlert('Upgrade to premium to generate report', 'warning'); return; }
             
             const statusDiv = document.getElementById('genStatus');
-            statusDiv.innerHTML = '<div class="ai-processing">🤖 AI is analyzing your logbook and writing your professional report... This takes about 10-15 seconds.</div>';
+            statusDiv.innerHTML = '<div class="ai-processing">🤖 AI is analyzing your logbook and writing your professional report... Please wait 10-15 seconds.</div>';
             
-            // Get all form data
+            // Build the prompt from user data
             const studentName = document.getElementById('studentName').value || 'Student';
             const studentId = document.getElementById('studentId').value || '';
             let programme = document.getElementById('programmeSelect').value;
@@ -315,7 +314,7 @@
             const recOrg = document.getElementById('recOrganization').value || '';
             const recStud = document.getElementById('recStudents').value || '';
             
-            // Format logbook entries for AI
+            // Format logbook entries
             let logbookText = '';
             for (let i = 0; i < logbookEntries.length; i++) {
                 const e = logbookEntries[i];
@@ -324,66 +323,54 @@
                 }
             }
             
-            // Build prompt for AI
-            const prompt = `You are a professional report writer for university students. Write a complete internship report for a ${programme} student.
+            const prompt = `Write a complete professional internship report for a ${programme} student.
 
-STUDENT INFORMATION:
-Name: ${studentName}
-ID: ${studentId}
+Student: ${studentName} (ID: ${studentId})
 University: ${university}
 Faculty: ${faculty}
 Department: ${department}
 Supervisor: ${academicSupervisor}
 Organization: ${orgName}
 Workplace Supervisor: ${workSupervisor} (${supervisorPosition})
-Internship Period: ${startDate} to ${endDate}
+Period: ${startDate} to ${endDate}
 
-LOGBOOK ENTRIES (student's raw notes):
+LOGBOOK ENTRIES:
 ${logbookText}
 
 ADDITIONAL INFO:
-Abstract summary: ${abstract}
-Personal contribution: ${contribution}
-Recommendations to university: ${recUni}
-Recommendations to organization: ${recOrg}
-Recommendations to future students: ${recStud}
+Abstract: ${abstract}
+Contribution: ${contribution}
+Recommendations to University: ${recUni}
+Recommendations to Organization: ${recOrg}
+Recommendations to Students: ${recStud}
 
-INSTRUCTIONS:
-1. Write a professional internship report with these chapters:
-   - Title Page (University name, faculty, student name, ID, programme)
-   - Declaration (student declares work is original)
-   - Approval (supervisor signatures)
-   - Acknowledgement (thank supervisors and organization)
-   - Abstract (summarize the internship)
-   - Chapter 1: Introduction (background, objectives, organization background)
-   - Chapter 2: Internship Activities (expand logbook entries into professional paragraphs)
-   - Chapter 3: Skills and Learning (extract skills and knowledge from activities)
-   - Chapter 4: Challenges and Solutions (extract challenges from activities)
-   - Chapter 5: Conclusion and Recommendations
-   - References
+Create a complete internship report with:
+1. Title page (university, faculty, student name, ID, programme)
+2. Declaration
+3. Approval page
+4. Acknowledgement
+5. Abstract
+6. Chapter 1: Introduction (background, objectives, organization background)
+7. Chapter 2: Activities (expand logbook into professional paragraphs)
+8. Chapter 3: Skills and Learning
+9. Chapter 4: Challenges and Solutions
+10. Chapter 5: Conclusion and Recommendations
+11. References
 
-2. Use professional, academic language
-3. Write complete sentences and paragraphs
-4. Make the student sound competent and professional
-5. Format with proper headings (h2 for chapters, h3 for subheadings)
-6. DO NOT mention that AI wrote this report
-7. Return ONLY valid HTML that can be inserted into a webpage
-
-Generate the complete report now:`;
+Use professional academic language. Format with HTML (h2 for chapters, h3 for subheadings). Do not mention AI. Make the student sound competent.`;
 
             try {
-                // Call Groq AI API
-                const response = await fetch('/.netlify/functions/groq-generate', {
+                const response = await fetch('https://internship-report-payments-backend.netlify.app/.netlify/functions/groq-generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prompt: prompt })
                 });
                 
                 const data = await response.json();
+                console.log('Response:', data);
                 
                 if (data.success && data.content) {
                     let reportHtml = data.content;
-                    // Ensure proper CSS classes
                     if (!reportHtml.includes('premium-report')) {
                         reportHtml = '<div class="premium-report">' + reportHtml + '</div>';
                     }
@@ -396,8 +383,8 @@ Generate the complete report now:`;
                 }
             } catch (error) {
                 console.error('AI Error:', error);
-                statusDiv.innerHTML = '<div style="background:#f8d7da; padding:0.5rem; border-radius:6px;">❌ AI generation failed. Using fallback template. Please try again or check your internet connection.</div>';
-                // Fallback: use rule-based report
+                statusDiv.innerHTML = '<div style="background:#f8d7da; padding:0.5rem; border-radius:6px;">❌ AI connection error. Using fallback template. Please check your internet and try again.</div>';
+                // Fallback: use template-based report
                 const fallbackReport = buildFallbackReport();
                 document.getElementById('reportContent').innerHTML = fallbackReport;
                 generatedHTML = fallbackReport;
@@ -405,10 +392,42 @@ Generate the complete report now:`;
         }
 
         function buildFallbackReport() {
-            // Simple fallback if AI fails
             const studentName = document.getElementById('studentName').value || 'Student';
+            const studentId = document.getElementById('studentId').value || '';
+            const programme = document.getElementById('programmeSelect').value || 'Programme';
+            const orgName = document.getElementById('orgName').value || 'Organization';
             const currentDate = new Date().toLocaleDateString('en-GB');
-            return '<div class="premium-report"><div class="title-page"><div class="uni-name">Islamic University in Uganda</div><div class="report-title">INTERNSHIP REPORT</div><div class="student-name">' + escapeHtml(studentName) + '</div><div class="date">' + currentDate + '</div></div><div class="chapter"><h2>CHAPTER ONE: INTRODUCTION</h2><p>This internship report documents the practical training experience.</p></div></div>';
+            
+            let activitiesHtml = '';
+            for (let i = 0; i < logbookEntries.length; i++) {
+                const e = logbookEntries[i];
+                if (e.activity) {
+                    activitiesHtml += `<div class="activity-entry">
+                        <div class="activity-date">${e.date || 'Date'}</div>
+                        <h4>${escapeHtml(e.activity)}</h4>
+                        <p>${escapeHtml(e.description) || ''}</p>
+                    </div>`;
+                }
+            }
+            
+            return `<div class="premium-report">
+                <div class="title-page">
+                    <div class="uni-name">Islamic University in Uganda</div>
+                    <div class="faculty-name">Faculty of Arts and Social Sciences</div>
+                    <div class="report-title">INTERNSHIP REPORT</div>
+                    <div class="student-name">${escapeHtml(studentName)}</div>
+                    <div class="student-id">${escapeHtml(studentId)}</div>
+                    <div class="submission-info">${escapeHtml(programme)}</div>
+                    <div class="date">${currentDate}</div>
+                </div>
+                <div class="page-break"></div>
+                <div class="chapter"><h2>CHAPTER ONE: INTRODUCTION</h2>
+                <p>This internship was undertaken at ${escapeHtml(orgName)}.</p></div>
+                <div class="chapter"><h2>CHAPTER TWO: ACTIVITIES</h2>
+                ${activitiesHtml || '<p>No activities recorded.</p>'}</div>
+                <div class="references"><h2>REFERENCES</h2>
+                <p>University Internship Guidelines</p></div>
+            </div>`;
         }
 
         // Export PDF
